@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+}
+.body {
+    font-family:cursive;
+    
+}
+.TopFrame {
+    background-color: black;
+    padding: 2px;
+    font-size: 25px;
+    
+}
+.TopFrame img {
+    float: left;
+    width: 215px;
+    height: 125px;
+}
+.TopFrame h1 {
+    position: relative;
+    top: 0px;
+    left: 10px;
+    color: rgb(240, 238, 238);
+    text-align:left;
+    
+}
+.nav1 {
+    float:left;
+    width: 15%;
+    padding: 40px;
+    height: 1000px;
+    background-color: rgb(119, 128, 128);
+    
+}
+.nav2 {
+    float: right;
+    width: 15%;
+    padding: 40px;
+    height: 1000px;
+    background-color: rgb(119, 128, 128);
+}
+
+
+
+.NavUl1 {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+
+.NavUl2 {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+
+.GameScreen {
+    float: left;
+    width: 70%;
+    background-color: #f1f1f1;
+    height: 1000px;
+    padding: 90px;
+}
+
+.GameScreen p {
+    text-align: center;
+}
+
+.GameScreen img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/*Det her vil clear ens float efter at kolonnerne er færdige */
+
+section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*Style ens fodnote */
+
+.footer {
+    background-color: black;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+/* Det her vil få de to frames til at stå ovenpå hinanden på små skærme (mobiler) */
+
+@media (max-width: 600px) {
+    .nav1, .nav2, .GameScreen {
+        width: 100%;
+        height: auto;
+    }
+}
