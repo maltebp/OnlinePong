@@ -1,6 +1,5 @@
 
 window.onload = function(){
-    //document.body.appendChild(canvas);
     animate(step);
 };
 
@@ -26,11 +25,7 @@ var step = function() {
 var player1 = new Player1(); //paddle is in the player constructor
 var player2 = new Player2(); //paddle is in the player constructor
 var ball = new Ball(300, 200); //the ball which will start 
-var midCourtLine = new MidCourtLine();
-var midCourtLine1 = new MidCourtLine1();
-var midCourtLine2 = new MidCourtLine2();
-var midCourtLine3 = new MidCourtLine3();
-var midCourtLine4 = new MidCourtLine4();
+var midCourtGraphics = new MidcourtGraphics();
 var bottomLine = new BottomLine();
 
 //variables
@@ -80,29 +75,11 @@ function MidCourtLine(x,y,width,height){
     this.width = width;
     this.height = height;
 }
-function MidCourtLine1(x,y,width,height){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-function MidCourtLine2(x,y,width,height){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-function MidCourtLine3(x,y,width,height){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-function MidCourtLine4(x,y,width,height){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+function MidcourtGraphics() {
+    this.midCourtLine1 = new MidCourtLine(347.5, 0 , 5, 50);
+    this.midCourtLine2 = new MidCourtLine(347.5, 118.3333, 5, 50);
+    this.midCourtLine3 = new MidCourtLine(347.5, 236.6666, 5, 50);
+    this.midCourtLine4 = new MidCourtLine(347.5, 355, 5, 50);
 }
 
 //render functions. 
@@ -113,13 +90,8 @@ var render = function(){
     player1.render();
     player2.render();
     ball.render();
-    midCourtLine.render();
-    midCourtLine1.render();
-    midCourtLine2.render();
-    midCourtLine3.render();
-    midCourtLine4.render();
+    midCourtGraphics.render();
     bottomLine.render();
-
 };
 Paddle.prototype.render = function() {
     context.beginPath();
@@ -143,36 +115,17 @@ BottomLine.prototype.render = function() {
     context.fillRect(0, 405, 700, 5);
     context.fillStyle = "#FFFFFF";
     context.fill();
-}
-MidCourtLine.prototype.render = function(){    
-    context.beginPath();
-    context.fillRect(347.5, 0, 5, 50);
-    context.fillStyle = "#FFFFFF";
-    context.fill();
 };
-MidCourtLine1.prototype.render = function(){    
+MidCourtLine.prototype.render = function() {
     context.beginPath();
-    context.fillRect(347.5, 0, 5, 50);
     context.fillStyle = "#FFFFFF";
-    context.fill();
+    context.fillRect(this.x, this.y, this.width, this.height);
 };
-MidCourtLine2.prototype.render = function(){    
-    context.beginPath();
-    context.fillRect(347.5, 118.3333, 5, 50);
-    context.fillStyle = "#FFFFFF";
-    context.fill();
-};
-MidCourtLine3.prototype.render = function(){    
-    context.beginPath();
-    context.fillRect(347.5, 236.6666, 5, 50);
-    context.fillStyle = "#FFFFFF";
-    context.fill();
-};
-MidCourtLine4.prototype.render = function(){    
-    context.beginPath();
-    context.fillRect(347.5, 355, 5, 50);
-    context.fillStyle = "#FFFFFF";
-    context.fill();
+MidcourtGraphics.prototype.render = function() {
+    this.midCourtLine1.render();
+    this.midCourtLine2.render();
+    this.midCourtLine3.render();
+    this.midCourtLine4.render();
 };
 
 //how we use keys to play the game. 
