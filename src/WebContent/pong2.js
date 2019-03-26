@@ -1,5 +1,5 @@
 
-vwindow.onload = function(){
+window.onload = function(){
     //document.body.appendChild(canvas);
     animate(step);
 };
