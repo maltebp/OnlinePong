@@ -153,10 +153,10 @@ var update = function(){
 Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 79){ // Numpad 8
+        if(value == 79){ // Keyboard key 'O'
             this.paddle.move(0,-4);
         }
-        else if (value == 76) { // Numpad 2
+        else if (value == 76) { // Keyboard key 'L'
             this.paddle.move(0,4);
         }
         else {
