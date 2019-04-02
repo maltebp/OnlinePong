@@ -27,9 +27,9 @@ var step = function() {
 // the game objects
 var player1 = new Player1(); //paddle is in the player constructor
 var player2 = new Player2(); //paddle is in the player constructor
-var ball = new Ball(300, 200); //the ball which will start 
-var midCourtGraphics = new MidcourtGraphics();
-var bottomLine = new BottomLine();
+var ball = new Ball(350, 200); //the ball which will start at (x, y) = (350, 200) midscreen
+var midCourtGraphics = new MidcourtGraphics(); //the object for the midcourt graphics which is for objects of lines
+var bottomLine = new BottomLine(); //the bottom line
 
 //variables
 var canvas = document.getElementById("game");
