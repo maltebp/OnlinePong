@@ -1,5 +1,8 @@
 
-window.onload = function(){
+
+
+function initialize() {
+    startBtn.style.display = 'none';
     animate(step);
 };
 
@@ -35,6 +38,7 @@ var width = 700;
 var height = 500;
 var score = 0;
 var keysDown = {};
+var startBtn = document.getElementById("startBtn")
 
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
