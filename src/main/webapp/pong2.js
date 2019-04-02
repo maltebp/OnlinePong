@@ -1,5 +1,8 @@
 
-window.onload = function(){
+
+
+function initialize() {
+    startBtn.style.display = 'none';
     animate(step);
 };
 
@@ -35,6 +38,7 @@ var width = 700;
 var height = 500;
 var score = 0;
 var keysDown = {};
+var startBtn = document.getElementById("startBtn")
 
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
@@ -128,8 +132,10 @@ MidcourtGraphics.prototype.render = function() {
     this.midCourtLine4.render();
 };
 
-//how we use keys to play the game. 
-//If a key is pressed down there will be an reaction. when the key is released again it will delete that event
+/**
+ * how we use keys to play the game.
+ * If a key is pressed down there will be an reaction. when the key is released again it will delete that event
+ */
 window.addEventListener("keydown", function(event) {
     keysDown[event.keyCode] = true;
 });
@@ -147,10 +153,10 @@ var update = function(){
 Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 104){ // Numpad 8
+        if(value == 79){ // Numpad 8
             this.paddle.move(0,-4);
         }
-        else if (value == 98) { // Numpad 2
+        else if (value == 76) { // Numpad 2
             this.paddle.move(0,4);
         }
         else {
