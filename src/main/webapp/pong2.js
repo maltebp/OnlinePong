@@ -1,10 +1,9 @@
 
-
-
 function initialize() {
     startBtn.style.display = 'none';
+    maxScore = 10;
     animate(step);
-};
+}
 
 var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || 
 function(callback) {
@@ -31,14 +30,15 @@ var ball = new Ball(350, 200); //the ball which will start at (x, y) = (350, 200
 var midCourtGraphics = new MidcourtGraphics(); //the object for the midcourt graphics which is for objects of lines
 var bottomLine = new BottomLine(); //the bottom line
 
+
 //variables
 var canvas = document.getElementById("game");
 var context = canvas.getContext('2d');
 var width = 700;
 var height = 500;
-var score = 0;
 var keysDown = {};
-var startBtn = document.getElementById("startBtn")
+var startBtn = document.getElementById("startBtn");
+var maxScore = 10;
 
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
@@ -61,17 +61,18 @@ function Ball(x,y) {
     this.radius = 5;
 }
 function Player1() {
-    this.paddle = new Paddle(680, 175, 10, 50);
+    this.paddle = new Paddle(10, 175, 10, 50);
+    this.score = new Score(175, 450, 0);
 }
 function Player2() {
-    this.paddle = new Paddle(10, 175, 10, 50);
+    this.paddle = new Paddle(680, 175, 10, 50);
+    this.score = new Score(525, 450, 0);
 }
 function BottomLine(x,y,width,height) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-
 }
 function MidCourtLine(x,y,width,height){
     this.x = x;
@@ -85,7 +86,11 @@ function MidcourtGraphics() {
     this.midCourtLine3 = new MidCourtLine(347.5, 236.6666, 5, 50);
     this.midCourtLine4 = new MidCourtLine(347.5, 355, 5, 50);
 }
-
+function Score(x,y, score) {
+    this.x = x;
+    this.y = y;
+    this.score = score;
+}
 //render functions. 
 var render = function(){
     context.fillStyle = "#000000";
@@ -101,11 +106,20 @@ Paddle.prototype.render = function() {
     context.fillStyle = "#FFFFFF";
     context.fillRect(this.x, this.y, this.width, this.height);
 };
+Score.prototype.render = function() {
+    context.beginPath();
+    context.font = "16px Arial";
+    context.fillStyle = "#FFFFFF";
+    context.fillText(""+ this.score, this.x, this.y);
+    context.closePath();
+};
 Player1.prototype.render = function(){
     this.paddle.render();
+    this.score.render();
 };
 Player2.prototype.render = function() {
     this.paddle.render();
+    this.score.render();
 };
 Ball.prototype.render = function() {
     context.beginPath();
@@ -131,6 +145,7 @@ MidcourtGraphics.prototype.render = function() {
     this.midCourtLine4.render();
 };
 
+
 /**
  * how we use keys to play the game.
  * If a key is pressed down there will be an reaction. when the key is released again it will delete that event
@@ -152,31 +167,31 @@ var update = function(){
 Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value === 79){ // Keyboard key 'O'
+        if(value === 87){ // Keyboard key 'W'
             this.paddle.move(0,-4);
         }
-        else if (value === 76) { // Keyboard key 'L'
+        else if (value === 83) { // Keyboard key 'S'
             this.paddle.move(0,4);
         }
         else {
             this.paddle.move(0,0);
         }
     }
-}
+};
 Player2.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value === 87) { // Keyboard key 'W'
+        if(value === 79) { // Keyboard key 'O'
             this.paddle.move(0,-4);
         }
-        else if(value === 83) { // Keyboard key 'S'
+        else if(value === 76) { // Keyboard key 'L'
             this.paddle.move(0,4);
         }
         else {
             this.paddle.move(0,0);
         }
     }
-}
+};
 Ball.prototype.update = function(paddle1, paddle2) {
     this.x = this.x + this.x_speed;
     this.y = this.y + this.y_speed;
@@ -194,28 +209,38 @@ Ball.prototype.update = function(paddle1, paddle2) {
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { // a point was scored
-        this.x_speed = 3;
+        if (this.x < 0){
+            // player2.score.score++;
+            player2.score.goal();
+        } else if (this.x > 700) {
+            // player1.score.score++;
+            player1.score.goal();
+        }
+        this.x_speed = this.x_speed * -1; // Reverts the ball's direction
         this.y_speed = 0;
-        this.x = 300;
+        this.x = width/2;
         this.y = 200;
     }
 
     if(left_x > 500) {
-        if(left_x < (paddle1.x + paddle1.width) && right_x > paddle1.x && left_y < (paddle1.y + paddle1.height) && right_y > paddle1.y) {
+        if(left_x < (paddle2.x + paddle2.width) && right_x > paddle2.x && left_y < (paddle2.y + paddle2.height) && right_y > paddle2.y) {
             // hit player 1´s paddle
             this.x_speed = -3;
-            this.y_speed += (paddle1.y_speed / 2);
+            this.y_speed += (paddle2.y_speed / 2);
             this.x += this.x_speed;
         }
     } 
     else {
-        if(left_x < (paddle2.x + paddle2.width) && right_x > paddle2.x && left_y < (paddle2.y + paddle2.height) && right_y > paddle2.y) {
+        if(left_x < (paddle1.x + paddle1.width) && right_x > paddle1.x && left_y < (paddle1.y + paddle1.height) && right_y > paddle1.y) {
         // hit player 2´s paddle
         this.x_speed = 3;
-        this.y_speed += (paddle2.y_speed / 2);
+        this.y_speed += (paddle1.y_speed / 2);
         this.x += this.x_speed;
     }
   }
+};
+Score.prototype.goal = function() {
+    this.score++;
 };
 
 //move functions
@@ -232,17 +257,6 @@ Paddle.prototype.move = function(x, y) {
         this.y_speed = 0;
     }
 };
-
-function drawScore() {
-    context.font = "16px Arial";
-    context.fillStyle = "#FFFFFF";
-    context.fillText("Score:" + score, 8, 20);
-
-}
-
-function detectCollision() {
-
-}
 
 
 

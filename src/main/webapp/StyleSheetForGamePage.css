@@ -11,6 +11,7 @@ making sure that the padding stays inside of the box and that it does not break 
 /*-----    This specifies the the style for the entire body tag    -----*/
 .Body {
     font-family: Calibri;
+    margin: 0;
 }
 
 /*-----    This specifies the height of the middle boxes    -----*/
@@ -72,7 +73,7 @@ nav, .OuterGameScreen {
 
 /*-----    Startbuttons position for game    -----*/
 #startBtn {
-    position: fixed;
+    /*position: fixed;*/
     top: 48%;
     left: 47.5%;
 }
