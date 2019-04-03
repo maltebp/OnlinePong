@@ -216,9 +216,9 @@ Ball.prototype.update = function(paddle1, paddle2) {
             // player1.score.score++;
             player1.score.goal();
         }
-        this.x_speed = 3;
+        this.x_speed = this.x_speed * -1; // Reverts the ball's direction
         this.y_speed = 0;
-        this.x = 300;
+        this.x = width/2;
         this.y = 200;
     }
 
