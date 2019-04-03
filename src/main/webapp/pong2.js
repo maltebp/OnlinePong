@@ -1,7 +1,7 @@
 
 function initialize() {
     startBtn.style.display = 'none';
-    maxScore = 10;
+    maxScore = 10; //TODO
     animate(step);
 }
 
@@ -38,7 +38,7 @@ var width = 700;
 var height = 500;
 var keysDown = {};
 var startBtn = document.getElementById("startBtn");
-var maxScore = 10;
+var maxScore; //TODO
 
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
