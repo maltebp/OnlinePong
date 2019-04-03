@@ -3,7 +3,7 @@ function initialize() {
     startBtn.style.display = 'none';
     maxScore = 10;
     animate(step);
-};
+}
 
 var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || 
 function(callback) {
@@ -167,31 +167,31 @@ var update = function(){
 Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 87){ // Keyboard key 'W'
+        if(value === 87){ // Keyboard key 'W'
             this.paddle.move(0,-4);
         }
-        else if (value == 83) { // Keyboard key 'S'
+        else if (value === 83) { // Keyboard key 'S'
             this.paddle.move(0,4);
         }
         else {
             this.paddle.move(0,0);
         }
     }
-}
+};
 Player2.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 79) { // Keyboard key 'O'
+        if(value === 79) { // Keyboard key 'O'
             this.paddle.move(0,-4);
         }
-        else if(value == 76) { // Keyboard key 'L'
+        else if(value === 76) { // Keyboard key 'L'
             this.paddle.move(0,4);
         }
         else {
             this.paddle.move(0,0);
         }
     }
-}
+};
 Ball.prototype.update = function(paddle1, paddle2) {
     this.x = this.x + this.x_speed;
     this.y = this.y + this.y_speed;
@@ -241,7 +241,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 };
 Score.prototype.goal = function() {
     this.score++;
-}
+};
 
 //move functions
 Paddle.prototype.move = function(x, y) {
@@ -256,7 +256,7 @@ Paddle.prototype.move = function(x, y) {
         this.y = 400 - this.height;
         this.y_speed = 0;
     }
-}
+};
 
 
 
