@@ -1,6 +1,4 @@
 
-
-
 function initialize() {
     startBtn.style.display = 'none';
     maxScore = 10;
@@ -93,8 +91,6 @@ function Score(x,y, score) {
     this.y = y;
     this.score = score;
 }
-
-
 //render functions. 
 var render = function(){
     context.fillStyle = "#000000";
@@ -114,7 +110,7 @@ Score.prototype.render = function() {
     context.beginPath();
     context.font = "16px Arial";
     context.fillStyle = "#FFFFFF";
-    context.fillText("Score: " + this.score, this.x, this.y);
+    context.fillText(""+ this.score, this.x, this.y);
     context.closePath();
 };
 Player1.prototype.render = function(){
