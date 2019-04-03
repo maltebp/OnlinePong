@@ -1,4 +1,4 @@
 .idea/
 target/
-workspace.xml/
+workspace.xml
 *.iml
