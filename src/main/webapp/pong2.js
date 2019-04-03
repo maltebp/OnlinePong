@@ -88,13 +88,12 @@ function MidcourtGraphics() {
 
 //render functions. 
 var render = function(){
-    console.log(20);
     context.fillStyle = "#000000";
     context.fillRect(0, 0, width, height);
+    midCourtGraphics.render();
     player1.render();
     player2.render();
     ball.render();
-    midCourtGraphics.render();
     bottomLine.render();
 };
 Paddle.prototype.render = function() {
@@ -116,14 +115,14 @@ Ball.prototype.render = function() {
 };
 BottomLine.prototype.render = function() {
     context.beginPath();
-    context.fillRect(0, 405, 700, 5);
     context.fillStyle = "#FFFFFF";
-    context.fill();
+    context.fillRect(0, 405, 700, 5);
 };
 MidCourtLine.prototype.render = function() {
     context.beginPath();
     context.fillStyle = "#FFFFFF";
     context.fillRect(this.x, this.y, this.width, this.height);
+
 };
 MidcourtGraphics.prototype.render = function() {
     this.midCourtLine1.render();
