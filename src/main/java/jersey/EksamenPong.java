@@ -9,6 +9,6 @@ public class EksamenPong extends Application {
 
 public EksamenPong(){
 
-}
 
+    }
 }
