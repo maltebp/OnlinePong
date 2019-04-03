@@ -1,14 +1,36 @@
 
 function initialize(chosenScore) {
     startBtn.style.display = 'none';
+    canvas.style.display = 'inline';
     setupGame(chosenScore);
-    animate(step);
+    animate(runGame);
 }
 
 var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || 
 function(callback) {
     window.setTimeout(callback, 1000/60);
 };
+
+//Game objects:
+var player1, player2, ball;                     //Paddle and Ball objects are created in setupGame(...)
+var midCourtGraphics = new MidcourtGraphics();  //the object for the midcourt graphics which is for objects of lines
+var bottomLine = new BottomLine();              //the bottom line
+
+//Variables
+var canvas = document.getElementById("game");
+var context = canvas.getContext('2d');
+var width = 700;
+var height = 500;
+var keysDown = {};
+var startBtn = document.getElementById("startBtn");
+var maxScore; //TODO
+var gameRunning;
+
+//sets the width of the witdth of the canvas to width and height the same
+canvas.width = width;
+canvas.height = height;
+
+
 
 /**
  * This function will do 3 things
@@ -17,38 +39,25 @@ function(callback) {
  * 2. it will render the objects
  * 3. it will use requestAnimationFrame to call the step function again
  */
-var gameRunning = true;
-var step = function() {
-    if(gameRunning) { //While loop crashes the program??
-        update();
-        render();
-        animate(step);
-    }
-};
 var setupGame = function(chosenScore) {
     maxScore = chosenScore;
+    player1 = new Player1();
+    player2 = new Player2();
+    ball = new Ball(350, 200);
+    gameRunning = true;
+};
+var runGame = function() {
+    if(gameRunning) { //Recursion since while loop crashes the program??
+        update();
+        render();
+        animate(runGame);
+    }
+};
+var endGame = function() {
+    gameRunning = false;
+    canvas.style.display = 'none';
+    startBtn.style.display = 'inline';
 }
-
-// the game objects
-var player1 = new Player1(); //paddle is in the player constructor
-var player2 = new Player2(); //paddle is in the player constructor
-var ball = new Ball(350, 200); //the ball which will start at (x, y) = (350, 200) midscreen
-var midCourtGraphics = new MidcourtGraphics(); //the object for the midcourt graphics which is for objects of lines
-var bottomLine = new BottomLine(); //the bottom line
-
-
-//variables
-var canvas = document.getElementById("game");
-var context = canvas.getContext('2d');
-var width = 700;
-var height = 500;
-var keysDown = {};
-var startBtn = document.getElementById("startBtn");
-var maxScore; //TODO
-
-//sets the width of the witdth of the canvas to width and height the same
-canvas.width = width;
-canvas.height = height;
 
 //constructors
 function Paddle(x,y,width,height) {
@@ -248,7 +257,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 Score.prototype.goal = function() {
     this.score++;
     if(this.score === maxScore) {
-        gameRunning = false;
+        endGame();
     }
 };
 
