@@ -196,7 +196,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
     if(this.x < 0 || this.x > 700) { // a point was scored
         this.x_speed = 3;
         this.y_speed = 0;
-        this.x = 300;
+        this.x = 350;
         this.y = 200;
     }
 
