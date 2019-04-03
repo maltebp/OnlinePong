@@ -152,10 +152,10 @@ var update = function(){
 Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 79){ // Keyboard key 'O'
+        if(value === 79){ // Keyboard key 'O'
             this.paddle.move(0,-4);
         }
-        else if (value == 76) { // Keyboard key 'L'
+        else if (value === 76) { // Keyboard key 'L'
             this.paddle.move(0,4);
         }
         else {
@@ -166,10 +166,10 @@ Player1.prototype.update = function() {
 Player2.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 87) { // Keyboard key 'W'
+        if(value === 87) { // Keyboard key 'W'
             this.paddle.move(0,-4);
         }
-        else if(value == 83) { // Keyboard key 'S'
+        else if(value === 83) { // Keyboard key 'S'
             this.paddle.move(0,4);
         }
         else {
@@ -231,25 +231,7 @@ Paddle.prototype.move = function(x, y) {
         this.y = 400 - this.height;
         this.y_speed = 0;
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
 
 function drawScore() {
     context.font = "16px Arial";
