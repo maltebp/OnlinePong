@@ -1,7 +1,7 @@
 
-function initialize() {
+function initialize(chosenScore) {
     startBtn.style.display = 'none';
-    maxScore = 10; //TODO
+    setupGame(chosenScore);
     animate(step);
 }
 
@@ -17,11 +17,17 @@ function(callback) {
  * 2. it will render the objects
  * 3. it will use requestAnimationFrame to call the step function again
  */
+var gameRunning = true;
 var step = function() {
-    update();
-    render();
-    animate(step);
+    if(gameRunning) { //While loop crashes the program??
+        update();
+        render();
+        animate(step);
+    }
 };
+var setupGame = function(chosenScore) {
+    maxScore = chosenScore;
+}
 
 // the game objects
 var player1 = new Player1(); //paddle is in the player constructor
@@ -241,6 +247,9 @@ Ball.prototype.update = function(paddle1, paddle2) {
 };
 Score.prototype.goal = function() {
     this.score++;
+    if(this.score === maxScore) {
+        gameRunning = false;
+    }
 };
 
 //move functions
