@@ -3,6 +3,8 @@
 
 function initialize() {
     startBtn.style.display = 'none';
+    canvas.style.display = 'inline';
+    maxScore = 10;
     animate(step);
 };
 
@@ -39,6 +41,7 @@ var width = 700;
 var height = 500;
 var keysDown = {};
 var startBtn = document.getElementById("startBtn");
+var maxScore = 10;
 
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
@@ -62,11 +65,11 @@ function Ball(x,y) {
 }
 function Player1() {
     this.paddle = new Paddle(10, 175, 10, 50);
-    this.scoreplacement = new ScorePlacement(175, 450, 0);
+    this.score = new Score(175, 450, 0);
 }
 function Player2() {
     this.paddle = new Paddle(680, 175, 10, 50);
-    this.scoreplacement = new ScorePlacement(525, 450, 0);
+    this.score = new Score(525, 450, 0);
 }
 function BottomLine(x,y,width,height) {
     this.x = x;
@@ -86,7 +89,7 @@ function MidcourtGraphics() {
     this.midCourtLine3 = new MidCourtLine(347.5, 236.6666, 5, 50);
     this.midCourtLine4 = new MidCourtLine(347.5, 355, 5, 50);
 }
-function ScorePlacement(x,y, score) {
+function Score(x,y, score) {
     this.x = x;
     this.y = y;
     this.score = score;
@@ -108,7 +111,7 @@ Paddle.prototype.render = function() {
     context.fillStyle = "#FFFFFF";
     context.fillRect(this.x, this.y, this.width, this.height);
 };
-ScorePlacement.prototype.render = function() {
+Score.prototype.render = function() {
     context.beginPath();
     context.font = "16px Arial";
     context.fillStyle = "#FFFFFF";
@@ -117,11 +120,11 @@ ScorePlacement.prototype.render = function() {
 };
 Player1.prototype.render = function(){
     this.paddle.render();
-    this.scoreplacement.render();
+    this.score.render();
 };
 Player2.prototype.render = function() {
     this.paddle.render();
-    this.scoreplacement.render();
+    this.score.render();
 };
 Ball.prototype.render = function() {
     context.beginPath();
@@ -211,7 +214,13 @@ Ball.prototype.update = function(paddle1, paddle2) {
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { // a point was scored
-        //give point
+        if (this.x < 0){
+            // player2.score.score++;
+            player2.score.goal();
+        } else if (this.x > 700) {
+            // player1.score.score++;
+            player1.score.goal();
+        }
         this.x_speed = 3;
         this.y_speed = 0;
         this.x = 300;
@@ -235,6 +244,13 @@ Ball.prototype.update = function(paddle1, paddle2) {
     }
   }
 };
+Score.prototype.goal = function() {
+    this.score++;
+    if(this.score === maxScore) {
+        canvas.style.display = 'none';
+        startBtn.style.display = 'inline';
+    }
+}
 
 //move functions
 Paddle.prototype.move = function(x, y) {
