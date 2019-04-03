@@ -3,7 +3,6 @@
 
 function initialize() {
     startBtn.style.display = 'none';
-    canvas.style.display = 'inline';
     maxScore = 10;
     animate(step);
 };
@@ -246,10 +245,6 @@ Ball.prototype.update = function(paddle1, paddle2) {
 };
 Score.prototype.goal = function() {
     this.score++;
-    if(this.score === maxScore) {
-        canvas.style.display = 'none';
-        startBtn.style.display = 'inline';
-    }
 }
 
 //move functions
