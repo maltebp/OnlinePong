@@ -62,11 +62,11 @@ function Ball(x,y) {
 }
 function Player1() {
     this.paddle = new Paddle(10, 175, 10, 50);
-    this.score = new Score(175, 450, 0);
+    this.score = new Score(175, 460, 0);
 }
 function Player2() {
     this.paddle = new Paddle(680, 175, 10, 50);
-    this.score = new Score(525, 450, 0);
+    this.score = new Score(525, 460, 0);
 }
 function BottomLine(x,y,width,height) {
     this.x = x;
@@ -108,7 +108,7 @@ Paddle.prototype.render = function() {
 };
 Score.prototype.render = function() {
     context.beginPath();
-    context.font = "16px Arial";
+    context.font = "30px Arial";
     context.fillStyle = "#FFFFFF";
     context.fillText(""+ this.score, this.x, this.y);
     context.closePath();
