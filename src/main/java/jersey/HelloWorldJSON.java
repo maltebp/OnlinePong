@@ -12,7 +12,8 @@ import java.util.LinkedList;
 
 import static javafx.application.ConditionalFeature.MEDIA;
 
-
+@Produces(MediaType.TEXT_PLAIN)
+@Consumes(MediaType.APPLICATION_JSON)
 @Path("/json")
 public class HelloWorldJSON {
 
@@ -35,10 +36,12 @@ public class HelloWorldJSON {
     }
 
     @POST
+    public String postStrMsg( Ball ball) {
+        //System.out.println("Input registered " + msg);
+        Gson gson = new Gson();
+        //Ball ball  = gson.fromJson(msg, Ball.class);
+        String output = "This is a ball with position: "+ball.getX() + " " + ball.getY();
 
-    //@Consumes(MediaType.TEXT_XML)
-    public String postStrMsg(String msg) {
-        String output = "POST:Jersey say : " + msg;
         return output;
     }
 
