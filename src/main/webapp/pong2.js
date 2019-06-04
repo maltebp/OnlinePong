@@ -229,23 +229,6 @@ Paddle.prototype.move = function(x, y) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function drawScore() {
     context.font = "16px Arial";
     context.fillStyle = "#FFFFFF";
