@@ -1,3 +1,9 @@
+/**
+ * Småting der skal fikses:
+ * Player 1 + 2 skal byttes om, så Player 1 har paddle 1 og vice versa (paddles er rigtige!)
+ *
+ * @param chosenScore
+ */
 
 function initialize(chosenScore) {
     startBtn.style.display = 'none';
@@ -65,13 +71,13 @@ function Paddle(x,y,width,height) {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.x_speed = 0;
     this.y_speed = 0;
 }
 function Ball(x,y) {
     this.x = x;
     this.y = y;
-    this.x_speed = 3;
+    this.speed = 3;
+    this.x_speed = this.speed;
     this.y_speed = 0;
     this.radius = 5;
 }
@@ -183,13 +189,13 @@ Player1.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
         if(value === 87){ // Keyboard key 'W'
-            this.paddle.move(0,-4);
+            this.paddle.move(-4);
         }
         else if (value === 83) { // Keyboard key 'S'
-            this.paddle.move(0,4);
+            this.paddle.move(4);
         }
         else {
-            this.paddle.move(0,0);
+            this.paddle.move(0);
         }
     }
 };
@@ -197,62 +203,56 @@ Player2.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
         if(value === 79) { // Keyboard key 'O'
-            this.paddle.move(0,-4);
+            this.paddle.move(-4);
         }
         else if(value === 76) { // Keyboard key 'L'
-            this.paddle.move(0,4);
+            this.paddle.move(4);
         }
         else {
-            this.paddle.move(0,0);
+            this.paddle.move(0);
         }
     }
 };
 Ball.prototype.update = function(paddle1, paddle2) {
     this.x = this.x + this.x_speed;
     this.y = this.y + this.y_speed;
-    var left_x = this.x - 5;
-    var left_y = this.y - 5;
-    var right_x = this.x + 5;
-    var right_y = this.y + 5;
 
-    if(this.y - 5 < 0) { // hitting the top wall
-        this.y = 5;
+    var ball_left = this.x - 5;
+    var ball_bottom = this.y - 5;
+    var ball_right = this.x + 5;
+    var ball_top = this.y + 5;
+
+    if(ball_bottom <= 0) { // hitting the bottom wall
         this.y_speed = -this.y_speed;
     } 
-    else if(this.y - 5 > 400) { // hitting the bottom wall
-        this.y = 395;
+    else if(ball_top >= 400) { // hitting the top wall
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { // a point was scored
         if (this.x < 0){
-            // player2.score.score++;
             player2.score.goal();
         } else if (this.x > 700) {
-            // player1.score.score++;
             player1.score.goal();
         }
-        this.x_speed = this.x_speed * -1; // Reverts the ball's direction
+        this.x_speed = -this.x_speed; // Reverts the ball's direction
         this.y_speed = 0;
         this.x = width/2;
         this.y = 200;
     }
 
-    if(left_x > 500) {
-        if(left_x < (paddle2.x + paddle2.width) && right_x > paddle2.x && left_y < (paddle2.y + paddle2.height) && right_y > paddle2.y) {
-            // hit player 1´s paddle
-            this.x_speed = -3;
+    if(ball_right > 500) {// > 500 //Boldens position foran player 1's paddle (500 på x aksen)
+        if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
+            (ball_top - ball.radius / 2) > paddle2.y) { // hit player 1´s paddle
             this.y_speed += (paddle2.y_speed / 2);
-            this.x += this.x_speed;
+            this.x_speed = -this.x_speed;
         }
-    } 
-    else {
-        if(left_x < (paddle1.x + paddle1.width) && right_x > paddle1.x && left_y < (paddle1.y + paddle1.height) && right_y > paddle1.y) {
-        // hit player 2´s paddle
-        this.x_speed = 3;
-        this.y_speed += (paddle1.y_speed / 2);
-        this.x += this.x_speed;
+    } else if (ball_left < 200) {
+        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
+            (ball_top - ball.radius / 2) > paddle1.y) { // hit player 2´s paddle
+            this.y_speed += (paddle1.y_speed / 2);
+            this.x_speed = -this.x_speed;
+        }
     }
-  }
 };
 Score.prototype.goal = function() {
     this.score++;
@@ -262,10 +262,8 @@ Score.prototype.goal = function() {
 };
 
 //move functions
-Paddle.prototype.move = function(x, y) {
-    this.x += x;
+Paddle.prototype.move = function(y) {
     this.y += y;
-    this.x_speed = x;
     this.y_speed = y;
     if(this.y < 0) { //All the way to bottom
         this.y = 0;
