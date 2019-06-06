@@ -1,6 +1,6 @@
-package jersey;
+package DataLayer;
 
-public class UserDTO {
+public class UserDTO implements IUserDTO {
 
     private int userId;
     String username;
@@ -9,6 +9,7 @@ public class UserDTO {
         this.userId = userId;
         this.username = username;
     }
+    public UserDTO(){}
 
     public int getUserId() {
         return userId;
