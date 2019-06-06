@@ -8,8 +8,9 @@ import DataLayer.UserDTO;
 public class UserController implements IUserController{
     private IUserDAO UserDAO = new UserDAO();
 
+    @Override
     public IUserDTO convertUser(int id) {
-        IUserDTO user;
+        IUserDTO user = new UserDTO(4, "this didn't work");
         try{
             user = UserDAO.getDBUser(id);
             if(user == null){
@@ -18,8 +19,7 @@ public class UserController implements IUserController{
             }
         }catch(IUserDAO.DALException e){
             e.getMessage();
-            user = new UserDTO();
-            user.setUsername("Something went wrong");
+            user = new UserDTO(-1, "Something went wrong");
         }
         return user;
     }

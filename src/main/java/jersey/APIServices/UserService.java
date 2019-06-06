@@ -14,17 +14,16 @@ public class UserService {
     @GET
     @Produces("TEXT/HTML")
     public String publicServiceMessage(){
-        return "Things are working, don't worry, but you need to enter a number in the URL. \n For example 'xyz/1' ";
+        return "Things are working, don't worry, but you need to enter a number in the URL. \r Try for example 'xyz/1' ";
     }
 
     //the Following function(s) are for 'rest-request'.
+    @Path("/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public IUserDTO requestUser(@PathParam("id") int id) throws IUserDAO.DALException {
+    public IUserDTO requestUser(@PathParam("id") int id){
         IUserController userController = new UserController();
-        IUserDTO test = userController.convertUser(id);
-        return test;
+        IUserDTO user = userController.convertUser(id);
+        return user;
     }
-
 }
