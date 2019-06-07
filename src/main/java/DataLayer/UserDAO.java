@@ -8,7 +8,7 @@ public class UserDAO implements IUserDAO{
 
     /**@author Claes
      * Creates a connection to the Database.
-     * It is inside a try/catch statment to assure we do not leave open connections.
+     * It is inside a try/catch statment to assure we do not leave open connections..
      * @return
      * @throws SQLException
      */
