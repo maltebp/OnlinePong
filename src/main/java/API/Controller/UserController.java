@@ -1,9 +1,9 @@
-package Controller;
+package API.Controller;
 
-import DataLayer.IUserDAO;
-import DataLayer.IUserDTO;
-import DataLayer.UserDAO;
-import DataLayer.UserDTO;
+import API.DataLayer.IUserDAO;
+import API.DataLayer.IUserDTO;
+import API.DataLayer.UserDAO;
+import API.DataLayer.UserDTO;
 
 import java.sql.SQLException;
 
@@ -35,26 +35,29 @@ public class UserController implements IUserController{
             return user;
         }
     }
-    //Todo: fix it so that it actually trows an exception
+    //possible issues with error-handling here.
+    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAO level).
     public String checkScore(int id, int score){
         try{
-            UserDAO.newScore(id, score);
-            return "User-score have been send to the databse.";
+            String returnMessage = UserDAO.newScore(id, score);
+            return returnMessage;
+
         }catch(SQLException e){
             e.printStackTrace();
-            return "Something went wrong, user-score NOT added.";
+            return "Something went wrong, user-score NOT added" + e.getMessage();
         }
     }
 
-    //TODO: This error checck DOES NOT WORK.
+    //possible issues with error-handling here.
+    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAO level).
     public String createUser(String username, String password){
         try{
-            UserDAO.createUser(username, password);
-            return "user has been added to the databse.";
+            String returnMessage = UserDAO.createUser(username, password);
+            return returnMessage;
 
         }catch(SQLException e){
             e.getMessage();
-            return "Soemthing went wrong, user NOT  added";
+            return "Soemthing went wrong, user NOT added"+e.getMessage();
         }
     }
 }

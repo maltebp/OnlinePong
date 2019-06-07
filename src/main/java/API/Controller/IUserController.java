@@ -1,6 +1,6 @@
-package Controller;
+package API.Controller;
 
-import DataLayer.IUserDTO;
+import API.DataLayer.IUserDTO;
 
 public interface IUserController {
     /** @author Claes

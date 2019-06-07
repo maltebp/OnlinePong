@@ -1,10 +1,8 @@
 package jersey.APIServices;
 
-import Controller.IUserController;
-import Controller.UserController;
-import DataLayer.IUserDAO;
-import DataLayer.IUserDTO;
-import DataLayer.UserDTO;
+import API.Controller.IUserController;
+import API.Controller.UserController;
+import API.DataLayer.IUserDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

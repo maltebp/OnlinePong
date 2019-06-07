@@ -1,12 +1,7 @@
-package DataLayer;
+package API.DataLayer;
 
 
-import Controller.IUserController;
-
-import javax.validation.constraints.Null;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class UserDAO implements IUserDAO{
 
@@ -89,7 +84,7 @@ public class UserDAO implements IUserDAO{
             }
     }
 
-    public void newScore(int id, int score) throws SQLException {
+    public String newScore(int id, int score) throws SQLException {
 
         try (Connection con = createConnection()) {
 
@@ -98,13 +93,14 @@ public class UserDAO implements IUserDAO{
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, score);
             preparedStatement.execute();
-
+            return "It was added, much wow";
         } catch (SQLException e) {
             e.getMessage();
+            return "There was an error: " + e.getMessage();
         }
     }
 
-    public void createUser(String username, String password) throws SQLException {
+    public String createUser(String username, String password) throws SQLException {
         try (Connection con = createConnection()) {
 
             //user_id is on AUTO_INREMENT.
@@ -113,8 +109,10 @@ public class UserDAO implements IUserDAO{
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.execute();
+            return"It was added, much wow";
         }catch(SQLException e){
             e.getMessage();
+            return "There was an error: " + e.getMessage();
         }
     }
 }
