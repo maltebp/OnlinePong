@@ -24,7 +24,11 @@ public class UserService {
     @GET
     @Produces("TEXT/HTML")
     public String publicServiceMessage(){
-        return "=================================||<br>\n" +
+        return "|||||||||||||||||||||<br>\n" +
+                "||API User Manual:||<br>\n" +
+                "|||||||||||||||||||||<br>\n" +
+                "||<br>\n" +
+                "=================================||<br>\n" +
                 "Things are working, DON'T WORRY!,||<br>\n" +
                 "=================================||<br>\n" +
                 "||<br>\n" +
