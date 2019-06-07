@@ -1,6 +1,10 @@
 package API.DataLayer;
 
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Constants;
+import de.mkammerer.argon2.Argon2Factory;
+
 import java.sql.*;
 
 public class UserDAO implements IUserDAO{
@@ -101,19 +105,46 @@ public class UserDAO implements IUserDAO{
     }
 
     public String createUser(String username, String password) throws SQLException {
+        Argon2 argon2 = Argon2Factory.create();
+        String hashedPassword = argon2.hash(1,2,3, password);
+
         try (Connection con = createConnection()) {
 
-            //user_id is on AUTO_INREMENT.
+
+            //user_id is on AUTO_INCREMENT.
             String query = "INSERT INTO users (username, password) VALUES(?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(2, hashedPassword);
             preparedStatement.execute();
             return"It was added, much wow";
         }catch(SQLException e){
             e.getMessage();
             return "There was an error: " + e.getMessage();
         }
+
+    }
+    public boolean checkHash(int id, String password) throws SQLException{
+        Argon2 argon2 = Argon2Factory.create();
+        String hashedPass = argon2.hash(1,2,3, password);
+
+        try (Connection con = createConnection()) {
+            String query = "SELECT password FROM users WHERE user_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet set = preparedStatement.executeQuery();
+
+            if(set.next()){
+                String dbPass = set.getString(1);
+                if(dbPass.equals(hashedPass)){
+                    return true;
+                }
+            }
+        }catch(SQLException e){
+            e.getMessage();
+            return false;
+        }
+        return false;
     }
 }
 

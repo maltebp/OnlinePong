@@ -73,4 +73,17 @@ public class UserService {
         String returnStatement = userController.createUser(username, password);
         return returnStatement;
     }
+
+
+    @Path("/checkUser/{id}&{password}")
+    @GET
+    @Produces("text/HTML")
+    public String userValidation(@PathParam("id") int id, @PathParam("password") String password){
+        IUserController userController = new UserController();
+        boolean result = userController.userValidation(id, password);
+        if(result == true)
+            return "Access Granted";
+        else
+            return "Access Denied";
+    }
 }

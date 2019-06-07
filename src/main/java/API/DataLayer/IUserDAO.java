@@ -24,6 +24,8 @@ public interface IUserDAO {
 
     public String createUser(String username, String password) throws SQLException;
 
+    public boolean checkHash(int id, String password) throws SQLException;
+
     public class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;

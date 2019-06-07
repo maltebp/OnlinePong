@@ -60,4 +60,14 @@ public class UserController implements IUserController{
             return "Soemthing went wrong, user NOT added"+e.getMessage();
         }
     }
+
+    public boolean userValidation(int id, String password){
+        try{
+            boolean result = UserDAO.checkHash(id, password);
+            return result;
+        }catch(SQLException e){
+            e.getMessage();
+            return false;
+        }
+    }
 }
