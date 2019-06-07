@@ -24,13 +24,21 @@ public class UserService {
     @GET
     @Produces("TEXT/HTML")
     public String publicServiceMessage(){
-        return "Things are working, don't worry, but you need to enter a number in the URL. \r Try for example 'xyz/1' ";
+        return "=================================||<br>\n" +
+                "Things are working, DON'T WORRY!,||<br>\n" +
+                "=================================||<br>\n" +
+                "||<br>\n" +
+                "However you have couple of options ||<br>\n" +
+                "(1.) [GET DATA FROM A USER]: ||<br>\n " +
+                "you need to enter a number in the URL. \r Try for example 'service/1 ||<br>\n" +
+                "(2.) {INSERT A NEW SCORE MADE BY A USER} ||<br>\n " +
+                "Try for example 'service/1/[the score you want to insert] ||<br>";
     }
 
     /**This function sendes'rest-request'.
      * This returns data on a desired user
      * @param id the user whos data you want
-     * @return
+     * @return All the data there is on a given user.
      */
     @Path("/{id}")
     @GET
@@ -40,4 +48,5 @@ public class UserService {
         IUserDTO user = userController.convertUser(id);
         return user;
     }
+
 }
