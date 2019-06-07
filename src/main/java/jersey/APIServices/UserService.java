@@ -53,4 +53,12 @@ public class UserService {
         return user;
     }
 
+    @Path("/{id}/{score}")
+    @GET
+    @Produces("text/HTML")
+    public String requestUser(@PathParam("id") int id, @PathParam("score") int score){
+        IUserController userController = new UserController();
+        String statement = userController.checkScore(id, score);
+        return statement;
+    }
 }

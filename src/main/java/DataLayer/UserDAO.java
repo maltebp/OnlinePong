@@ -1,7 +1,11 @@
 package DataLayer;
 
 
+import Controller.IUserController;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserDAO implements IUserDAO{
 
@@ -57,12 +61,33 @@ public class UserDAO implements IUserDAO{
       * */
     @Override
     public IUserDTO makeUser(ResultSet set) throws SQLException {
-
         IUserDTO user = new UserDTO();
         user.setUserId(set.getInt("user_id"));
         user.setUsername(set.getString("username"));
         return user;
     }
+
+    public IUserDTO getDBScore(IUserDTO user) throws SQLException{
+
+        try (Connection con = createConnection()) {
+
+            String query = "SELECT * FROM score WHERE user_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, user.getUserId());
+            ResultSet set = preparedStatement.executeQuery();
+
+            while(set.next()){
+                user.addScore(set.getInt(2));
+            }
+            return user;
+
+        }catch(SQLException e){
+            e.getMessage();
+            return null;
+            }
+    }
+
+
 
     public void newScore(int id, int score) throws SQLException {
 

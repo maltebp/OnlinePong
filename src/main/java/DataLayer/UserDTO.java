@@ -1,8 +1,11 @@
 package DataLayer;
 
+import java.util.ArrayList;
+
 public class UserDTO implements IUserDTO {
     private int userId;
     String username;
+    ArrayList<Integer> scores = new ArrayList<>();
 
     public UserDTO(int userId, String username) {
         this.userId = userId;
@@ -24,5 +27,17 @@ public class UserDTO implements IUserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public ArrayList<Integer> getScores() {
+        return scores;
+    }
+
+    public void setScores(ArrayList<Integer> scores) {
+        this.scores = scores;
+    }
+
+    public void addScore(int score){
+        scores.add(score);
     }
 }
