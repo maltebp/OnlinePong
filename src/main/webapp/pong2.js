@@ -4,12 +4,27 @@
  *
  * @param chosenScore
  */
+var connection;
+var x = 1;
 
 function initialize(chosenScore) {
-    startBtn.style.display = 'none';
-    canvas.style.display = 'inline';
-    setupGame(chosenScore);
-    animate(runGame);
+    connection = new WebSocket("ws://62.79.16.17:8080/socket/Jacob");
+
+    connection.onmessage = function(event){
+
+        if (x === 1){
+            console.log("Success " + event.data);
+            x++;
+        }
+        else if (x === 2){
+            console.log("Success 2 " + event.data);
+
+            startBtn.style.display = 'none';
+            canvas.style.display = 'inline';
+            setupGame(chosenScore);
+            animate(runGame);
+        }
+    }
 }
 
 var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || 
@@ -32,11 +47,11 @@ var startBtn = document.getElementById("startBtn");
 var maxScore; //TODO
 var gameRunning;
 
+
+
 //sets the width of the witdth of the canvas to width and height the same
 canvas.width = width;
 canvas.height = height;
-
-
 
 /**
  * This function will do 3 things
@@ -246,11 +261,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
     if(ball_right > 500) {// > 500 //Boldens position foran player 1's paddle (500 på x aksen)
         if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
             (ball_top - ball.radius / 2) > paddle2.y) { // hit player 1´s paddle
-            // this.x_speed = -this.x_speed;
-            // this.y_speed += (paddle2.y_speed / 2);
 
             this.speed += 0.1;
-
             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
             this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
@@ -259,19 +271,13 @@ Ball.prototype.update = function(paddle1, paddle2) {
     } else if (ball_left < 200) {
         if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
             (ball_top - ball.radius / 2) > paddle1.y) { // hit player 2´s paddle
-            // this.x_speed = -this.x_speed;
-            // this.y_speed += (paddle1.y_speed / 2);
 
             this.speed += 0.1;
-
             newYSpeed = this.y_speed + (paddle1.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
             this.x_speed = Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2));
 
         }
-    }
-    if(this.y_speed !== 4 || this.y_speed !== -4) {
-        //console.log(this); //TODO Remove when done
     }
 };
 Score.prototype.goal = function() {
