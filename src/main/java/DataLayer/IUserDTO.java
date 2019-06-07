@@ -1,7 +1,12 @@
 package DataLayer;
 
 public interface IUserDTO {
-
+    /**@author Claes and Andreas
+     * this class is an object that carries data between processes.
+     * it Encapsulates data while it is being transfered
+     * between two subsystems(Databse and api in this case)
+     * As is also stated in the name Data Transfer Object (DTO)
+     */
     public int getUserId();
 
     public void setUserId(int userId);
