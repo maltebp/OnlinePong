@@ -27,7 +27,11 @@ function initialize(chosenScore) {
             x++;
         }
         else{
-            player2.paddle = JSON.parse(event.data); // Parses String (or data) to JSON object.
+            if(x>3){
+                player2.paddle = JSON.parse(event.data);// Parses String (or data) to JSON object.
+            }else{
+                x++;
+            }
             connection.send(player1.paddle.toString());
         }
     }
