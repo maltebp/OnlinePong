@@ -8,6 +8,7 @@ import DataLayer.UserDTO;
 public class UserController implements IUserController{
     private IUserDAO UserDAO = new UserDAO();
 
+
     @Override
     public IUserDTO convertUser(int id) {
         IUserDTO user = new UserDTO(4, "this didn't work");
@@ -19,6 +20,7 @@ public class UserController implements IUserController{
             }
         }catch(IUserDAO.DALException e){
             e.getMessage();
+            //WARING: BAD PRATICE: [nice to have:] make this error statement say something about what went wrong.
             user = new UserDTO(-1, "Something went wrong");
         }
         return user;

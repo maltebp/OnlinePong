@@ -1,7 +1,6 @@
 package DataLayer;
 
 public class UserDTO implements IUserDTO {
-
     private int userId;
     String username;
 
