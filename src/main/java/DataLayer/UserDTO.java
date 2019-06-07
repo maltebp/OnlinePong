@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class UserDTO implements IUserDTO {
     private int userId;
     String username;
+    String password;
     ArrayList<Integer> scores = new ArrayList<>();
 
     public UserDTO(int userId, String username) {
@@ -39,5 +40,13 @@ public class UserDTO implements IUserDTO {
 
     public void addScore(int score){
         scores.add(score);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

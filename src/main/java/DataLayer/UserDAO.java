@@ -64,6 +64,7 @@ public class UserDAO implements IUserDAO{
         IUserDTO user = new UserDTO();
         user.setUserId(set.getInt("user_id"));
         user.setUsername(set.getString("username"));
+        user.setPassword(set.getString("password"));
         return user;
     }
 

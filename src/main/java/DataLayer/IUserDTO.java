@@ -23,4 +23,8 @@ public interface IUserDTO {
     public void setScores(ArrayList<Integer> scores);
 
     public void addScore(int score);
+
+    public void setPassword(String password);
+
+    public String getPassword();
 }
