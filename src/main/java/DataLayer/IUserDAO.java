@@ -18,6 +18,8 @@ public interface IUserDAO {
 
     IUserDTO makeUser(ResultSet set) throws SQLException;
 
+    public void newScore(int id, int score)throws SQLException;
+
     public class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;

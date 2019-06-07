@@ -9,4 +9,6 @@ public interface IUserController {
      * @return a User convert to a object that can be used in the local code
      */
     public IUserDTO convertUser(int id);
+
+    public String checkScore(int id, int score);
 }
