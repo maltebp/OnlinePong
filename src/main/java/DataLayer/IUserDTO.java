@@ -1,5 +1,8 @@
 package DataLayer;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public interface IUserDTO {
     /**@author Claes and Andreas
      * this class is an object that carries data between processes.
@@ -15,5 +18,13 @@ public interface IUserDTO {
 
     public void setUsername(String username);
 
+    public ArrayList<Integer> getScores();
 
+    public void setScores(ArrayList<Integer> scores);
+
+    public void addScore(int score);
+
+    public void setPassword(String password);
+
+    public String getPassword();
 }

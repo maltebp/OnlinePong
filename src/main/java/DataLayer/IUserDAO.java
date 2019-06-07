@@ -18,6 +18,8 @@ public interface IUserDAO {
 
     IUserDTO makeUser(ResultSet set) throws SQLException;
 
+    IUserDTO getDBScore(IUserDTO user) throws SQLException;
+
     public void newScore(int id, int score)throws SQLException;
 
     public class DALException extends Exception {

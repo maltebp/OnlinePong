@@ -20,12 +20,20 @@ public class UserController implements IUserController{
                 user = new UserDTO();
                 user.setUsername("no user");
             }
+
         }catch(IUserDAO.DALException e){
             e.getMessage();
             //WARING: BAD PRATICE: [nice to have:] make this error statement say something about what went wrong.
             user = new UserDTO(-1, "Something went wrong");
         }
-        return user;
+        try {
+            IUserDTO newUser = UserDAO.getDBScore(user);
+            return newUser;
+
+        }catch(SQLException e){
+            user.addScore(-500);
+            return user;
+        }
     }
 
     public String checkScore(int id, int score){
