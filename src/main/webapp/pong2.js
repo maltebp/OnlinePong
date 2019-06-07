@@ -8,7 +8,7 @@ var connection;
 var x = 1;
 
 function initialize(chosenScore) {
-    connection = new WebSocket("ws://62.79.16.17:8080/socket/Jacob");
+    connection = new WebSocket("ws://62.79.16.17:8080/findgame/Jacob");
 
     connection.onmessage = function(event){
 
@@ -23,6 +23,12 @@ function initialize(chosenScore) {
             canvas.style.display = 'inline';
             setupGame(chosenScore);
             animate(runGame);
+
+            x++;
+        }
+        else{
+            player2.paddle = JSON.parse(event.data); // Parses String (or data) to JSON object.
+            connection.send(player1.paddle.toString());
         }
     }
 }
@@ -157,12 +163,12 @@ Player2.prototype.render = function() {
     this.paddle.render();
     this.score.render();
 };
-Ball.prototype.render = function() {
-    context.beginPath();
-    context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
-    context.fillStyle = "#FF0000";
-    context.fill();
-};
+// Ball.prototype.render = function() {
+//     context.beginPath();
+//     context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+//     context.fillStyle = "#FF0000";
+//     context.fill();
+// };
 BottomLine.prototype.render = function() {
     context.beginPath();
     context.fillStyle = "#FFFFFF";
@@ -228,58 +234,58 @@ Player2.prototype.update = function() {
         }
     }
 };
-Ball.prototype.update = function(paddle1, paddle2) {
-    this.x = this.x + this.x_speed;
-    this.y = this.y + this.y_speed;
-
-    var ball_left = this.x - 5;
-    var ball_bottom = this.y - 5;
-    var ball_right = this.x + 5;
-    var ball_top = this.y + 5;
-
-    if(ball_bottom <= 0) { // hitting the bottom wall
-        this.y_speed = -this.y_speed;
-    } 
-    else if(ball_top >= 400) { // hitting the top wall
-        this.y_speed = -this.y_speed;
-    }
-    if(this.x < 0 || this.x > 700) { // a point was scored
-        this.speed = 3;
-        if (this.x < 0){
-            player2.score.goal();
-            this.x_speed = this.speed; // Reverts the ball's direction
-        } else if (this.x > 700) {
-            player1.score.goal();
-            this.x_speed = -this.speed; // Reverts the ball's direction
-        }
-        this.y_speed = 0;
-        this.x = width/2;
-        this.y = 200;
-    }
-
-    var newYSpeed;
-    if(ball_right > 500) {// > 500 //Boldens position foran player 1's paddle (500 på x aksen)
-        if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
-            (ball_top - ball.radius / 2) > paddle2.y) { // hit player 1´s paddle
-
-            this.speed += 0.1;
-            newYSpeed = this.y_speed + (paddle2.y_speed / 2);
-            this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
-            this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
-
-        }
-    } else if (ball_left < 200) {
-        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
-            (ball_top - ball.radius / 2) > paddle1.y) { // hit player 2´s paddle
-
-            this.speed += 0.1;
-            newYSpeed = this.y_speed + (paddle1.y_speed / 2);
-            this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
-            this.x_speed = Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2));
-
-        }
-    }
-};
+// Ball.prototype.update = function(paddle1, paddle2) {
+//     this.x = this.x + this.x_speed;
+//     this.y = this.y + this.y_speed;
+//
+//     var ball_left = this.x - 5;
+//     var ball_bottom = this.y - 5;
+//     var ball_right = this.x + 5;
+//     var ball_top = this.y + 5;
+//
+//     if(ball_bottom <= 0) { // hitting the bottom wall
+//         this.y_speed = -this.y_speed;
+//     }
+//     else if(ball_top >= 400) { // hitting the top wall
+//         this.y_speed = -this.y_speed;
+//     }
+//     if(this.x < 0 || this.x > 700) { // a point was scored
+//         this.speed = 3;
+//         if (this.x < 0){
+//             player2.score.goal();
+//             this.x_speed = this.speed; // Reverts the ball's direction
+//         } else if (this.x > 700) {
+//             player1.score.goal();
+//             this.x_speed = -this.speed; // Reverts the ball's direction
+//         }
+//         this.y_speed = 0;
+//         this.x = width/2;
+//         this.y = 200;
+//     }
+//
+//     var newYSpeed;
+//     if(ball_right > 500) {// > 500 //Boldens position foran player 1's paddle (500 på x aksen)
+//         if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
+//             (ball_top - ball.radius / 2) > paddle2.y) { // hit player 1´s paddle
+//
+//             this.speed += 0.1;
+//             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
+//             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
+//             this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
+//
+//         }
+//     } else if (ball_left < 200) {
+//         if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
+//             (ball_top - ball.radius / 2) > paddle1.y) { // hit player 2´s paddle
+//
+//             this.speed += 0.1;
+//             newYSpeed = this.y_speed + (paddle1.y_speed / 2);
+//             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
+//             this.x_speed = Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2));
+//
+//         }
+//     }
+// };
 Score.prototype.goal = function() {
     this.score++;
     if(this.score === maxScore) {
