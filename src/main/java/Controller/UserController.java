@@ -45,4 +45,15 @@ public class UserController implements IUserController{
             return "Something went wrong, user-score NOT added.";
         }
     }
+
+    public String createUser(String username, String password){
+        try{
+            UserDAO.createUser(username, password);
+            return "user has been added to the databse.";
+
+        }catch(SQLException e){
+            e.getMessage();
+            return "Soemthing went wrong, user NOT  added";
+        }
+    }
 }

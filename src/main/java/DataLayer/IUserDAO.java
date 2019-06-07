@@ -22,6 +22,8 @@ public interface IUserDAO {
 
     public void newScore(int id, int score)throws SQLException;
 
+    public void createUser(String username, String password) throws SQLException;
+
     public class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;
