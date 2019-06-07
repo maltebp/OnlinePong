@@ -35,7 +35,7 @@ public class UserController implements IUserController{
             return user;
         }
     }
-
+    //TODO: This error check DOES NOT WORK.
     public String checkScore(int id, int score){
         try{
             UserDAO.newScore(id, score);
@@ -43,6 +43,17 @@ public class UserController implements IUserController{
         }catch(SQLException e){
             e.printStackTrace();
             return "Something went wrong, user-score NOT added.";
+        }
+    }
+
+    public String createUser(String username, String password){
+        try{
+            UserDAO.createUser(username, password);
+            return "user has been added to the databse.";
+
+        }catch(SQLException e){
+            e.getMessage();
+            return "Soemthing went wrong, user NOT  added";
         }
     }
 }

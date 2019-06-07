@@ -88,8 +88,6 @@ public class UserDAO implements IUserDAO{
             }
     }
 
-
-
     public void newScore(int id, int score) throws SQLException {
 
         try (Connection con = createConnection()) {
@@ -101,6 +99,20 @@ public class UserDAO implements IUserDAO{
             preparedStatement.execute();
 
         } catch (SQLException e) {
+            e.getMessage();
+        }
+    }
+
+    public void createUser(String username, String password) throws SQLException {
+        try (Connection con = createConnection()) {
+
+            String query = "INSERT INTO users VALUES(?,?,?)";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, 0);
+            preparedStatement.setString(2, username);
+            preparedStatement.setString(3, password);
+            preparedStatement.execute();
+        }catch(SQLException e){
             e.getMessage();
         }
     }

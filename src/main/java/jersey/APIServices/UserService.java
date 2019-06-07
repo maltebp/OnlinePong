@@ -58,7 +58,16 @@ public class UserService {
     @Produces("text/HTML")
     public String requestUser(@PathParam("id") int id, @PathParam("score") int score){
         IUserController userController = new UserController();
-        String statement = userController.checkScore(id, score);
-        return statement;
+        String returnStatement = userController.checkScore(id, score);
+        return returnStatement;
+    }
+
+    @Path("/createUser/{username}&{password}")
+    @GET
+    @Produces("text/HTML")
+    public String createUser(@PathParam("username") String username, @PathParam("password") String password){
+        IUserController userController = new UserController();
+        String returnStatement = userController.createUser(username, password);
+        return returnStatement;
     }
 }

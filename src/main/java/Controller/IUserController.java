@@ -17,4 +17,6 @@ public interface IUserController {
     public IUserDTO convertUser(int id);
 
     public String checkScore(int id, int score);
+
+    public String createUser(String username, String password);
 }
