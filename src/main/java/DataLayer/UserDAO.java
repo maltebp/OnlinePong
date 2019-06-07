@@ -3,6 +3,7 @@ package DataLayer;
 
 import Controller.IUserController;
 
+import javax.validation.constraints.Null;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,11 +107,11 @@ public class UserDAO implements IUserDAO{
     public void createUser(String username, String password) throws SQLException {
         try (Connection con = createConnection()) {
 
-            String query = "INSERT INTO users VALUES(?,?,?)";
+            //user_id is on AUTO_INREMENT.
+            String query = "INSERT INTO users (username, password) VALUES(?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, 0);
-            preparedStatement.setString(2, username);
-            preparedStatement.setString(3, password);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             preparedStatement.execute();
         }catch(SQLException e){
             e.getMessage();

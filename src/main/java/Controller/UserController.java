@@ -46,6 +46,7 @@ public class UserController implements IUserController{
         }
     }
 
+    //TODO: This error checck DOES NOT WORK.
     public String createUser(String username, String password){
         try{
             UserDAO.createUser(username, password);
