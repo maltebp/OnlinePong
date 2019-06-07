@@ -1,6 +1,5 @@
-package DataLayer;
+package API.DataLayer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface IUserDTO {

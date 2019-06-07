@@ -1,4 +1,4 @@
-package DataLayer;
+package API.DataLayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,9 +20,9 @@ public interface IUserDAO {
 
     IUserDTO getDBScore(IUserDTO user) throws SQLException;
 
-    public void newScore(int id, int score)throws SQLException;
+    public String newScore(int id, int score)throws SQLException;
 
-    public void createUser(String username, String password) throws SQLException;
+    public String createUser(String username, String password) throws SQLException;
 
     public class DALException extends Exception {
         //Til Java serialisering...
