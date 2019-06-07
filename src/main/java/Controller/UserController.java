@@ -35,11 +35,11 @@ public class UserController implements IUserController{
             return user;
         }
     }
-    //TODO: This error check DOES NOT WORK.
+    //Todo: fix it so that it actually trows an exception
     public String checkScore(int id, int score){
         try{
             UserDAO.newScore(id, score);
-            return "User-score has been added to the database.";
+            return "User-score have been send to the databse.";
         }catch(SQLException e){
             e.printStackTrace();
             return "Something went wrong, user-score NOT added.";

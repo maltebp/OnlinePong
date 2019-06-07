@@ -35,8 +35,13 @@ public class UserService {
                 "However you have couple of options ||<br>\n" +
                 "(1.) [GET DATA FROM A USER]: ||<br>\n " +
                 "you need to enter a number in the URL. \r Try for example 'service/1 ||<br>\n" +
+                "||<br>\n" +
                 "(2.) {INSERT A NEW SCORE MADE BY A USER} ||<br>\n " +
-                "Try for example 'service/1/[the score you want to insert] ||<br>";
+                "Try for example 'service/1/[the score you want to insert] ||<br>\n" +
+                "||<br>\n" +
+                "(3.) [CREATE USER] <br>\n" +
+                "Try for example 'service/createUser/[the User Name you want]&[The Password YouWant] <br>\n" +
+                "<br>\n";
     }
 
     /**This function sendes'rest-request'.
