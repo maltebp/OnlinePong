@@ -1,70 +1,9 @@
-/**
- * Småting der skal fikses:
- * Player 1 + 2 skal byttes om, så Player 1 har paddle 1 og vice versa (paddles er rigtige!)
- *
- * @param chosenScore
- */
-var connection;
-var x = 1;
-
-function initialize(chosenScore) {
-    connection = new WebSocket("ws://62.79.16.17:8080/findgame/Jacob");
-
-    connection.onmessage = function(event){
-
-        if (x === 1){
-            console.log("Success " + event.data);
-            x++;
-        }
-        else if (x === 2){
-            console.log("Success 2 " + event.data);
-
-            startBtn.style.display = 'none';
-            canvas.style.display = 'inline';
-            setupGame(chosenScore);
-            animate(runGame);
-
-            x++;
-        }
-        else{
-            if(x>3){
-                var obj = JSON.parse(event.data);
-                player2.paddle.y = obj.y;
-                player2.paddle.y_speed = obj.y_speed;
-            }else{
-                x++;
-            }
-            connection.send(JSON.stringify(player1.paddle));
-            //console.log(player1.paddle)
-        }
-    }
-}
-
-var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || 
-function(callback) {
-    window.setTimeout(callback, 1000/60);
-};
-
-//Game objects:
-var player1, player2, ball;                     //Paddle and Ball objects are created in setupGame(...)
-var midCourtGraphics = new MidcourtGraphics();  //the object for the midcourt graphics which is for objects of lines
-var bottomLine = new BottomLine();              //the bottom line
-
-//Variables
-var canvas = document.getElementById("game");
-var context = canvas.getContext('2d');
-var width = 700;
-var height = 500;
-var keysDown = {};
-var startBtn = document.getElementById("startBtn");
-var maxScore; //TODO
-var gameRunning;
 
 
 
-//sets the width of the witdth of the canvas to width and height the same
-canvas.width = width;
-canvas.height = height;
+
+
+
 
 /**
  * This function will do 3 things
@@ -109,6 +48,7 @@ function Ball(x,y) {
     this.y_speed = 0;
     this.radius = 5;
 }
+
 function Player1() {
     this.paddle = new Paddle(10, 175, 10, 50);
     this.score = new Score(175, 460, 0);
@@ -117,29 +57,18 @@ function Player2() {
     this.paddle = new Paddle(680, 175, 10, 50);
     this.score = new Score(525, 460, 0);
 }
-function BottomLine(x,y,width,height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-function MidCourtLine(x,y,width,height){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-}
-function MidcourtGraphics() {
-    this.midCourtLine1 = new MidCourtLine(347.5, 0 , 5, 50);
-    this.midCourtLine2 = new MidCourtLine(347.5, 118.3333, 5, 50);
-    this.midCourtLine3 = new MidCourtLine(347.5, 236.6666, 5, 50);
-    this.midCourtLine4 = new MidCourtLine(347.5, 355, 5, 50);
-}
-function Score(x,y, score) {
-    this.x = x;
-    this.y = y;
-    this.score = score;
-}
+/*function Player(Playerpaddle,Playerscore,id){
+     this.paddle= Playerpaddle;
+     this.score = Playerscore;
+     this.playerId = id;
+
+}*/
+
+
+
+
+
+
 //render functions. 
 var render = function(){
     context.fillStyle = "#000000";
@@ -163,12 +92,10 @@ Score.prototype.render = function() {
     context.closePath();
 };
 Player1.prototype.render = function(){
-    //console.log(this.paddle);
     this.paddle.render();
     this.score.render();
 };
 Player2.prototype.render = function() {
-    //console.log(this.paddle);
     this.paddle.render();
     this.score.render();
 };
@@ -296,6 +223,9 @@ Ball.prototype.update = function(paddle1, paddle2) {
             this.x_speed = Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2));
 
         }
+    }
+    if(this.y_speed !== 4 || this.y_speed !== -4) {
+        //console.log(this); //TODO Remove when done
     }
 };
 Score.prototype.goal = function() {
