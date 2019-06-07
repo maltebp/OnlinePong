@@ -34,7 +34,6 @@ public class UserDAO implements IUserDAO{
     public IUserDTO getDBUser(int id) throws DALException {
 
         try (Connection con = createConnection()) {
-
             String query = "SELECT * FROM users WHERE user_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, id);
