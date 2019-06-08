@@ -9,3 +9,10 @@ function MidcourtGraphics() {
     this.midCourtLine3 = new MidCourtLine(347.5, 236.6666, 5, 50);
     this.midCourtLine4 = new MidCourtLine(347.5, 355, 5, 50);
 }
+
+MidcourtGraphics.prototype.render = function() {
+    this.midCourtLine1.render();
+    this.midCourtLine2.render();
+    this.midCourtLine3.render();
+    this.midCourtLine4.render();
+};

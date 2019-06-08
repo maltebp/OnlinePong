@@ -6,3 +6,9 @@ function BottomLine(x,y,width,height) {
     this.width = width;
     this.height = height;
 }
+
+BottomLine.prototype.render = function() {
+    context.beginPath();
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0, 405, 700, 5);
+};

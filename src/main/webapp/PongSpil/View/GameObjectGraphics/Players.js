@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-
-//constructors
-
-
-
 function Player1() {
     this.paddle = new Paddle(10, 175, 10, 50);
     this.score = new Score(175, 460, 0);
@@ -26,29 +14,10 @@ function Player2() {
 
 }*/
 
+//render functions.
 
 
 
-
-
-//render functions. 
-var render = function(){
-    context.fillStyle = "#000000";
-    context.fillRect(0, 0, width, height);
-    midCourtGraphics.render();
-    player1.render();
-    player2.render();
-    ball.render();
-    bottomLine.render();
-};
-
-Score.prototype.render = function() {
-    context.beginPath();
-    context.font = "30px Arial";
-    context.fillStyle = "#FFFFFF";
-    context.fillText(""+ this.score, this.x, this.y);
-    context.closePath();
-};
 Player1.prototype.render = function(){
     this.paddle.render();
     this.score.render();
@@ -58,25 +27,6 @@ Player2.prototype.render = function() {
     this.score.render();
 };
 
-BottomLine.prototype.render = function() {
-    context.beginPath();
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(0, 405, 700, 5);
-};
-MidCourtLine.prototype.render = function() {
-    context.beginPath();
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(this.x, this.y, this.width, this.height);
-
-};
-MidcourtGraphics.prototype.render = function() {
-    this.midCourtLine1.render();
-    this.midCourtLine2.render();
-    this.midCourtLine3.render();
-    this.midCourtLine4.render();
-};
-
-
 /**
  * how we use keys to play the game.
  * If a key is pressed down there will be an reaction. when the key is released again it will delete that event
@@ -84,7 +34,7 @@ MidcourtGraphics.prototype.render = function() {
 window.addEventListener("keydown", function(event) {
     keysDown[event.keyCode] = true;
 });
-  
+
 window.addEventListener("keyup", function(event) {
     delete keysDown[event.keyCode];
 });
@@ -125,30 +75,3 @@ Player2.prototype.update = function() {
     //     }
     // }
 };
-
-
-Score.prototype.goal = function() {
-    this.score++;
-    if(this.score === maxScore) {
-        endGame();
-    }
-};
-
-//move functions
-Paddle.prototype.move = function(y) {
-    this.y += y;
-    this.y_speed = y;
-    if(this.y < 0) { //All the way to bottom
-        this.y = 0;
-        this.y_speed = 0;
-    } else if(this.y + this.height > 400) { //All the way to the top
-        this.y = 400 - this.height;
-        this.y_speed = 0;
-    }
-};
-
-
-
-
-
-
