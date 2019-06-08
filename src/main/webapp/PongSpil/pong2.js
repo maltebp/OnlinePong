@@ -5,41 +5,10 @@
 
 
 
-/**
- * This function will do 3 things
- * 
- * 1. update all the objects
- * 2. it will render the objects
- * 3. it will use requestAnimationFrame to call the step function again
- */
-var setupGame = function(chosenScore) {
-    maxScore = chosenScore;
-    player1 = new Player1();
-    player2 = new Player2();
-    ball = new Ball(350, 200);
-    gameRunning = true;
-};
-var runGame = function() {
-    if(gameRunning) { //Recursion since while loop crashes the program??
-        update();
-        render();
-        animate(runGame);
-    }
-};
-var endGame = function() {
-    gameRunning = false;
-    canvas.style.display = 'none';
-    startBtn.style.display = 'inline';
-}
+
 
 //constructors
-function Paddle(x,y,width,height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.y_speed = 0;
-}
+
 function Ball(x,y) {
     this.x = x;
     this.y = y;
@@ -79,11 +48,7 @@ var render = function(){
     ball.render();
     bottomLine.render();
 };
-Paddle.prototype.render = function() {
-    context.beginPath();
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(this.x, this.y, this.width, this.height);
-};
+
 Score.prototype.render = function() {
     context.beginPath();
     context.font = "30px Arial";
