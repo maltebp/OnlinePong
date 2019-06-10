@@ -73,4 +73,7 @@ public class UserService {
         String returnStatement = userController.createUser(username, password);
         return returnStatement;
     }
+
+
+    //Validate user
 }
