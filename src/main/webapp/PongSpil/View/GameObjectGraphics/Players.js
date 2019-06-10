@@ -90,6 +90,7 @@ Player1.prototype.update = function() {
         this.paddle.y_speed = 0;
     }
     this.paddle.move(this.paddle.y_speed);
+    // console.log(this.paddle.y_speed);
 };
 
 Player2.prototype.update = function() {
