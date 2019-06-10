@@ -14,7 +14,8 @@
 var connection;
 var x = 1;
 function initialize(chosenScore) {
-    connection = new WebSocket("ws://62.79.16.17:8080/socket/Jacob");
+    var user = {"code": 1, "username": "Jacob", "password": "somePassWord"}; //TODO Retrieve from
+    connection = new WebSocket("ws://62.79.16.17:8080/communcation/" + user);
 
     connection.onmessage = function(event){
 
@@ -36,18 +37,23 @@ function initialize(chosenScore) {
             //Retrieve information
             if(x > 3){
                 var obj = JSON.parse(event.data);
-                console.log("GSObjectLook: ");
-                console.log(obj);
-                player2Movement(obj.paddle);
-                ballMovement(obj.ball);
-                playerScores(obj.scores);
+                if (obj.code === 10) {
+                    console.log("GSObjectLook: ");
+                    console.log(obj);
+                    player2Movement(obj.paddle);
+                    ballMovement(obj.ball);
+                    playerScores(obj.scores);
+                }
             }else{
                 x++;
             }
             //Send information
-            var gsObj = new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]);
-            console.log(gsObj);
-            connection.send(JSON.stringify(gsObj));
+            try {
+                var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score, player2.score]);
+                console.log(gsObj);
+                connection.send(JSON.stringify(gsObj));
+            } catch (e) { //TODO Get and send error information
+            }
 
             // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
         }
