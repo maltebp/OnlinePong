@@ -1,3 +1,6 @@
+/**
+ * For playing locally (second player movement wont work)
+ */
 // function initialize(chosenScore) {
 //     startBtn.style.display = 'none';
 //     canvas.style.display = 'inline';
@@ -5,6 +8,9 @@
 //     animate(runGame);
 // }
 
+/**
+ * For playing with server
+ */
 var connection;
 var x = 1;
 function initialize(chosenScore) {
@@ -27,16 +33,36 @@ function initialize(chosenScore) {
             x++;
         }
         else{
+            // var obj2 = JSON.stringify({Paddle: player1.paddle}, {Ball: ball});
+            var gsObj = new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]);
+            // var gsObj = new GameStateObject(player1.paddle, ball);
+            console.log(gsObj);
+            // console.log("Obj2");
+            // console.log(obj2);
             if(x > 3){
                 var obj = JSON.parse(event.data);
-                if(player2.paddle.y_speed !== obj.y_speed) {
-                    player2.paddle.y = obj.y;
-                }
-                player2.paddle.y_speed = obj.y_speed;
+                console.log("GSObjectLook: ");
+                console.log(obj);
+                player2Movement(obj.Paddle);
+                ballMovement(obj.Ball);
             }else{
                 x++;
             }
-            connection.send(JSON.stringify(player1.paddle));
+            console.log(gsObj);
+            connection.send(JSON.stringify(gsObj));
+
+            // connection.send(JSON.stringify(player1.paddle)); //TODO
         }
     }
+}
+
+function player2Movement(paddle) {
+    if(player2.paddle.y_speed !== paddle.y_speed) {
+        player2.paddle.y = paddle.y;
+    }
+    player2.paddle.y_speed = paddle.y_speed;
+}
+
+function ballMovement(obj) {
+
 }
