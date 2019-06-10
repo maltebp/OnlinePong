@@ -14,8 +14,15 @@
 var connection;
 var x = 1;
 function initialize(chosenScore) {
-    var user = {"code": 1, "username": "Jacob", "password": "somePassWord"}; //TODO Retrieve from
-    connection = new WebSocket("ws://62.79.16.17:8080/communcation/" + user);
+    var user = {"code": 1, "username": "Jacob", "password": "somePassWord"}; //TODO Retrieve userdata
+    var JSONuser = JSON.stringify(user);
+    // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + JSONuser);
+    connection = new WebSocket("ws://62.79.16.17:8080/communication");
+    // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + "HejMalte");
+
+    connection.onopen = function() {
+        connection.send(JSONuser);
+    };
 
     connection.onmessage = function(event){
 
