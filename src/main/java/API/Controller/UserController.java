@@ -8,8 +8,8 @@ import API.DataLayer.UserDTO;
 import java.sql.SQLException;
 
 public class UserController implements IUserController{
-    private IUserDAO UserDAO = new UserDAO();
 
+    private IUserDAO UserDAO = new UserDAO();
 
     @Override
     public IUserDTO convertUser(int id) {
