@@ -14,10 +14,10 @@
 var connection;
 var x = 1;
 function initialize(chosenScore) {
-    var user = {"code": 1, "username": "Jacob", "password": "somePassWord"}; //TODO Retrieve userdata
+    var user = {"code": 1, "username": "Malte", "password": "somePassWord"}; //TODO Retrieve userdata
     var JSONuser = JSON.stringify(user);
     // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + JSONuser);
-    connection = new WebSocket("ws://62.79.16.17:8080/communication");
+    connection = new WebSocket("ws://localhost:8080/communication");
     // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + "HejMalte");
 
     connection.onopen = function() {
@@ -63,7 +63,7 @@ function initialize(chosenScore) {
             // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
         }
         if(obj.code === 103 || obj.code === 10) {
-            var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score, player2.score]);
+            var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
             console.log(gsObj);
             connection.send(JSON.stringify(gsObj));
         }
@@ -86,6 +86,6 @@ function ballMovement(oppBall) {
 }
 
 function playerScores(scores) {
-    player1.score = scores[1];
-    player2.score = scores[0];
+    player1.score.score = scores[1];
+    player2.score.score = scores[0];
 }
