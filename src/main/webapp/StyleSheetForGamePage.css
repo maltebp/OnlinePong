@@ -19,6 +19,10 @@ nav, .OuterGameScreen {
     height: 725px;
 }
 
+.loginForm {
+
+}
+
 /*-----    This specify the style of the TopFrame box    -----*/
 .TopFrame {
     background-color: black;
