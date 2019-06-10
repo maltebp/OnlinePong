@@ -23,4 +23,4 @@ var endGame = function() {
     gameRunning = false;
     canvas.style.display = 'none';
     startBtn.style.display = 'inline';
-}
+};

@@ -5,6 +5,7 @@ function Ball(x,y) {
     this.x_speed = this.speed;
     this.y_speed = 0;
     this.radius = 5;
+    this.incrementSpeed = 0.1;
 }
 Ball.prototype.render = function() {
     context.beginPath();
@@ -43,11 +44,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
     }
 
     var newYSpeed;
-    if(ball_right > 500) {// > 500 //Boldens position foran player 1's paddle (500 på x aksen)
+    if(ball_right > 500) {  //Boldens position foran player 1's paddle (500 på x aksen)
         if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
-            (ball_top - ball.radius / 2) > paddle2.y) { // hit player 1´s paddle
+            (ball_top - ball.radius / 2) > paddle2.y) { // hit player 2´s paddle
 
-            this.speed += 0.1;
+            this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
             this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
@@ -55,16 +56,13 @@ Ball.prototype.update = function(paddle1, paddle2) {
         }
     } else if (ball_left < 200) {
         if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
-            (ball_top - ball.radius / 2) > paddle1.y) { // hit player 2´s paddle
+            (ball_top - ball.radius / 2) > paddle1.y) { // hit player 1´s paddle
 
-            this.speed += 0.1;
+            this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle1.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
             this.x_speed = Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2));
 
         }
-    }
-    if(this.y_speed !== 4 || this.y_speed !== -4) {
-        //console.log(this); //TODO Remove when done
     }
 };

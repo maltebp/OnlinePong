@@ -40,6 +40,7 @@ function initialize(chosenScore) {
                 console.log(obj);
                 player2Movement(obj.paddle);
                 ballMovement(obj.ball);
+                playerScores(obj.scores);
             }else{
                 x++;
             }
@@ -62,8 +63,13 @@ function player2Movement(oppPaddle) {
 
 function ballMovement(oppBall) {
     ball.speed = oppBall.speed;
-    ball.x = oppBall.x;
+    ball.x = width / 2 - oppBall.x;
     ball.y = oppBall.y;
-    ball.x_speed = oppBall.x_speed;
+    ball.x_speed = -oppBall.x_speed;
     ball.y_speed = oppBall.y_speed;
+}
+
+function playerScores(scores) {
+    player1.score = scores[1];
+    player2.score = scores[0];
 }

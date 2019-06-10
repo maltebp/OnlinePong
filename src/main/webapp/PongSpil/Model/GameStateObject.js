@@ -1,6 +1,6 @@
-function GameStateObject(code, paddle, ball, score) {
+function GameStateObject(code, paddle, ball, scores) {
     this.code = code;
     this.paddle = paddle;
     this.ball = ball;
-    this.score = score;
+    this.scores = scores;
 }
