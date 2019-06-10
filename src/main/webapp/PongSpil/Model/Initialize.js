@@ -33,36 +33,37 @@ function initialize(chosenScore) {
             x++;
         }
         else{
-            // var obj2 = JSON.stringify({Paddle: player1.paddle}, {Ball: ball});
-            var gsObj = new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]);
-            // var gsObj = new GameStateObject(player1.paddle, ball);
-            console.log(gsObj);
-            // console.log("Obj2");
-            // console.log(obj2);
+            //Retrieve information
             if(x > 3){
                 var obj = JSON.parse(event.data);
                 console.log("GSObjectLook: ");
                 console.log(obj);
-                player2Movement(obj.Paddle);
-                ballMovement(obj.Ball);
+                player2Movement(obj.paddle);
+                ballMovement(obj.ball);
             }else{
                 x++;
             }
+            //Send information
+            var gsObj = new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]);
             console.log(gsObj);
             connection.send(JSON.stringify(gsObj));
 
-            // connection.send(JSON.stringify(player1.paddle)); //TODO
+            // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
         }
     }
 }
 
-function player2Movement(paddle) {
-    if(player2.paddle.y_speed !== paddle.y_speed) {
-        player2.paddle.y = paddle.y;
+function player2Movement(oppPaddle) {
+    if(player2.paddle.y_speed !== oppPaddle.y_speed) {
+        player2.paddle.y = oppPaddle.y;
     }
-    player2.paddle.y_speed = paddle.y_speed;
+    player2.paddle.y_speed = oppPaddle.y_speed;
 }
 
-function ballMovement(obj) {
-
+function ballMovement(oppBall) {
+    ball.speed = oppBall.speed;
+    ball.x = oppBall.x;
+    ball.y = oppBall.y;
+    ball.x_speed = oppBall.x_speed;
+    ball.y_speed = oppBall.y_speed;
 }
