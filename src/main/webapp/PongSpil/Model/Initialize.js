@@ -42,11 +42,14 @@ function initialize(chosenScore) {
 
             x++;
         }
-        else{
+        else if(obj.code === 10) {
+
             //Retrieve information
             // if(x > 3){
                 // var obj = JSON.parse(event.data);
                 // if (obj.code === 10) {
+                //     console.log("GSObjectLook: ");
+                    console.log(obj);
                     player2Movement(obj.paddle);
                     ballMovement(obj.ball);
                     playerScores(obj.scores);
@@ -55,11 +58,14 @@ function initialize(chosenScore) {
             //     x++;
             // }
             //Send information
+
+
+            // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
+        }
+        if(obj.code === 103 || obj.code === 10) {
             var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score, player2.score]);
             console.log(gsObj);
             connection.send(JSON.stringify(gsObj));
-
-            // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
         }
     }
 }
