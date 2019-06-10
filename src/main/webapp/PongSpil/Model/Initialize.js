@@ -25,12 +25,14 @@ function initialize(chosenScore) {
     };
 
     connection.onmessage = function(event){
-
-        if (x === 1){
+        var obj = JSON.parse(event.data);
+        // else if (x === 2){
+        if (obj.code === 101){
             console.log("Success " + event.data);
             x++;
         }
-        else if (x === 2){
+        // else if (x === 2){
+        else if (obj.code === 102){
             console.log("Success 2 " + event.data);
 
             startBtn.style.display = 'none';
@@ -42,25 +44,20 @@ function initialize(chosenScore) {
         }
         else{
             //Retrieve information
-            if(x > 3){
-                var obj = JSON.parse(event.data);
-                if (obj.code === 10) {
-                    console.log("GSObjectLook: ");
-                    console.log(obj);
+            // if(x > 3){
+                // var obj = JSON.parse(event.data);
+                // if (obj.code === 10) {
                     player2Movement(obj.paddle);
                     ballMovement(obj.ball);
                     playerScores(obj.scores);
-                }
-            }else{
-                x++;
-            }
+                // }
+            // }else{
+            //     x++;
+            // }
             //Send information
-            try {
-                var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score, player2.score]);
-                console.log(gsObj);
-                connection.send(JSON.stringify(gsObj));
-            } catch (e) { //TODO Get and send error information
-            }
+            var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score, player2.score]);
+            console.log(gsObj);
+            connection.send(JSON.stringify(gsObj));
 
             // connection.send(JSON.stringify(new GameStateObject("010", player1.paddle, ball, [player1.score, player2.score]))); //Should be final form
         }
