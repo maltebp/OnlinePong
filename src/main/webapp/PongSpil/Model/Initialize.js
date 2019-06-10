@@ -27,7 +27,7 @@ function initialize(chosenScore) {
             x++;
         }
         else{
-            if(x >= 3){
+            if(x > 3){
                 var obj = JSON.parse(event.data);
                 if(player2.paddle.y_speed !== obj.y_speed) {
                     player2.paddle.y = obj.y;
