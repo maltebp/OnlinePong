@@ -5,7 +5,7 @@ var player1, player2, ball;                     //Paddle and Ball objects are cr
 //Variables
 
 var keysDown = {};
-var startBtn = document.getElementById("startBtn");
+var startBtn = document.getElementById("startButton");
 var maxScore;
 var gameRunning;
 

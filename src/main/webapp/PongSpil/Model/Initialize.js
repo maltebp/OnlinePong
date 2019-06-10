@@ -1,5 +1,5 @@
 function initialize(chosenScore) {
-    startBtn.style.display = 'none';
+    startButton.style.display = 'none';
     canvas.style.display = 'inline';
     setupGame(chosenScore);
     animate(runGame);
