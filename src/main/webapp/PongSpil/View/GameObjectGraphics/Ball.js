@@ -48,6 +48,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
         if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
             (ball_top - ball.radius / 2) > paddle2.y) { // hit player 2´s paddle
 
+            console.log("Bump you");
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
@@ -58,6 +59,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
         if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
             (ball_top - ball.radius / 2) > paddle1.y) { // hit player 1´s paddle
 
+            console.log("Bump me");
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle1.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;

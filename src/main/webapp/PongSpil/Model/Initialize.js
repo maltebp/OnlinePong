@@ -14,10 +14,10 @@
 var connection;
 var x = 1;
 function initialize(chosenScore) {
-    var user = {"code": 1, "username": "Malte", "password": "somePassWord"}; //TODO Retrieve userdata
+    var user = {"code": 1, "username": "Carsten og Flemming", "password": "somePassWord"}; //TODO Retrieve userdata
     var JSONuser = JSON.stringify(user);
     // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + JSONuser);
-    connection = new WebSocket("ws://localhost:8080/communication");
+    connection = new WebSocket("ws://62.79.16.17:8080/communication");
     // connection = new WebSocket("ws://62.79.16.17:8080/communication/" + "HejMalte");
 
     connection.onopen = function() {
@@ -51,7 +51,9 @@ function initialize(chosenScore) {
                 //     console.log("GSObjectLook: ");
                     console.log(obj);
                     player2Movement(obj.paddle);
-                    ballMovement(obj.ball);
+                    if(ball.x > 400) {
+                        ballMovement(obj.ball);
+                    }
                     playerScores(obj.scores);
                 // }
             // }else{
@@ -79,7 +81,7 @@ function player2Movement(oppPaddle) {
 
 function ballMovement(oppBall) {
     ball.speed = oppBall.speed;
-    ball.x = width / 2 - oppBall.x;
+    ball.x = width - oppBall.x;
     ball.y = oppBall.y;
     ball.x_speed = -oppBall.x_speed;
     ball.y_speed = oppBall.y_speed;
