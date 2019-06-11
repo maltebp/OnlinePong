@@ -1,3 +1,16 @@
+/**
+ * Score objects and the update
+ *
+ * @Author Kristian Andersen and Jacob Riis
+ */
+
+/**
+ *
+ * @param x
+ * @param y
+ * @param score
+ * @constructor
+ */
 function Score(x,y, score) {
     this.x = x;
     this.y = y;
