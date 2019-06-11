@@ -1,5 +1,7 @@
 /**
  * Collection of global variables
+ *
+ * @Author Kristian Andersen and Jacob Riis
  */
 //Game objects:
 var player1, player2, ball;                     //Paddle and Ball objects are created in setupGame(...)
