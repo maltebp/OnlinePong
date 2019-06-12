@@ -8,7 +8,6 @@ function createConnection() {
 
     connection = new WebSocket("ws://localhost:8080/communication");
 
-
     connection.onopen = function () {
         var user = {
             "code": 1,
@@ -21,13 +20,20 @@ function createConnection() {
     }
 
     connection.onmessage = function (event) {
-        console.log(event.data);
-        var jsonObject = JSON.parse(event.data);
-        decodeEvent(jsonObject);
 
+        var obj = JSON.parse(event.data);
 
+        decodeEvent(obj);
     }
 }
+
+
+
+
+
+
+
+
 
 function decodeEvent(jsonObject){
 
@@ -57,8 +63,10 @@ function connection(){
 }
 
 function findingGame(jsonObject){
-    document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n Please wait..."
-    whileLoading(true);
+
+    startButton.style.display = 'none';
+    document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n\n Please wait..."
+    //whileLoading(true);
 }
 
 

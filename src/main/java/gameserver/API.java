@@ -15,12 +15,10 @@ public class API {
 
     @OnOpen
     public void onOpen(Session session ){
-        try {
-            session.getBasicRemote().sendText("A connection has been made");
+
+
             System.out.println("Recieved open request");
-        }catch(IOException e){
-            e.getMessage();
-        }
+
     }
 
 //TODO Lukke, forbindelsen, hvis at en bruger taster et forkert login.
