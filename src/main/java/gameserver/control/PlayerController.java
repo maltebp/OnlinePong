@@ -5,21 +5,34 @@ import gameserver.view.Sender;
 import java.util.ArrayList;
 
 
-public class PlayerController {
+/**
+ * Controller which handles players connected to the
+ * game server.
+ * It validates users via authentication (username/password)
+ * and duplicate Player checks (usernameExists()), and maintains
+ * information about validated users.
+ *
+ */
+class PlayerController {
 
     private Sender sender;
 
+    // Validated users
     private ArrayList<Player> players = new ArrayList<Player>();
 
-    public PlayerController(Sender sender){
+
+    PlayerController(Sender sender){
         this.sender = sender;
     }
 
+
     /**
-     * Checks if the player is valid by authenticating it
-     * and checking its already logged in.
+     * Validate the player and adds it to the list of validated
+     * Players (players connected to the Game Server).
+     *
+     * @return Whether or not the player was validated
      */
-    public boolean addPlayer( Player player, String username, String password ){
+    boolean addPlayer( Player player, String username, String password ){
         if( authenticatePlayer(username, password) ){
 
             if( !usernameExists(username)){
@@ -36,11 +49,18 @@ public class PlayerController {
         return false;
     }
 
-    public void removePlayer(Player player){
+    /**
+     * Removes the player as a validated user
+     */
+    void removePlayer(Player player){
         players.remove(player);
     }
 
-    public boolean playerIsAuthenticated(Player player){
+
+    /**
+     * @return True if the player has been authenticated (via addPlayer())
+     */
+    boolean playerIsAuthenticated(Player player){
         if( players.contains(player)){
             return true;
         }else{
@@ -50,10 +70,19 @@ public class PlayerController {
     }
 
 
+    /**
+     * Checks if username and password identifies a user within the
+     * game database
+     */
     private boolean authenticatePlayer(String username, String password){
         return true;
     }
 
+
+    /**
+     * Checks if a Player with a given username is already connected
+     * to the game server.
+     */
     private boolean usernameExists(String username){
         return false;
         // TODO: Turn this on
