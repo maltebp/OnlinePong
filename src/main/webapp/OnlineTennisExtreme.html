@@ -30,30 +30,12 @@
 
             <div class="OuterGameScreen" class="BoxHeight">
 
+                <p>This is the game</p>
                 <div class="Div1">
+                    <button type="button" id="startButton" onclick="initialize(10)" style="height: 4%; width: 5%;">START</button>
+                   <canvas class="InnerGameScreen" id="game">
 
-                    <script src="jsToGameServer.js"></script>
-                    <form name="middleFrame" action="#" onsubmit="myFunction();return false;">
-
-                        <p class="textForRegister">Username: </p>
-                        <input id="Username" type="text" name=""></br>
-                        <p class="textForRegister">Password: </p>
-                        <input id="Password" type="password" placeholder="Password"></br>
-                        <input id="Confirm Password" type="password" placeholder="Confirm password"></br></br>
-                        Male: <input type="radio" name="maleorfemale value">
-                        Female: <input type="radio" name="maleorfemale value"></br></br>
-                        <input type="number" placeholder="Age"></br>
-                        <p class="textForRegister">Birthday: </p>
-                        <input type="date" name="Bday" placeholder="Birthday"> </br></br>
-                        <input type="submit" value="Submit">
-
-
-                    </form>
-
-                        <canvas class="InnerGameScreen" id="game"></canvas>
-
-                    </form>
-
+                </canvas> 
                 </div>
             </div>
             <!-- Remember the order of the scripts!-->
@@ -65,6 +47,7 @@
             <script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>
 
             <!-- Then we get the model and the Game Functions/Logic-->
+            <script src="PongSpil/Model/GameStateObject.js"></script>
             <script src="PongSpil/Model/Initialize.js"></script>
             <script src="PongSpil/Model/SetupGame.js"></script>
 
