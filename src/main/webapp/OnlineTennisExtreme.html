@@ -30,11 +30,20 @@
 
             <div class="OuterGameScreen" class="BoxHeight">
 
-                <p>This is the game</p>
                 <div class="Div1">
-                    <button type="button" id="startButton" onclick="initialize(10)" style="height: 4%; width: 5%;">START</button>
-                   <canvas class="InnerGameScreen" id="game">
-                </canvas> 
+                    <!--TODO remove login.php-->
+                    <form class="loginForm" action="login.php" method="post">
+
+                        <h2>Login </h2>
+                        <p>Username: <input type="text" Username=""></p>
+                        <p>Password: <input type="password" ></p>
+                        <p><button type="button" id="startButton" onclick="initialize(10)">Login</button></p>
+                        <p> Don't have an account? <a href="RegisterPage.html">Register</a> </p>
+
+                        <canvas class="InnerGameScreen" id="game"></canvas>
+
+                    </form>
+
                 </div>
             </div>
             <!-- Remember the order of the scripts!-->
