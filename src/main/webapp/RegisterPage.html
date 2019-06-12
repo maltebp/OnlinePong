@@ -19,12 +19,14 @@
         This is some text for the register page
     </div>
     <!--TODO remove register.php-->
-    <form class="middleFrame" action="Register.php" method="post">
-            <p class="textForRegister">Username: </p>
-            <input type="text" name=""></br>
-            <p class="textForRegister">Password: </p>
-            <input type="password" placeholder="Password"></br>
-            <input type="password" placeholder="Confirm password"></br></br>
+    <form class="middleFrame" action="localhost:8080/rest/service/createUser/" method="post">
+
+            <label for="userName">Username: </label></br>
+            <input type="text" name="say" id="userName"></br></br>
+            <label for="password">Password: </label></br>
+            <input type="password" placeholder="Password" id="password"></br>
+            <label for="password2"></label>
+            <input type="password" placeholder="Confirm password" id="password2"></br></br>
             <!--Male: <input type="radio" name="maleorfemale value">-->
             <!--Female: <input type="radio" name="maleorfemale value"></br></br>-->
             <!--<input type="number" placeholder="Age"></br>-->
