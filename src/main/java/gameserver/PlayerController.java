@@ -17,7 +17,6 @@ public class PlayerController {
     }
 
 
-
     public LinkedList<Player> getPlayersLookingForGame(){
         return lookingForGame;
     }
