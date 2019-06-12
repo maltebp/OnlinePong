@@ -9,15 +9,6 @@ public class Game {
     private boolean player1Accepted = false;
     private boolean player2Accepted = false;
 
-    public GameState getState() {
-        return state;
-    }
-
-    // TODO: Consider removing this
-    public void setState(GameState state) {
-        this.state = state;
-    }
-
     private GameState state = GameState.ACCEPT_PENDING;
 
 
@@ -64,4 +55,14 @@ public class Game {
         ACCEPT_PENDING,
         STARTED
     }
+
+    public GameState getState() {
+        return state;
+    }
+
+    // TODO: Consider removing this
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
 }

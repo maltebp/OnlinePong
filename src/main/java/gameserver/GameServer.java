@@ -32,7 +32,6 @@ public class GameServer {
                 case 1:
                     if( authenticator.authenticatePlayer(msg.getString("username"), msg.getString("password"))){
                         players.add(player);
-                        sender.sendMessage(player, messageCreator.findingGame(0));
                         matchmaker.addPlayer(player);
                     }
                     break;
@@ -48,6 +47,8 @@ public class GameServer {
                     if( checkAuthentication(player))
                         gameController.dataRecieved(player, textMessage);
                     break;
+
+
 
 
 

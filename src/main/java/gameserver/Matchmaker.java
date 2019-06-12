@@ -1,19 +1,21 @@
 package gameserver;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Matchmaker extends Thread{
 
-    private static final double MATCHMAKING_UPDATE = 3; // Seconds
+    // The frequent between checking if there are any players to be matched
+    private static final double MATCHMAKING_FREQ = 3;
     private Sender sender;
 
-    private ArrayList<Player> lookingForGame = new ArrayList<Player>();
+    private LinkedList<Player> lookingForGame = new LinkedList<>();
     private GameController gameController;
-    private HashMap<Player, Game> awaitingAccept = new HashMap<Player, Game>();
+    private HashMap<Player, Game> awaitingAccept = new HashMap<>();
     private MessageCreator messageCreator;
+;
 
     public Matchmaker( Sender sender, GameController gameController, MessageCreator messageCreator){
         this.gameController = gameController;
@@ -27,28 +29,38 @@ public class Matchmaker extends Thread{
         try {
             while (true) {
                 LinkedList<Game> newGames = new LinkedList<Game>();
-                Player player1 = null;
+                LinkedList<Player> remainingPlayers = new LinkedList<>(lookingForGame);
+
                 for (Player player : lookingForGame) {
-                    if (player1 == null) {
-                        player1 = player;
-                    } else {
-                        newGames.add(new Game(player1, player));
-                        player1 = null;
+                    if( remainingPlayers.remove(player) ){
+                        Player opponent = findMatch(player, 0, remainingPlayers);
+                        if( opponent != null ){
+                            newGames.add( new Game(player, opponent));
+                            remainingPlayers.remove(opponent);
+                        }
                     }
                 }
+
                 for(Game game : newGames){
                     lookingForGame.remove(game.getPlayer(1));
                     lookingForGame.remove(game.getPlayer(2));
                     awaitingAccept.put(game.getPlayer(1), game);
                     awaitingAccept.put(game.getPlayer(2), game);
                 }
-                sleep((long) 3 * 1000);
+
+                sleep((long) MATCHMAKING_FREQ * 1000);
             }
         }catch( InterruptedException e){
             System.out.println("Matchmaking thread is interrupted: "+e.getMessage());
         }
     }
 
+
+    /** The method which evalutes who the player should play against */
+    protected Player findMatch(Player player, int timeWaited, List<Player> opponents){
+        if( !opponents.isEmpty() ) return opponents.get(0);
+        return null;
+    }
 
     public void playerAcceptsMatch(Player player){
         Game game = awaitingAccept.get(player);
