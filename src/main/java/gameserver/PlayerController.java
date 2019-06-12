@@ -27,7 +27,7 @@ public class PlayerController {
     }
 
     public Player addPlayer(Session session, String username){
-        if( ! playerExists(username)) {
+        if( true || ! playerExists(username)) {
             Player player = new Player(session, username);
             players.put(session.getId(), player);
             lookingForGame.add(player);
