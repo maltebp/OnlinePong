@@ -32,13 +32,32 @@
 
                 <p>This is the game</p>
                 <div class="Div1">
-                    <button type="button" id="startBtn" onclick="initialize(2)" style="height: 4%; width: 5%;">START</button>
+                    <button type="button" id="startButton" onclick="initialize(10)" style="height: 4%; width: 5%;">START</button>
                    <canvas class="InnerGameScreen" id="game">
 
                 </canvas> 
                 </div>
             </div>
-            <script src="pong2.js"></script> 
+            <!-- Remember the order of the scripts!-->
+            <!-- First we get the backgrounds Graphics-->
+            <script src="PongSpil/GlobalVariables.js"></script>
+            <script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>
+            <script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>
+            <script src="PongSpil/View/BackGroundGraphics/MidCourtLine.js"></script>
+            <script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>
+
+            <!-- Then we get the model and the Game Functions/Logic-->
+            <script src="PongSpil/Model/GameStateObject.js"></script>
+            <script src="PongSpil/Model/Initialize.js"></script>
+            <script src="PongSpil/Model/SetupGame.js"></script>
+
+            <!-- Finally we get the GameObjects that we play the game with-->
+            <script src="PongSpil/View/Render.js"></script>
+            <script src="PongSpil/View/GameObjectGraphics/Score.js"></script>
+            <script src="PongSpil/View/GameObjectGraphics/Paddle.js"></script>
+            <script src="PongSpil/View/GameObjectGraphics/Ball.js"></script>
+            <script src="PongSpil/View/GameObjectGraphics/Players.js"></script>
+
 
             <nav class="RightBox" class="BoxHeight">
 

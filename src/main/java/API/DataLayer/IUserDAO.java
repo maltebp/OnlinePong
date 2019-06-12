@@ -20,13 +20,14 @@ public interface IUserDAO {
 
     IUserDTO getDBScore(IUserDTO user) throws SQLException;
 
-    public String newScore(int id, int score)throws SQLException;
+    String newScore(int id, int score)throws SQLException;
 
-    public String createUser(String username, String password) throws SQLException;
+    String createUser(String username, String password) throws SQLException;
 
-    public boolean checkHash(int id, String password) throws SQLException;
+    boolean checkHash(int id, String password) throws SQLException;
 
-    public class DALException extends Exception {
+    class DALException extends Exception {
+
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;
 

@@ -10,7 +10,7 @@ import java.sql.*;
 public class UserDAO implements IUserDAO{
 
 
-    /**@author Claes
+    /**@author Claes and Simon
      * Creates a connection to the Database.
      * It is inside a try/catch statment to assure we do not leave open connections.
      * NOTE: "com.mysql.jdbc.Driver" selects the driver for TomCat to use to connect to mySQL server.

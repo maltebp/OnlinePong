@@ -14,11 +14,11 @@ public interface IUserController {
      * @param id The Id of the User we desire userdata from
      * @return a User convert to a object that can be used in the local code
      */
-    public IUserDTO convertUser(int id);
+    IUserDTO convertUser(int id);
 
-    public String checkScore(int id, int score);
+    String checkScore(int id, int score);
 
-    public String createUser(String username, String password);
+    String createUser(String username, String password);
 
-    public boolean userValidation(int id, String password);
+    boolean userValidation(int id, String password);
 }
