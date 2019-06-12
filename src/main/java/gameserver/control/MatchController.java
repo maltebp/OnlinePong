@@ -21,8 +21,6 @@ public class MatchController {
         playerGame.put(match.getPlayer(1), match);
         playerGame.put(match.getPlayer(2), match);
 
-        match.setState(Match.MatchState.STARTED);
-
         Random rnd = new Random();
         boolean player1Starting = rnd.nextBoolean();
 
