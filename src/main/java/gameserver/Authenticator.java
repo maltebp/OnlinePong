@@ -6,6 +6,6 @@ public class Authenticator {
     }
 
     public boolean authenticatePlayer(String username, String password){
-        return false;
+        return true;
     }
 }

@@ -25,7 +25,7 @@ public class GameController {
         boolean player1Starting = rnd.nextBoolean();
 
         sender.sendMessage(game.getPlayer(1), messageCreator.startGame( player1Starting ));
-        sender.sendMessage(game.getPlayer(1), messageCreator.startGame( !player1Starting ));
+        sender.sendMessage(game.getPlayer(2), messageCreator.startGame( !player1Starting ));
     }
 
 

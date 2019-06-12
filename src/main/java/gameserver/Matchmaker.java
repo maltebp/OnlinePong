@@ -46,6 +46,8 @@ public class Matchmaker extends Thread{
                     lookingForGame.remove(game.getPlayer(2));
                     awaitingAccept.put(game.getPlayer(1), game);
                     awaitingAccept.put(game.getPlayer(2), game);
+                    sender.sendMessage(game.getPlayer(0), messageCreator.foundGame());
+                    sender.sendMessage(game.getPlayer(1), messageCreator.foundGame());
                 }
 
                 sleep((long) MATCHMAKING_FREQ * 1000);

@@ -1,32 +1,28 @@
 package gameserver;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
+import javax.websocket.Session;
 import java.util.HashMap;
 
-@ServerEndpoint("/gameserver")
-public class Connector implements Sender {
+public class WebSocketController implements Sender {
 
     private GameServer gameServer = new GameServer(this);
     private HashMap<Session, Player> players = new HashMap<Session, Player>();
     private HashMap<Player, Session> sessions = new HashMap<Player, Session>();
 
-
-    @OnOpen
-    public void onOpen(Session session){
-        players.put(session, new Player());
+    public void addSession(Session session){
+        Player player = new Player();
+        players.put(session, player );
+        sessions.put(player, session);
     }
 
-    @OnMessage
-    public void onMessage( Session session, String msg ) throws Exception{
+    public void sessionMessage(Session session, String message){
         Player player = players.get(session);
         if( player != null ){
-            gameServer.recieveMessage(player, msg);
+            gameServer.recieveMessage(player, message);
         }
     }
 
-    @OnClose
-    public void onClose( Session session ) throws Exception{
+    public void sessionClosed( Session session ){
         Player player = players.get(session);
         if( player != null ){
             gameServer.removePlayer(player);
@@ -34,12 +30,6 @@ public class Connector implements Sender {
             sessions.remove(player);
         }
     }
-
-    @OnError
-    public void onError(Throwable t){
-        System.out.println("Some error occured: "+t.getMessage());
-    }
-
 
     public void sendMessage(Player player, String message ){
         Session session = sessions.get(player);

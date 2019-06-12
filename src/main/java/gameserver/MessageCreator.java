@@ -42,6 +42,11 @@ public class MessageCreator {
         return msg.toString();
     }
 
+    public String alreadyLoggedIn(){
+        JSONObject msg = getCodeMsg(202);
+        return msg.toString();
+    }
+
     public String wrongUsernamePassword(){
         return getCodeMsg(201).toString();
     }

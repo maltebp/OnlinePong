@@ -22,7 +22,7 @@ public class GameServer {
         matchmaker = new Matchmaker(sender, gameController, messageCreator);
     }
 
-    public void recieveMessage( Player player, String textMessage ) throws GameServerException{
+    public void recieveMessage( Player player, String textMessage ){
         JSONObject msg = new JSONObject(textMessage);
 
         try {
@@ -30,9 +30,21 @@ public class GameServer {
 
                 // Login
                 case 1:
-                    if( authenticator.authenticatePlayer(msg.getString("username"), msg.getString("password"))){
-                        players.add(player);
-                        matchmaker.addPlayer(player);
+                    System.out.println("Authentication recieved");
+                    String username = msg.getString("username");
+                    String password = msg.getString("password");
+                    if( authenticator.authenticatePlayer( username, password)){
+                        if( !usernameExists(username)){
+                            player.setUsername(username);
+                            players.add(player);
+                            matchmaker.addPlayer(player);
+                        }else{
+                            System.out.println("Already logged in");
+                            sender.sendMessage(player, messageCreator.alreadyLoggedIn());
+                        }
+                    }else{
+                        System.out.println("Wrong username password");
+                        sender.sendMessage(player, messageCreator.wrongUsernamePassword());
                     }
                     break;
 
@@ -48,10 +60,6 @@ public class GameServer {
                         gameController.dataRecieved(player, textMessage);
                     break;
 
-
-
-
-
                 default:
                     sender.sendMessage(player, messageCreator.wrongMessageFormat("Unknown code"));
             }
@@ -60,6 +68,17 @@ public class GameServer {
             // Wrong format
             sender.sendMessage(player, messageCreator.wrongMessageFormat());
         }
+    }
+
+
+    private boolean usernameExists(String username){
+        return false;
+        /*for( Player player : players ){
+            if( player.getUsername().equals(username) ){
+                return true;
+            }
+        }
+        return false;*/
     }
 
     private boolean checkAuthentication(Player player){
@@ -72,7 +91,7 @@ public class GameServer {
     }
 
 
-    public void removePlayer( Player player ) throws GameServerException{
+    public void removePlayer( Player player ){
         matchmaker.removePlayer(player);
         gameController.removePlayer(player);
         players.remove(player);
