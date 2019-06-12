@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface IUserDAO {
-    /**@author Claes
+    /**@author Claes, Simon
      * The purpose of this class is being able to access the UserData.
      * As is also stated in the name Data Access Object (DAO)
      * @return Userdata

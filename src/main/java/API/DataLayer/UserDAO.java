@@ -34,7 +34,7 @@ public class UserDAO implements IUserDAO{
         return null;
     }
 
-    /**@author Claes
+    /**@author Claes, Simon
      * This function gets User Data From the Database
      @param id The User, that one wants DB Data from
      */
@@ -56,7 +56,7 @@ public class UserDAO implements IUserDAO{
         }
     }
 
-    /**@author Claes
+    /**@author Claes, Simon
      * This Function Helps Translate the Data from the database
      * To a local object, which make the Data easier to Access in this local code
      @param set - The set of SQL data you want made into a local object.
@@ -74,6 +74,13 @@ public class UserDAO implements IUserDAO{
         }
     }
 
+    /**
+     * @Author Simon, Claes
+     * Gets the scores from a user_id, and 'appends' them to a received IUserDTO.
+     * @param user
+     * @return IUserDTO
+     * @throws DALException
+     */
     public IUserDTO getDBScore(IUserDTO user) throws DALException{
 
         try (Connection con = createConnection()) {
@@ -93,6 +100,14 @@ public class UserDAO implements IUserDAO{
             }
     }
 
+    /**
+     * @Author Simon, Claes
+     * Adds a score to a user_id in the DB.
+     * @param id
+     * @param score
+     * @return String: error message.
+     * @throws DALException
+     */
     public String newScore(int id, int score) throws DALException{
 
         try (Connection con = createConnection()) {
@@ -108,6 +123,14 @@ public class UserDAO implements IUserDAO{
         }
     }
 
+    /**
+     * @Author Simon, Claes
+     * Create a user in the DB, (with a hashed password ofc.).
+     * @param username
+     * @param password
+     * @return String: Whether successful or not.
+     * @throws DALException
+     */
     public String createUser(String username, String password) throws DALException {
         Argon2 argon2 = Argon2Factory.create();
         String hashedPassword = argon2.hash(10, 65536, 1, password);
@@ -126,6 +149,15 @@ public class UserDAO implements IUserDAO{
         }
     }
 
+    /**
+     * @Author Simon
+     * Compare a password, to that user's hashed password in the DB.
+     * This is for user-validation.
+     * @param id
+     * @param password
+     * @return boolean: whether successful or not.
+     * @throws DALException
+     */
     public boolean checkHash(int id, String password) throws DALException{
         Argon2 argon2 = Argon2Factory.create();
 

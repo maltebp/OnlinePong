@@ -11,6 +11,12 @@ public class UserController implements IUserController{
 
     private IUserDAO UserDAO = new UserDAO();
 
+    /**
+     * @Author Simon, Claes
+     * calls 'getDBUser' to send a IUserDTO to the API.
+     * @param id The Id of the User we desire userdata from
+     * @return IUserDTO:
+     */
     @Override
     public IUserDTO convertUser(int id) {
         IUserDTO user = new UserDTO(4, "this didn't work");
@@ -61,6 +67,14 @@ public class UserController implements IUserController{
         }
     }
 
+    /**
+     * @Author Simon
+     * Calls 'chechHash' to compare password, with the saved and hashed password.
+     * This is for user-validation.
+     * @param id
+     * @param password
+     * @return boolean: whether the password is correct.
+     */
     public boolean userValidation(int id, String password){
         try{
             boolean result = UserDAO.checkHash(id, password);

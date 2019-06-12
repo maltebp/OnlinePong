@@ -3,7 +3,7 @@ package API.DataLayer;
 import java.util.ArrayList;
 
 public interface IUserDTO {
-    /**@author Claes and Andreas
+    /**@author Claes and Simon
      * this class is an object that carries data between processes.
      * it Encapsulates data while it is being transfered
      * between two subsystems(Databse and api in this case)

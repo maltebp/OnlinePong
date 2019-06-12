@@ -3,7 +3,7 @@ package API.Controller;
 import API.DataLayer.IUserDTO;
 
 public interface IUserController {
-    /** @author Claes
+    /** @author Claes and Simon
      *  The purpose of this class is error handeling,
      *  and as a controller it is naturally the thing responsable for
      *  the communication between 'view'part(the part that the User of the API sees) and

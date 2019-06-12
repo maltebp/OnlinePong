@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * @author claes
+ * @author Claes, Simon
  * ======================================================
  *          IF(YOU ARE A USER){WELCOME!!!!}
  * ======================================================
@@ -58,6 +58,13 @@ public class UserService {
         return user;
     }
 
+    /**
+     * @Author Simon, Claes
+     * This adds a new score for a user (w/ 'id')
+     * @param id
+     * @param score
+     * @return String: whether successful or not.
+     */
     @Path("/{id}/{score}")
     @GET
     @Produces("text/HTML")
@@ -67,6 +74,13 @@ public class UserService {
         return returnStatement;
     }
 
+    /**
+     * @Author Simon, Claes
+     * Creates a user.
+     * @param username
+     * @param password
+     * @return String: whether successful or not.
+     */
     @Path("/createUser/{username}&{password}")
     @GET
     @Produces("text/HTML")
@@ -76,7 +90,13 @@ public class UserService {
         return returnStatement;
     }
 
-
+    /**
+     * @Author Simon
+     * compares given password with the user's hashed database-password.
+     * @param id
+     * @param password
+     * @return String: whether the password was correct or not.
+     */
     @Path("/checkUser/{id}&{password}")
     @GET
     @Produces("text/HTML")
