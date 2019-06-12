@@ -23,7 +23,7 @@ public class API {
         }
     }
 
-
+//TODO Lukke, forbindelsen, hvis at en bruger taster et forkert login.
     @OnMessage
     public void onMessage(Session session, String msg ){
         JSONObject obj = new JSONObject(msg);

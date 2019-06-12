@@ -29,29 +29,30 @@ function createConnection() {
     }
 }
 
-
-
-
-
-
-
-
 function decodeEvent(jsonObject){
 
     switch (jsonObject.code) {
+
         case 101: findingGame(jsonObject);
             break;
-        case 103:
 
+        case 102: initializeGame();
+            break;
 
-
+        case 103: break;
+        
+        case 10: console.log(obj);
+            player2Movement(obj.paddle);    //Update the opponent paddle
+            ballMovement(obj.ball);         //Update the ball
+            playerScores(obj.scores);       //Update the scores
+            break;
     }
 
-
-    }
+}
 
 function connection(){
     document.getElementById("messagesFromServer").innerHTML = "You are now connected...";
+    startButton.style.display = 'none';
     whileLoading(true);
 }
 
@@ -71,4 +72,10 @@ function whileLoading(run){
 
         }
     }
+}
+
+function initializeGame(){
+    canvas.style.display = 'inline';
+    setupGame(chosenScore);
+    animate(runGame);
 }
