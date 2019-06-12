@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class GameServer {
 
-    private ArrayList<Player> players = new ArrayList<Player>();
     private Sender sender;
     private GameController gameController;
     private MessageCreator messageCreator = new MessageCreator();
     private Matchmaker matchmaker;
-    private Authenticator authenticator = new Authenticator();
+    private PlayerController playerController;
 
 
     public GameServer(Sender sender){
         this.sender = sender;
+        playerController = new PlayerController(sender, messageCreator);
         gameController = new GameController(sender, messageCreator);
         matchmaker = new Matchmaker(sender, gameController, messageCreator);
     }
@@ -30,33 +30,22 @@ public class GameServer {
 
                 // Login
                 case 1:
-                    System.out.println("Authentication recieved");
                     String username = msg.getString("username");
                     String password = msg.getString("password");
-                    if( authenticator.authenticatePlayer( username, password)){
-                        if( !usernameExists(username)){
-                            player.setUsername(username);
-                            players.add(player);
-                            matchmaker.addPlayer(player);
-                        }else{
-                            System.out.println("Already logged in");
-                            sender.sendMessage(player, messageCreator.alreadyLoggedIn());
-                        }
-                    }else{
-                        System.out.println("Wrong username password");
-                        sender.sendMessage(player, messageCreator.wrongUsernamePassword());
+                    if( playerController.addPlayer(player, username, password) ){
+                        matchmaker.addPlayer(player);
                     }
                     break;
 
                 // Accept game
                 case 2:
-                    if(checkAuthentication(player))
+                    if(playerController.playerIsAuthenticated(player))
                         matchmaker.playerAcceptsMatch(player);
                     break;
 
                 //
                 case 10:
-                    if( checkAuthentication(player))
+                    if( playerController.playerIsAuthenticated(player))
                         gameController.dataRecieved(player, textMessage);
                     break;
 
@@ -71,31 +60,10 @@ public class GameServer {
     }
 
 
-    private boolean usernameExists(String username){
-        return false;
-        /*for( Player player : players ){
-            if( player.getUsername().equals(username) ){
-                return true;
-            }
-        }
-        return false;*/
-    }
-
-    private boolean checkAuthentication(Player player){
-        if( players.contains(player)){
-            return true;
-        }else{
-            sender.sendMessage(player, messageCreator.notAuthenticated());
-            return false;
-        }
-    }
-
-
     public void removePlayer( Player player ){
         matchmaker.removePlayer(player);
         gameController.removePlayer(player);
-        players.remove(player);
+        playerController.removePlayer(player);
     }
-
 
 }
