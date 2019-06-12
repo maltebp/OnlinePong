@@ -26,6 +26,8 @@ public class Matchmaker extends Thread{
 
     // The frequent between checking if there are any players to be matched
     private static final double MATCHMAKING_FREQ = 3;
+    private static final double MAX_RATING_DIFF = 500;
+    private static final double RATING_DIFF_TIME_FACTOR = 2;
 
     // List of players looking for a match
     private LinkedList<Player> lookingForMatch = new LinkedList<>();
@@ -86,12 +88,32 @@ public class Matchmaker extends Thread{
      * Evaluate if the Player should be matched against any of the possible
      * opponents.
      *
-     * @param timeWaited The time period (minutes) the Player has waited for a match (NOT IMPLEMENTED)
+     * @param timeWaited The time period (seconds) the Player has waited for a match (NOT IMPLEMENTED)
      * @param opponents A list of possible opponents for the Player
      */
-    private Player findMatch(Player player, int timeWaited, List<Player> opponents){
-        if( !opponents.isEmpty() ) return opponents.get(0);
-        return null;
+    private Player findMatch(Player player, int timeWaited, List<Player> opponents) {
+        double playerRating = player.getRating();
+        double allowedRatingDiff = timeWaited * RATING_DIFF_TIME_FACTOR;
+
+        // Adjusting difference to limit
+        allowedRatingDiff = (allowedRatingDiff > MAX_RATING_DIFF) ? MAX_RATING_DIFF : allowedRatingDiff;
+
+        Player bestOpponent = null;
+        double bestOpponentRatingDiff = -1;
+        double ratingDiff;
+        double opponentRating;
+
+        for (Player opponent : opponents) {
+            opponentRating = opponent.getRating();
+            ratingDiff = (opponentRating > playerRating) ? opponentRating - playerRating : playerRating - opponentRating;
+
+            if (ratingDiff < allowedRatingDiff && (bestOpponentRatingDiff == -1 || bestOpponentRatingDiff > opponentRating)) {
+                bestOpponent = opponent;
+                bestOpponentRatingDiff = opponentRating;
+            }
+        }
+
+        return bestOpponent;
     }
 
 
