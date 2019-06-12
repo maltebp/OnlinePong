@@ -2,9 +2,10 @@ package gameserver;
 
 public class Authenticator {
 
+    public Authenticator(){
+    }
 
-
-    public static boolean authenticateUser(String username, String password){
-        return true;
+    public boolean authenticatePlayer(String username, String password){
+        return false;
     }
 }

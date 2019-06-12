@@ -30,6 +30,10 @@ public class MessageCreator {
     }
 
 
+    public String wrongMessageFormat(){
+        return wrongMessageFormat("");
+    }
+
     public String wrongMessageFormat(String optionalMessage){
         JSONObject msg = getCodeMsg(204);
         if(optionalMessage != null && optionalMessage.equals("") ){
@@ -43,4 +47,13 @@ public class MessageCreator {
     }
 
 
+    public String opponentDisconnected(){
+        JSONObject msg = getCodeMsg(210);
+        return msg.toString();
+    }
+
+    public String notAuthenticated() {
+        JSONObject msg = getCodeMsg(205);
+        return msg.toString();
+    }
 }
