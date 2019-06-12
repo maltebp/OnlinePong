@@ -3,8 +3,7 @@ package API.DataLayer;
 
 import java.sql.*;
 
-public class UserDAO implements IUserDAO{
-
+public class UserDAOSQL implements IUserDAO{
 
     /**@author Claes and Simon
      * Creates a connection to the Database.
@@ -13,8 +12,7 @@ public class UserDAO implements IUserDAO{
      * @return
      * @throws SQLException
      */
-    @Override
-    public Connection createConnection() throws SQLException {
+    private Connection createConnection() throws SQLException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
         String dbUsername = "s180943";
         String dbPassword = "UXZTadQzbPrlIosGCZYNF";
@@ -32,7 +30,7 @@ public class UserDAO implements IUserDAO{
      @param id The User, that one wants DB Data from
      */
     @Override
-    public IUserDTO getDBUser(int id) throws DALException {
+    public IUserDTO getUser(int id) throws DALException {
 
         try (Connection con = createConnection()) {
             String query = "SELECT * FROM users WHERE user_id = ?";
@@ -41,7 +39,7 @@ public class UserDAO implements IUserDAO{
             ResultSet set = preparedStatement.executeQuery();
 
             if(set.next()){
-                return makeUser(set);
+                return createUserDTO(set);
             }
             return null;
         } catch (SQLException e) {
@@ -55,17 +53,19 @@ public class UserDAO implements IUserDAO{
      * To a local object, which make the Data easier to Access in this local code
      @param set - The set of SQL data you want made into a local object.
       * */
-    @Override
-    public IUserDTO makeUser(ResultSet set) throws SQLException {
-        IUserDTO user = new UserDTO();
-        user.setUserId(set.getInt("user_id"));
-        user.setUsername(set.getString("username"));
-        user.setPassword(set.getString("password"));
-        return user;
+    private IUserDTO createUserDTO(ResultSet set) throws DALException {
+        try {
+            IUserDTO user = new UserDTO();
+            user.setUserId(set.getInt("user_id"));
+            user.setUsername(set.getString("username"));
+            user.setPassword(set.getString("password"));
+            return user;
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
     }
 
-    public IUserDTO getDBScore(IUserDTO user) throws SQLException{
-
+    public IUserDTO getScore(IUserDTO user) throws DALException{
         try (Connection con = createConnection()) {
 
             String query = "SELECT * FROM score WHERE user_id = ?";
@@ -79,13 +79,11 @@ public class UserDAO implements IUserDAO{
             return user;
 
         }catch(SQLException e){
-            e.getMessage();
-            return null;
-            }
+            throw new DALException("Error in retrieving updated score: " + e.getMessage());
+        }
     }
 
-    public String newScore(int id, int score) throws SQLException {
-
+    public String newScore(int id, int score) throws DALException {
         try (Connection con = createConnection()) {
 
             String query = "INSERT INTO score VALUES(?,?)";
@@ -95,24 +93,21 @@ public class UserDAO implements IUserDAO{
             preparedStatement.execute();
             return "It was added, much wow";
         } catch (SQLException e) {
-            e.getMessage();
-            return "There was an error: " + e.getMessage();
+            throw new DALException("There was an error: " + e.getMessage());
         }
     }
 
-    public String createUser(String username, String password) throws SQLException {
+    public String createUser(String username, String password) throws DALException {
         try (Connection con = createConnection()) {
-
             //user_id is on AUTO_INREMENT.
             String query = "INSERT INTO users (username, password) VALUES(?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.execute();
-            return"It was added, much wow";
+            return "It was added, much wow";
         }catch(SQLException e){
-            e.getMessage();
-            return "There was an error: " + e.getMessage();
+            throw new DALException("There was an error: " + e.getMessage());
         }
     }
 }

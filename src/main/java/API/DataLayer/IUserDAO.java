@@ -1,29 +1,55 @@
 package API.DataLayer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+/**
+ * The purpose of this class is being able to access the UserData.
+ * As is also stated in the name Data Access Object (DAO)
+ *
+ * @Author Claes
+ *
+ */
 public interface IUserDAO {
-    /**@author Claes
-     * The purpose of this class is being able to access the UserData.
-     * As is also stated in the name Data Access Object (DAO)
-     * @return Userdata
-     * @throws SQLException
+
+    /**
+     *  Search for a user by it's ID
+     *
+     * @param id    The ID of the user
+     * @return      User object
+     * @throws DALException
      */
+    IUserDTO getUser(int id) throws DALException;
 
-    Connection createConnection() throws SQLException;
+    /**
+     *  Retrieves an User object with updated score from database
+     *
+     * @param user  User object
+     * @return      User object
+     * @throws DALException
+     */
+    IUserDTO getScore(IUserDTO user) throws DALException;
 
-    IUserDTO getDBUser(int id) throws DALException;
+    /**
+     * //FixMe (KNA) Spørgsmål: Skal det her være elo eller win/loss? Sidstnævnte kræver 2 værdier
+     *
+     * @param id        ID of User
+     * @param score
+     * @return          String confirmation
+     * @throws DALException
+     */
+    String newScore(int id, int score) throws DALException;
 
-    IUserDTO makeUser(ResultSet set) throws SQLException;
+    /**
+     * Inserts a user into the database
+     *
+     * @param username      Users username
+     * @param password      Users password
+     * @return              String confirmation
+     * @throws DALException
+     */
+    String createUser(String username, String password) throws DALException;
 
-    IUserDTO getDBScore(IUserDTO user) throws SQLException;
-
-    String newScore(int id, int score)throws SQLException;
-
-    String createUser(String username, String password) throws SQLException;
-
+    /**
+     * Customizable exception for explaining Database Access Layer exceptions
+     */
     class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;
