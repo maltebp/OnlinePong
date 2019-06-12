@@ -106,10 +106,9 @@ public class UserDAO implements IUserDAO{
 
     public String createUser(String username, String password) throws SQLException {
         Argon2 argon2 = Argon2Factory.create();
-        String hashedPassword = argon2.hash(1,2,3, password);
+        String hashedPassword = argon2.hash(10, 65536, 1, password);
 
         try (Connection con = createConnection()) {
-
 
             //user_id is on AUTO_INCREMENT.
             String query = "INSERT INTO users (username, password) VALUES(?,?)";
@@ -117,16 +116,15 @@ public class UserDAO implements IUserDAO{
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, hashedPassword);
             preparedStatement.execute();
-            return"It was added, much wow";
+            return"User has been added.";
         }catch(SQLException e){
             e.getMessage();
             return "There was an error: " + e.getMessage();
         }
-
     }
+
     public boolean checkHash(int id, String password) throws SQLException{
         Argon2 argon2 = Argon2Factory.create();
-        String hashedPass = argon2.hash(1,2,3, password);
 
         try (Connection con = createConnection()) {
             String query = "SELECT password FROM users WHERE user_id = ?";
@@ -135,11 +133,10 @@ public class UserDAO implements IUserDAO{
             ResultSet set = preparedStatement.executeQuery();
 
             if(set.next()){
-                String dbPass = set.getString(1);
-                if(dbPass.equals(hashedPass)){
+                String dbPass = set.getString("password");
+                if(argon2.verify(dbPass, password));
                     return true;
                 }
-            }
         }catch(SQLException e){
             e.getMessage();
             return false;
