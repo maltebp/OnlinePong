@@ -26,7 +26,7 @@ making sure that the padding stays inside of the box and that it does not break 
     color: rgb(240, 238, 238);
     text-align:left;
 }
-
+/*-----    This specifies the style of the upper middle box with registration information    -----*/
 .upperMiddleBox {
     margin: 0;
     width: 100%;
@@ -42,10 +42,9 @@ making sure that the padding stays inside of the box and that it does not break 
     text-align: center;
     background-color: #b9b3b3;
 }
-
+/*-----    This specifes the style of the text above the registration boxes    -----*/
 .textForRegister {
-
-
+    //TODO implement this
 }
 /*-----    This will clear the floats in the documents body after the columns are done    -----*/
 body::after {
