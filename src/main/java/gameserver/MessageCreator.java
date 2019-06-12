@@ -7,6 +7,7 @@ public class MessageCreator {
     private JSONObject getCodeMsg(int code){
         JSONObject msg = new JSONObject();
         msg.put("code", code);
+        System.out.println(msg.toString());
         return msg;
     }
 
@@ -14,7 +15,7 @@ public class MessageCreator {
         JSONObject msg = getCodeMsg(103);
 
         msg.put( "initUpdate", (initUpdate) ? 1 : 0 );
-
+        System.out.println(msg.toString());
         return msg.toString();
     }
 

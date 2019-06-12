@@ -4,6 +4,8 @@ import javax.websocket.*;
 import javax.websocket.server.*;
 import org.json.*;
 
+import java.io.IOException;
+
 @ServerEndpoint("/communication")
 public class API {
 
@@ -13,7 +15,12 @@ public class API {
 
     @OnOpen
     public void onOpen(Session session ){
-        System.out.println("Recieved open request");
+        try {
+            session.getBasicRemote().sendText("A connection has been made");
+            System.out.println("Recieved open request");
+        }catch(IOException e){
+            e.getMessage();
+        }
     }
 
 
