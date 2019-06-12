@@ -13,7 +13,7 @@ public class UserDAOArray implements IUserDAO {
     ArrayList<IUserDTO> userList = createArray();
 
     /**
-     * Creates an ArrayList with 10 UserDTO objects
+     * Creates an ArrayList with 10 UserDTO model
      *
      * @return  ArrayList of 10 UserDTO
      */

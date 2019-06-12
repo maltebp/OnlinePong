@@ -3,8 +3,8 @@
  *
  * @Author Kristian Andersen and Jacob Riis
  */
-//Game objects:
-var player1, player2, ball;                     //Paddle and Ball objects are created in setupGame(...)
+//Game model:
+var player1, player2, ball;                     //Paddle and Ball model are created in setupGame(...)
 
 //Variables
 var keysDown = {83: false, 87: false};                  //Keys 'S' and 'W', which respectively makes the paddle go 'down' or 'up'

@@ -1,4 +1,4 @@
-package gameserver;
+package gameserver.model;
 
 public class Player {
 

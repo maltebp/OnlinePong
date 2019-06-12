@@ -1,4 +1,4 @@
-package gameserver;
+package gameserver.view.websocket;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;

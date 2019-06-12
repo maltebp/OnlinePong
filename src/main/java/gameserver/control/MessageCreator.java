@@ -1,4 +1,4 @@
-package gameserver;
+package gameserver.control;
 
 import org.json.JSONObject;
 

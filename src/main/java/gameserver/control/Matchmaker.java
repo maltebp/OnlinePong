@@ -1,5 +1,9 @@
-package gameserver;
+package gameserver.control;
 
+
+import gameserver.model.Game;
+import gameserver.model.Player;
+import gameserver.view.Sender;
 
 import java.util.HashMap;
 import java.util.LinkedList;

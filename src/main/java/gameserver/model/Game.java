@@ -1,4 +1,4 @@
-package gameserver;
+package gameserver.model;
 
 public class Game {
 
@@ -49,11 +49,6 @@ public class Game {
         }
     }
 
-    enum GameState{
-        ACCEPT_PENDING,
-        STARTED
-    }
-
     public GameState getState() {
         return state;
     }
@@ -61,6 +56,12 @@ public class Game {
     // TODO: Consider removing this
     public void setState(GameState state) {
         this.state = state;
+    }
+
+
+    public enum GameState{
+        ACCEPT_PENDING,
+        STARTED
     }
 
 }

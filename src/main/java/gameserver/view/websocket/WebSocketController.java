@@ -1,4 +1,8 @@
-package gameserver;
+package gameserver.view.websocket;
+
+import gameserver.control.GameServer;
+import gameserver.model.Player;
+import gameserver.control.Sender;
 
 import javax.websocket.Session;
 import java.util.HashMap;

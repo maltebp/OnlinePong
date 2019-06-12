@@ -1,9 +1,9 @@
-package gameserver;
+package gameserver.control;
 
+import gameserver.model.Player;
+import gameserver.view.Sender;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class GameServer {
@@ -22,7 +22,7 @@ public class GameServer {
         matchmaker = new Matchmaker(sender, gameController, messageCreator);
     }
 
-    public void recieveMessage( Player player, String textMessage ){
+    public void recieveMessage(Player player, String textMessage ){
         JSONObject msg = new JSONObject(textMessage);
 
         try {
