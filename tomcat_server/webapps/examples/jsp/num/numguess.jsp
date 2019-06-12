@@ -40,7 +40,7 @@
 
 <% } else if (numguess.getNumGuesses() == 0) { %>
 
-  Welcome to the Number Guess game.<p>
+  Welcome to the Number Guess match.<p>
 
   I'm thinking of a number between 1 and 100.<p>
 

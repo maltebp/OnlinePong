@@ -1,7 +1,7 @@
 package gameserver.control;
 
 
-import gameserver.model.Game;
+import gameserver.model.Match;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 
@@ -16,15 +16,13 @@ public class Matchmaker extends Thread{
     private Sender sender;
 
     private LinkedList<Player> lookingForGame = new LinkedList<>();
-    private GameController gameController;
-    private HashMap<Player, Game> awaitingAccept = new HashMap<>();
-    private MessageCreator messageCreator;
+    private MatchController matchController;
+    private HashMap<Player, Match> awaitingAccept = new HashMap<>();
 ;
 
-    public Matchmaker( Sender sender, GameController gameController, MessageCreator messageCreator){
-        this.gameController = gameController;
+    public Matchmaker(Sender sender, MatchController matchController){
+        this.matchController = matchController;
         this.sender = sender;
-        this.messageCreator = messageCreator; // TODO: Move message creator funcitonality into sender
         start();
     }
 
@@ -32,26 +30,26 @@ public class Matchmaker extends Thread{
     public void run(){
         try {
             while (true) {
-                LinkedList<Game> newGames = new LinkedList<Game>();
+                LinkedList<Match> newMatches = new LinkedList<Match>();
                 LinkedList<Player> remainingPlayers = new LinkedList<>(lookingForGame);
 
                 for (Player player : lookingForGame) {
                     if( remainingPlayers.remove(player) ){
                         Player opponent = findMatch(player, 0, remainingPlayers);
                         if( opponent != null ){
-                            newGames.add( new Game(player, opponent));
+                            newMatches.add( new Match(player, opponent));
                             remainingPlayers.remove(opponent);
                         }
                     }
                 }
 
-                for(Game game : newGames){
-                    lookingForGame.remove(game.getPlayer(1));
-                    lookingForGame.remove(game.getPlayer(2));
-                    awaitingAccept.put(game.getPlayer(1), game);
-                    awaitingAccept.put(game.getPlayer(2), game);
-                    sender.sendMessage(game.getPlayer(0), messageCreator.foundGame());
-                    sender.sendMessage(game.getPlayer(1), messageCreator.foundGame());
+                for(Match match : newMatches){
+                    lookingForGame.remove(match.getPlayer(1));
+                    lookingForGame.remove(match.getPlayer(2));
+                    awaitingAccept.put(match.getPlayer(1), match);
+                    awaitingAccept.put(match.getPlayer(2), match);
+                    sender.sendFoundGame(match.getPlayer(1));
+                    sender.sendFoundGame(match.getPlayer(2));
                 }
 
                 sleep((long) MATCHMAKING_FREQ * 1000);
@@ -69,11 +67,11 @@ public class Matchmaker extends Thread{
     }
 
     public void playerAcceptsMatch(Player player){
-        Game game = awaitingAccept.get(player);
-        if( game != null ){
-            game.playerAccepts(player);
-            if(game.playersAccepted()){
-                gameController.startGame(game);
+        Match match = awaitingAccept.get(player);
+        if( match != null ){
+            match.playerAccepts(player);
+            if(match.playersAccepted()){
+                matchController.startGame(match);
             }
         }else{
             // TODO: Implement error
@@ -82,15 +80,15 @@ public class Matchmaker extends Thread{
 
     public void addPlayer(Player player){
         lookingForGame.add(player);
-        sender.sendMessage(player, messageCreator.findingGame(0));
+        sender.sendFindingGame(player, 0);
     }
 
 
     public void removePlayer(Player player){
         if( !lookingForGame.remove(player) ){
-            Game game = awaitingAccept.remove(player);
-            if( game != null ){
-                Player opponent = game.getOpponent(player);
+            Match match = awaitingAccept.remove(player);
+            if( match != null ){
+                Player opponent = match.getOpponent(player);
                 awaitingAccept.remove(player);
                 awaitingAccept.remove(opponent);
                 addPlayer(opponent);

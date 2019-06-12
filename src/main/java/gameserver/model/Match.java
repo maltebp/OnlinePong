@@ -1,6 +1,6 @@
 package gameserver.model;
 
-public class Game {
+public class Match {
 
     private Player player1;
     private Player player2;
@@ -8,9 +8,9 @@ public class Game {
     private boolean player1Accepted = false;
     private boolean player2Accepted = false;
 
-    private GameState state = GameState.ACCEPT_PENDING;
+    private MatchState state = MatchState.ACCEPT_PENDING;
 
-    public Game(Player player1, Player player2){
+    public Match(Player player1, Player player2){
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -37,29 +37,23 @@ public class Game {
         }
     }
 
+
     public boolean playersAccepted(){
         return player1Accepted && player2Accepted;
     }
 
-    public void removePlayer(Player player) {
-        if( player1 == player){
-            player1 = null;
-        }else{
-            player2 = null;
-        }
-    }
 
-    public GameState getState() {
+    public MatchState getState() {
         return state;
     }
 
     // TODO: Consider removing this
-    public void setState(GameState state) {
+    public void setState(MatchState state) {
         this.state = state;
     }
 
 
-    public enum GameState{
+    public enum MatchState {
         ACCEPT_PENDING,
         STARTED
     }

@@ -2,19 +2,17 @@ package gameserver.control;
 
 import gameserver.model.Player;
 import gameserver.view.Sender;
-
 import java.util.ArrayList;
+
 
 public class PlayerController {
 
     private Sender sender;
-    private MessageCreator messageCreator;
 
     private ArrayList<Player> players = new ArrayList<Player>();
 
-    public PlayerController(Sender sender, MessageCreator messageCreator){
+    public PlayerController(Sender sender){
         this.sender = sender;
-        this.messageCreator = messageCreator;
     }
 
     /**
@@ -29,11 +27,11 @@ public class PlayerController {
                 return false;
             }else{
                 System.out.println("Already logged in");
-                sender.sendMessage(player, messageCreator.alreadyLoggedIn());
+                sender.sendAlreadyLoggedIn(player);
             }
         }else{
             System.out.println("Wrong username password");
-            sender.sendMessage(player, messageCreator.wrongUsernamePassword());
+            sender.sendWrongUsernamePassword(player);
         }
         return false;
     }
@@ -46,7 +44,7 @@ public class PlayerController {
         if( players.contains(player)){
             return true;
         }else{
-            sender.sendMessage(player, messageCreator.notAuthenticated());
+            sender.sendNotAuthenticated(player);
             return false;
         }
     }
@@ -58,6 +56,7 @@ public class PlayerController {
 
     private boolean usernameExists(String username){
         return false;
+        // TODO: Turn this on
         /*for( Player player : players ){
             if( player.getUsername().equals(username) ){
                 return true;

@@ -9,17 +9,16 @@ import org.json.JSONObject;
 public class GameServer {
 
     private Sender sender;
-    private GameController gameController;
-    private MessageCreator messageCreator = new MessageCreator();
+    private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
 
 
     public GameServer(Sender sender){
         this.sender = sender;
-        playerController = new PlayerController(sender, messageCreator);
-        gameController = new GameController(sender, messageCreator);
-        matchmaker = new Matchmaker(sender, gameController, messageCreator);
+        playerController = new PlayerController(sender);
+        matchController = new MatchController(sender);
+        matchmaker = new Matchmaker(sender, matchController);
     }
 
     public void recieveMessage(Player player, String textMessage ){
@@ -46,23 +45,23 @@ public class GameServer {
                 //
                 case 10:
                     if( playerController.playerIsAuthenticated(player))
-                        gameController.dataRecieved(player, textMessage);
+                        matchController.dataRecieved(player, textMessage);
                     break;
 
                 default:
-                    sender.sendMessage(player, messageCreator.wrongMessageFormat("Unknown code"));
+                    sender.sendWrongMessageFormat(player, "Unknown code");
             }
 
         }catch(JSONException exception){
             // Wrong format
-            sender.sendMessage(player, messageCreator.wrongMessageFormat());
+            sender.sendWrongMessageFormat(player);
         }
     }
 
 
     public void removePlayer( Player player ){
         matchmaker.removePlayer(player);
-        gameController.removePlayer(player);
+        matchController.removePlayer(player);
         playerController.removePlayer(player);
     }
 
