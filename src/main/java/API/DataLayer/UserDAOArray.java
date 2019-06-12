@@ -55,6 +55,12 @@ public class UserDAOArray implements IUserDAO {
         return "User is created";
     }
 
+    /**
+     * Search through the ArrayList for User by its ID
+     *
+     * @param id    ID of User
+     * @return      User object
+     */
     private IUserDTO searchUser(int id) {
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getUserId() == i) {
