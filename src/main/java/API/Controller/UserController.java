@@ -5,7 +5,7 @@ import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAO;
 import API.DataLayer.UserDTO;
 
-import java.sql.SQLException;
+import API.DataLayer.IUserDAO.DALException;
 
 public class UserController implements IUserController{
 
@@ -30,7 +30,7 @@ public class UserController implements IUserController{
             IUserDTO newUser = UserDAO.getDBScore(user);
             return newUser;
 
-        }catch(SQLException e){
+        }catch(DALException e){
             user.addScore(-500);
             return user;
         }
@@ -42,7 +42,7 @@ public class UserController implements IUserController{
             String returnMessage = UserDAO.newScore(id, score);
             return returnMessage;
 
-        }catch(SQLException e){
+        }catch(DALException e){
             e.printStackTrace();
             return "Something went wrong, user-score NOT added" + e.getMessage();
         }
@@ -55,7 +55,7 @@ public class UserController implements IUserController{
             String returnMessage = UserDAO.createUser(username, password);
             return returnMessage;
 
-        }catch(SQLException e){
+        }catch(DALException e){
             e.getMessage();
             return "Soemthing went wrong, user NOT added"+e.getMessage();
         }
@@ -65,7 +65,7 @@ public class UserController implements IUserController{
         try{
             boolean result = UserDAO.checkHash(id, password);
             return result;
-        }catch(SQLException e){
+        }catch(DALException e){
             e.getMessage();
             return false;
         }

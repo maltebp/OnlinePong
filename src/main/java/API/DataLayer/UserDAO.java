@@ -18,7 +18,7 @@ public class UserDAO implements IUserDAO{
      * @throws SQLException
      */
     @Override
-    public Connection createConnection() throws SQLException {
+    public Connection createConnection() throws DALException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
         String dbUsername = "s180943";
         String dbPassword = "UXZTadQzbPrlIosGCZYNF";
@@ -27,6 +27,9 @@ public class UserDAO implements IUserDAO{
             return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         }catch(ClassNotFoundException e){
             e.getMessage();
+        }
+        catch (SQLException e){
+            throw new DALException(e.getMessage());
         }
         return null;
     }
@@ -49,7 +52,6 @@ public class UserDAO implements IUserDAO{
             }
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DALException(e.getMessage());
         }
     }
@@ -60,15 +62,19 @@ public class UserDAO implements IUserDAO{
      @param set - The set of SQL data you want made into a local object.
       * */
     @Override
-    public IUserDTO makeUser(ResultSet set) throws SQLException {
-        IUserDTO user = new UserDTO();
-        user.setUserId(set.getInt("user_id"));
-        user.setUsername(set.getString("username"));
-        user.setPassword(set.getString("password"));
-        return user;
+    public IUserDTO makeUser(ResultSet set) throws DALException {
+        try {
+            IUserDTO user = new UserDTO();
+            user.setUserId(set.getInt("user_id"));
+            user.setUsername(set.getString("username"));
+            user.setPassword(set.getString("password"));
+            return user;
+        }catch(SQLException e){
+            throw new DALException(e.getMessage());
+        }
     }
 
-    public IUserDTO getDBScore(IUserDTO user) throws SQLException{
+    public IUserDTO getDBScore(IUserDTO user) throws DALException{
 
         try (Connection con = createConnection()) {
 
@@ -83,12 +89,11 @@ public class UserDAO implements IUserDAO{
             return user;
 
         }catch(SQLException e){
-            e.getMessage();
-            return null;
+            throw new DALException(e.getMessage());
             }
     }
 
-    public String newScore(int id, int score) throws SQLException {
+    public String newScore(int id, int score) throws DALException{
 
         try (Connection con = createConnection()) {
 
@@ -99,12 +104,11 @@ public class UserDAO implements IUserDAO{
             preparedStatement.execute();
             return "It was added, much wow";
         } catch (SQLException e) {
-            e.getMessage();
-            return "There was an error: " + e.getMessage();
+            throw new DALException("There was an error: " + e.getMessage());
         }
     }
 
-    public String createUser(String username, String password) throws SQLException {
+    public String createUser(String username, String password) throws DALException {
         Argon2 argon2 = Argon2Factory.create();
         String hashedPassword = argon2.hash(10, 65536, 1, password);
 
@@ -118,12 +122,11 @@ public class UserDAO implements IUserDAO{
             preparedStatement.execute();
             return"User has been added.";
         }catch(SQLException e){
-            e.getMessage();
-            return "There was an error: " + e.getMessage();
+            throw new DALException("There was an error: " +e.getMessage());
         }
     }
 
-    public boolean checkHash(int id, String password) throws SQLException{
+    public boolean checkHash(int id, String password) throws DALException{
         Argon2 argon2 = Argon2Factory.create();
 
         try (Connection con = createConnection()) {
@@ -138,8 +141,7 @@ public class UserDAO implements IUserDAO{
                     return true;
                 }
         }catch(SQLException e){
-            e.getMessage();
-            return false;
+            throw new DALException(e.getMessage());
         }
         return false;
     }

@@ -12,19 +12,19 @@ public interface IUserDAO {
      * @throws SQLException
      */
 
-    Connection createConnection() throws SQLException;
+    Connection createConnection() throws DALException;
 
     IUserDTO getDBUser(int id) throws DALException;
 
-    IUserDTO makeUser(ResultSet set) throws SQLException;
+    IUserDTO makeUser(ResultSet set) throws DALException;
 
-    IUserDTO getDBScore(IUserDTO user) throws SQLException;
+    IUserDTO getDBScore(IUserDTO user) throws DALException;
 
-    String newScore(int id, int score)throws SQLException;
+    String newScore(int id, int score)throws DALException;
 
-    String createUser(String username, String password) throws SQLException;
+    String createUser(String username, String password) throws DALException;
 
-    boolean checkHash(int id, String password) throws SQLException;
+    boolean checkHash(int id, String password) throws DALException;
 
     class DALException extends Exception {
 
