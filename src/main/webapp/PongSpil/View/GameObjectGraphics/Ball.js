@@ -32,14 +32,14 @@ Ball.prototype.update = function(paddle1, paddle2) {
     this.y = this.y + this.y_speed;
 
     var ball_left = this.x - 5;
-    var ball_bottom = this.y - 5;
     var ball_right = this.x + 5;
-    var ball_top = this.y + 5;
+    var ball_bottom = this.y + 5;
+    var ball_top = this.y - 5;
 
-    if(ball_bottom <= 0) { //Has hit the bottom wall
+    if(ball_top <= 0) { //Has hit the top wall
         this.y_speed = -this.y_speed;
     }
-    else if(ball_top >= 400) { //Has hit the top wall
+    else if(ball_bottom >= 400) { //Has hit the bottom wall
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { //Goal
@@ -58,18 +58,17 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
     var newYSpeed; //Temporary holder for y_speed for calculations
     if(ball_right > 500) {  //Controls for player two when it is in his vicinity
-        if(ball_right >= paddle2.x && (ball_bottom + ball.radius / 2) < (paddle2.y + paddle2.height) &&
-            (ball_top - ball.radius / 2) > paddle2.y) { //Has hit player 2´s paddle
+        if(ball_right >= paddle2.x && (ball_bottom - ball.radius / 2) < (paddle2.y) &&
+            (ball_top + ball.radius / 2) > paddle2.y + paddle2.height) { //Has hit player 2´s paddle
 
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
             this.y_speed = (Math.abs(newYSpeed) > (this.speed - 1)) ? this.y_speed : newYSpeed;
             this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
-
         }
     } else if (ball_left < 200) { //Controls for player one when it is in his vicinity
-        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom + ball.radius / 2) < (paddle1.y + paddle1.height) &&
-            (ball_top - ball.radius / 2) > paddle1.y) { //Has hit player 1´s paddle
+        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom - ball.radius / 2) < (paddle1.y) &&
+            (ball_top + ball.radius / 2) > paddle1.y + paddle1.height) { //Has hit player 1´s paddle
 
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle1.y_speed / 2);

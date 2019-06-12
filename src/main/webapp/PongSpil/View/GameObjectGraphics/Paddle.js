@@ -27,10 +27,10 @@ function Paddle(x,y,width,height) {
  */
 Paddle.prototype.move = function(y_speed) {
     this.y += y_speed;
-    if(this.y < 0) { //All the way to bottom
+    if(this.y < 0) { //All the way to top
         this.y = 0;
         this.y_speed = 0;
-    } else if(this.y + this.height > 400) { //All the way to the top
+    } else if(this.y + this.height > 400) { //All the way to the bottom
         this.y = 400 - this.height;
         this.y_speed = 0;
     }

@@ -30,7 +30,7 @@ function initialize(chosenScore) {
         else if (obj.code === 102){
             console.log("Success 2 " + event.data);
 
-            startBtn.style.display = 'none';
+            startButton.style.display = 'none';
             canvas.style.display = 'inline';
             setupGame(chosenScore);
             animate(runGame);

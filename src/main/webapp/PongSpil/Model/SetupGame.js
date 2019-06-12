@@ -36,5 +36,5 @@ var runGame = function() {
 var endGame = function() {
     gameRunning = false;
     canvas.style.display = 'none';
-    startBtn.style.display = 'inline';
+    startButton.style.display = 'inline';
 };
