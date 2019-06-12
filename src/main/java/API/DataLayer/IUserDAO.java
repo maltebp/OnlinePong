@@ -4,13 +4,13 @@ package API.DataLayer;
  * The purpose of this class is being able to access the UserData.
  * As is also stated in the name Data Access Object (DAO)
  *
- * @Author Claes
+ * @author Claes and Simon
  *
  */
 public interface IUserDAO {
 
     /**
-     *  Search for a user by it's ID
+     * Retrieves a user by ID
      *
      * @param id    The ID of the user
      * @return      User object
@@ -19,7 +19,7 @@ public interface IUserDAO {
     IUserDTO getUser(int id) throws DALException;
 
     /**
-     *  Retrieves an User object with the latest score from database
+     * Retrieves an User object with the latest score from database
      *
      * @param user  User object
      * @return      User object

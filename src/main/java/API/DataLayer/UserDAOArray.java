@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Class to act as database, by using a local ArrayList
+ * FixMe Has not hashing implemented
+ *
+ * @author Andreas and Kristian
  */
 public class UserDAOArray implements IUserDAO {
 
@@ -73,5 +76,10 @@ public class UserDAOArray implements IUserDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean checkHash(int id, String password) {
+        return true;
     }
 }

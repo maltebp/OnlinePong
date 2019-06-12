@@ -7,14 +7,21 @@ import de.mkammerer.argon2.Argon2Factory;
 
 import java.sql.*;
 
+/**
+ * Communication to SQL database
+ *
+ * @author Claes and Simon
+ */
 public class UserDAOSQL implements IUserDAO{
 
-    /**@author Claes and Simon
-     * Creates a connection to the Database.
+    /**Creates a connection to the Database.
      * It is inside a try/catch statment to assure we do not leave open connections.
      * NOTE: "com.mysql.jdbc.Driver" selects the driver for TomCat to use to connect to mySQL server.
      * @return
      * @throws SQLException
+     *
+     * @author Claes and Simon
+     *
      */
     private Connection createConnection() throws SQLException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
@@ -29,13 +36,8 @@ public class UserDAOSQL implements IUserDAO{
         return null;
     }
 
-    /**@author Claes
-     * This function gets User Data From the Database
-     @param id The User, that one wants DB Data from
-     */
     @Override
     public IUserDTO getUser(int id) throws DALException {
-
         try (Connection con = createConnection()) {
             String query = "SELECT * FROM users WHERE user_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -57,13 +59,11 @@ public class UserDAOSQL implements IUserDAO{
      @param set - The set of SQL data you want made into a local object.
       * */
     private IUserDTO createUserDTO(ResultSet set) throws SQLException {
-        try {
             IUserDTO user = new UserDTO();
             user.setUserId(set.getInt("user_id"));
             user.setUsername(set.getString("username"));
             user.setPassword(set.getString("password"));
             return user;
-        }
     }
 
     public IUserDTO getScore(IUserDTO user) throws DALException{
@@ -127,15 +127,11 @@ public class UserDAOSQL implements IUserDAO{
 
             if(set.next()){
                 String dbPass = set.getString("password");
-                if(argon2.verify(dbPass, password));
-                    return true;
-                }
+                return (argon2.verify(dbPass, password));
+            }
+            return false;
         }catch(SQLException e){
             throw new DALException(e.getMessage());
         }
-        return false;
     }
 }
-
-
-
