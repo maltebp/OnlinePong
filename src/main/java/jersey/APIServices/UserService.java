@@ -3,6 +3,8 @@ package jersey.APIServices;
 import API.Controller.IUserController;
 import API.Controller.UserController;
 import API.DataLayer.IUserDTO;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -72,5 +74,19 @@ public class UserService {
         IUserController userController = new UserController();
         String returnStatement = userController.createUser(username, password);
         return returnStatement;
+    }
+
+
+    @Path("/checkUser/{id}&{password}")
+    @GET
+    @Produces("text/HTML")
+    public String userValidation(@PathParam("id") int id, @PathParam("password") String password){
+
+        IUserController userController = new UserController();
+        boolean result = userController.userValidation(id, password);
+        if(result == true)
+            return "Access Granted";
+        else
+            return "Access Denied";
     }
 }
