@@ -10,19 +10,20 @@ function isSamePasswords() {
 }
 
 $('#form').on('submit', function(event){
+    window.alert("submit btn called");
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
-
-        $.ajax({
-            type: 'POST',
-            url: url + 'createUser/', //Hvad skal der stå her?
-            dataType: 'json',
-            data: JSON.stringify(userObj),
-            contentType: 'application/json',
-            success: function(data) {
-                alert(data) //Skal lige gøres sådan som vi vil have det
-            }
-        });
+        window.alert(userObj);
+        // $.ajax({
+        //     type: 'POST',
+        //     url: url + 'createUser', //Hvad skal der stå her?
+        //     dataType: 'json',
+        //     data: JSON.stringify(userObj),
+        //     contentType: 'application/json',
+        //     success: function(data) {
+        //         alert(data) //Skal lige gøres sådan som vi vil have det
+        //     }
+        // });
 
         return false;
     }
