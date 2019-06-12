@@ -47,10 +47,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
         if (this.x < 0){
             player2.score.goal();
             this.x_speed = this.speed; //Reverts the ball's direction
-        } else if (this.x > 700) {
+        }
+        /*else if (this.x > 700) {
             player1.score.goal();
             this.x_speed = -this.speed; //Reverts the ball's direction
-        }
+        }*/
         this.y_speed = 0;
         this.x = width/2;
         this.y = 200;
@@ -58,8 +59,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
     var newYSpeed; //Temporary holder for y_speed for calculations
     if(ball_right > 500) {  //Controls for player two when it is in his vicinity
-        if(ball_right >= paddle2.x && (ball_bottom - ball.radius / 2) < (paddle2.y) &&
-            (ball_top + ball.radius / 2) > paddle2.y + paddle2.height) { //Has hit player 2´s paddle
+        if(ball_right >= paddle2.x && (ball_bottom - ball.radius / 2) > (paddle2.y) &&
+            (ball_top + ball.radius / 2) < paddle2.y + paddle2.height) { //Has hit player 2´s paddle
 
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle2.y_speed / 2);
@@ -67,8 +68,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
             this.x_speed = -(Math.sqrt(Math.pow(this.speed, 2) - Math.pow(this.y_speed, 2)));
         }
     } else if (ball_left < 200) { //Controls for player one when it is in his vicinity
-        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom - ball.radius / 2) < (paddle1.y) &&
-            (ball_top + ball.radius / 2) > paddle1.y + paddle1.height) { //Has hit player 1´s paddle
+        if(ball_left <= (paddle1.x + paddle1.width) && (ball_bottom - ball.radius / 2) > (paddle1.y) &&
+            (ball_top + ball.radius / 2) < paddle1.y + paddle1.height) { //Has hit player 1´s paddle
 
             this.speed += this.incrementSpeed;
             newYSpeed = this.y_speed + (paddle1.y_speed / 2);

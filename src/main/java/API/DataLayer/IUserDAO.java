@@ -19,7 +19,7 @@ public interface IUserDAO {
     IUserDTO getUser(int id) throws DALException;
 
     /**
-     *  Retrieves an User object with updated score from database
+     *  Retrieves an User object with the latest score from database
      *
      * @param user  User object
      * @return      User object
@@ -46,6 +46,16 @@ public interface IUserDAO {
      * @throws DALException
      */
     String createUser(String username, String password) throws DALException;
+
+    /**
+     * Controls the password is correct through hashing
+     *
+     * @param id        ID of User
+     * @param password  Password of User
+     * @return          True if password is correct, else false
+     * @throws DALException
+     */
+    boolean checkHash(int id, String password) throws DALException;
 
     /**
      * Customizable exception for explaining Database Access Layer exceptions

@@ -19,4 +19,6 @@ public interface IUserController {
     String checkScore(int id, int score);
 
     String createUser(String username, String password);
+
+    boolean userValidation(int id, String password);
 }

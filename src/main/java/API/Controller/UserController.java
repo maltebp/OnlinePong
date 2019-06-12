@@ -22,7 +22,7 @@ public class UserController implements IUserController{
 
         }catch(IUserDAO.DALException e){
             e.getMessage();
-            //FixMe WARING: BAD PRACTICE: [nice to have:] make this error statement say something about what went wrong.
+            //FixMe WARNING: BAD PRACTICE: [nice to have:] make this error statement say something about what went wrong.
             user = new UserDTO(-1, "Something went wrong");
         }
         try {
@@ -57,6 +57,16 @@ public class UserController implements IUserController{
         }catch(DALException e){
             e.getMessage();
             return "Soemthing went wrong, user NOT added"+e.getMessage();
+        }
+    }
+
+    public boolean userValidation(int id, String password){
+        try{
+            boolean result = UserDAO.checkHash(id, password);
+            return result;
+        }catch(DALException e){
+            e.getMessage();
+            return false;
         }
     }
 }
