@@ -2,20 +2,19 @@ package API.Controller;
 
 import API.DataLayer.IUserDAO;
 import API.DataLayer.IUserDTO;
-import API.DataLayer.UserDAO;
+import API.DataLayer.UserDAOSQL;
 import API.DataLayer.UserDTO;
-
 import API.DataLayer.IUserDAO.DALException;
 
 public class UserController implements IUserController{
 
-    private IUserDAO UserDAO = new UserDAO();
+    private IUserDAO UserDAO = new UserDAOSQL();
 
     @Override
     public IUserDTO convertUser(int id) {
         IUserDTO user = new UserDTO(4, "this didn't work");
         try{
-            user = UserDAO.getDBUser(id);
+            user = UserDAO.getUser(id);
             if(user == null){
                 user = new UserDTO();
                 user.setUsername("no user");
@@ -23,11 +22,11 @@ public class UserController implements IUserController{
 
         }catch(IUserDAO.DALException e){
             e.getMessage();
-            //WARING: BAD PRATICE: [nice to have:] make this error statement say something about what went wrong.
+            //FixMe WARNING: BAD PRACTICE: [nice to have:] make this error statement say something about what went wrong.
             user = new UserDTO(-1, "Something went wrong");
         }
         try {
-            IUserDTO newUser = UserDAO.getDBScore(user);
+            IUserDTO newUser = UserDAO.getScore(user);
             return newUser;
 
         }catch(DALException e){
@@ -35,8 +34,8 @@ public class UserController implements IUserController{
             return user;
         }
     }
-    //possible issues with error-handling here.
-    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAO level).
+    //FixMe possible issues with error-handling here.
+    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
     public String checkScore(int id, int score){
         try{
             String returnMessage = UserDAO.newScore(id, score);
@@ -48,8 +47,8 @@ public class UserController implements IUserController{
         }
     }
 
-    //possible issues with error-handling here.
-    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAO level).
+    //FixMe possible issues with error-handling here.
+    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
     public String createUser(String username, String password){
         try{
             String returnMessage = UserDAO.createUser(username, password);

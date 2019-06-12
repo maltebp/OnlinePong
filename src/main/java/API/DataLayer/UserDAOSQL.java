@@ -7,18 +7,23 @@ import de.mkammerer.argon2.Argon2Factory;
 
 import java.sql.*;
 
-public class UserDAO implements IUserDAO{
+/**
+ * Communication to SQL database
+ *
+ * @author Claes and Simon
+ */
+public class UserDAOSQL implements IUserDAO{
 
-
-    /**@author Claes and Simon
-     * Creates a connection to the Database.
+    /**Creates a connection to the Database.
      * It is inside a try/catch statment to assure we do not leave open connections.
      * NOTE: "com.mysql.jdbc.Driver" selects the driver for TomCat to use to connect to mySQL server.
      * @return
      * @throws SQLException
+     *
+     * @author Claes and Simon
+     *
      */
-    @Override
-    public Connection createConnection() throws DALException {
+    private Connection createConnection() throws SQLException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
         String dbUsername = "s180943";
         String dbPassword = "UXZTadQzbPrlIosGCZYNF";
@@ -28,19 +33,11 @@ public class UserDAO implements IUserDAO{
         }catch(ClassNotFoundException e){
             e.getMessage();
         }
-        catch (SQLException e){
-            throw new DALException(e.getMessage());
-        }
         return null;
     }
 
-    /**@author Claes
-     * This function gets User Data From the Database
-     @param id The User, that one wants DB Data from
-     */
     @Override
-    public IUserDTO getDBUser(int id) throws DALException {
-
+    public IUserDTO getUser(int id) throws DALException {
         try (Connection con = createConnection()) {
             String query = "SELECT * FROM users WHERE user_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -48,7 +45,7 @@ public class UserDAO implements IUserDAO{
             ResultSet set = preparedStatement.executeQuery();
 
             if(set.next()){
-                return makeUser(set);
+                return createUserDTO(set);
             }
             return null;
         } catch (SQLException e) {
@@ -61,21 +58,15 @@ public class UserDAO implements IUserDAO{
      * To a local object, which make the Data easier to Access in this local code
      @param set - The set of SQL data you want made into a local object.
       * */
-    @Override
-    public IUserDTO makeUser(ResultSet set) throws DALException {
-        try {
+    private IUserDTO createUserDTO(ResultSet set) throws SQLException {
             IUserDTO user = new UserDTO();
             user.setUserId(set.getInt("user_id"));
             user.setUsername(set.getString("username"));
             user.setPassword(set.getString("password"));
             return user;
-        }catch(SQLException e){
-            throw new DALException(e.getMessage());
-        }
     }
 
-    public IUserDTO getDBScore(IUserDTO user) throws DALException{
-
+    public IUserDTO getScore(IUserDTO user) throws DALException{
         try (Connection con = createConnection()) {
 
             String query = "SELECT * FROM score WHERE user_id = ?";
@@ -89,12 +80,11 @@ public class UserDAO implements IUserDAO{
             return user;
 
         }catch(SQLException e){
-            throw new DALException(e.getMessage());
-            }
+            throw new DALException("Error in retrieving updated score: " + e.getMessage());
+        }
     }
 
-    public String newScore(int id, int score) throws DALException{
-
+    public String newScore(int id, int score) throws DALException {
         try (Connection con = createConnection()) {
 
             String query = "INSERT INTO score VALUES(?,?)";
@@ -122,7 +112,7 @@ public class UserDAO implements IUserDAO{
             preparedStatement.execute();
             return"User has been added.";
         }catch(SQLException e){
-            throw new DALException("There was an error: " +e.getMessage());
+            throw new DALException("There was an error: " + e.getMessage());
         }
     }
 
@@ -137,15 +127,11 @@ public class UserDAO implements IUserDAO{
 
             if(set.next()){
                 String dbPass = set.getString("password");
-                if(argon2.verify(dbPass, password));
-                    return true;
-                }
+                return (argon2.verify(dbPass, password));
+            }
+            return false;
         }catch(SQLException e){
             throw new DALException(e.getMessage());
         }
-        return false;
     }
 }
-
-
-
