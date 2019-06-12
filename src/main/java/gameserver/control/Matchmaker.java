@@ -27,7 +27,7 @@ public class Matchmaker extends Thread{
     // The frequent between checking if there are any players to be matched
     private static final double MATCHMAKING_FREQ = 3;
     private static final double MAX_RATING_DIFF = 500;
-    private static final double RATING_DIFF_TIME_FACTOR = 2;
+    private static final double RATING_DIFF_TIME_FACTOR = 4;
 
     // List of players looking for a match
     private LinkedList<Player> lookingForMatch = new LinkedList<>();
@@ -35,6 +35,8 @@ public class Matchmaker extends Thread{
     // List of players the matchmaker is waiting match acceptenance from (msg code 002)
     private HashMap<Player, Match> awaitingAccept = new HashMap<>();
 
+    // List of the players and how long they've waited
+    private HashMap<Player, Double> timeWaited = new HashMap<>();
 
 
     Matchmaker(Sender sender, MatchController matchController){
@@ -54,15 +56,18 @@ public class Matchmaker extends Thread{
         try {
 
             while (true) {
-                LinkedList<Match> newMatches = new LinkedList<Match>();
+                LinkedList<Match> newMatches = new LinkedList<>();
                 LinkedList<Player> remainingPlayers = new LinkedList<>(lookingForMatch);
 
                 for (Player player : lookingForMatch) {
                     if( remainingPlayers.remove(player) ){
-                        Player opponent = findMatch(player, 0, remainingPlayers);
+                        Player opponent = findMatch(player, timeWaited.get(player), remainingPlayers);
                         if( opponent != null ){
                             newMatches.add( new Match(player, opponent));
                             remainingPlayers.remove(opponent);
+                        }else{
+                            double currentTimeWaited = timeWaited.get(player);
+                            timeWaited.replace(player, currentTimeWaited+MATCHMAKING_FREQ);
                         }
                     }
                 }
@@ -91,7 +96,7 @@ public class Matchmaker extends Thread{
      * @param timeWaited The time period (seconds) the Player has waited for a match (NOT IMPLEMENTED)
      * @param opponents A list of possible opponents for the Player
      */
-    private Player findMatch(Player player, int timeWaited, List<Player> opponents) {
+    private Player findMatch(Player player, double timeWaited, List<Player> opponents) {
         double playerRating = player.getRating();
         double allowedRatingDiff = timeWaited * RATING_DIFF_TIME_FACTOR;
 
@@ -140,6 +145,7 @@ public class Matchmaker extends Thread{
      */
     void addPlayer(Player player){
         lookingForMatch.add(player);
+        timeWaited.put(player, 0.0);
         sender.sendFindingGame(player, 0);
     }
 
