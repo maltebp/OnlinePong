@@ -1,9 +1,13 @@
 /**
- * This function will do 3 things
+ * Sets up and runs the game
  *
- * 1. update all the objects
- * 2. it will render the objects
- * 3. it will use requestAnimationFrame to call the step function again
+ * @Author Kristian Andersen, Jacob Riis
+ */
+
+/**
+ * Sets up a new game with new game objects and a chosen final score, then sets the game as running
+ *
+ * @param chosenScore   The score to reach to win the game
  */
 var setupGame = function(chosenScore) {
     maxScore = chosenScore;
@@ -12,6 +16,12 @@ var setupGame = function(chosenScore) {
     ball = new Ball(350, 200);
     gameRunning = true;
 };
+
+/**
+ * Loops with a recursive call through the game, calling update and rendering methods to update state of the game
+ *
+ * Note: Recursive call chosen since a while loop crashed the program in early development for unknown reasons
+ */
 var runGame = function() {
     if(gameRunning) { //Recursion since while loop crashes the program??
         update();
@@ -19,8 +29,12 @@ var runGame = function() {
         animate(runGame);
     }
 };
+
+/**
+ * Stops the game and returns the player to previous screen
+ */
 var endGame = function() {
     gameRunning = false;
     canvas.style.display = 'none';
-    startBtn.style.display = 'inline';
-}
+    startButton.style.display = 'inline';
+};
