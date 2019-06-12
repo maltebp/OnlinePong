@@ -1,10 +1,10 @@
-/**
- * Class to act as database, by using a local ArrayList
- */
 package API.DataLayer;
 
 import java.util.ArrayList;
 
+/**
+ * Class to act as database, by using a local ArrayList
+ */
 public class UserDAOArray implements IUserDAO {
 
     ArrayList<IUserDTO> userList = createArray();
@@ -33,7 +33,12 @@ public class UserDAOArray implements IUserDAO {
 
     @Override
     public IUserDTO getScore(IUserDTO user) throws DALException {
-        return user;
+        IUserDTO foundUser = searchUser(user.getUserId());
+        if (foundUser != null) {
+            return foundUser;
+        } else {
+            throw new DALException("User doesn't exist");
+        }
     }
 
     @Override
