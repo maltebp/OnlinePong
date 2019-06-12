@@ -1,0 +1,112 @@
+/*-----    This is the stylesheet for the game page    -----*/
+
+
+
+/*-----    The box-sizing property allows us to include the padding and border in the box's total width (and height), 
+making sure that the padding stays inside of the box and that it does not break    -----*/
+* {
+    box-sizing: border-box;
+}
+
+/*-----    This specifies the the style for the entire body tag    -----*/
+.Body {
+    font-family: Calibri;
+    margin: 0;
+}
+
+/*-----    This specifies the height of the middle boxes    -----*/
+nav, .OuterGameScreen {
+    height: 725px;
+}
+
+.loginForm {
+
+}
+
+/*-----    This specify the style of the TopFrame box    -----*/
+.TopFrame {
+    background-color: black;
+    padding: 2px;
+    font-size: 25px;
+}
+
+/*-----   This specifies the style of the content in the TopFrame box   -----*/  
+.TopFrame img {
+    float: left;
+    width: 215px;
+    height: 125px;
+}
+.TopFrame h1 {
+    left: 10px;
+    color: rgb(240, 238, 238);
+    text-align:left; 
+}
+
+/*-----    This specifies the style for the left box    -----*/
+.LeftBox {
+    float:left;
+    width: 15%;
+    padding: 40px;
+    background-color: rgb(119, 128, 128);
+}
+
+/*-----    This specifies the style of the right box    -----*/
+.RightBox {
+    float: right;
+    width: 15%;
+    padding: 40px;
+    background-color: rgb(119, 128, 128);
+}
+
+/*-----    This specifies the style of the unordened lists in the right and left box    -----*/
+.NavUl1, .NavUl2 {
+    list-style-type: none;
+    padding: 0;
+    
+}
+
+/*-----    This specifies the styling of the middle box and the contents    -----*/
+.OuterGameScreen {
+    float: left;
+    width: 70%;
+    background-color: #b9b3b3;
+}
+.OuterGameScreen p {
+    text-align: center;
+}
+
+/*-----    Startbuttons position for game    -----*/
+#startBtn {
+    position: center;
+    top: 48%;
+    left: 47.5%;
+}
+
+/*-----    This specieftes the style of the  box in the middel box    -----*/
+.Div1 {
+    text-align: center;
+}
+
+/*-----    This will clear the floats in the documents body after the columns are done    -----*/
+body::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*-----    This specifies the style of the Footer box    -----*/
+
+.Footer {
+    background-color: black;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+/*-----    This will get the middle boxes to stand on top of each other on small screens ( smartphones )    -----*/
+@media (max-width: 600px) {
+    .RightBox, .LeftBox, .OuterGameScreen, .Div1 {
+        width: 100%;
+        height: auto;
+    }
+}
