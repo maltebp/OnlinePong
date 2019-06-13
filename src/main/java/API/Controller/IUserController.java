@@ -1,6 +1,7 @@
 package API.Controller;
 
 import API.DataLayer.IUserDTO;
+import org.json.JSONObject;
 
 public interface IUserController {
     /** @author Claes and Simon
@@ -11,14 +12,16 @@ public interface IUserController {
      *  crazy control freak, who does not want any of its emploiess to talk
      *  to anyone else of its emploiess. So that it have full control of all
      *  communication thi-hii #writingDocumentationCanBeFun
-     * @param id The Id of the User we desire userdata from
+     * @param username The Id of the User we desire userdata from
      * @return a User convert to a object that can be used in the local code
      */
-    IUserDTO convertUser(int id);
+    JSONObject convertUser(String username);
 
-    String checkScore(int id, int score);
+    //JSONObject addScore(JSONObject input);
 
-    String createUser(String username, String password);
+    JSONObject createUser(JSONObject input);
 
-    boolean userValidation(int id, String password);
+    JSONObject userValidation(JSONObject input);
+
+    JSONObject setElo(JSONObject input);
 }

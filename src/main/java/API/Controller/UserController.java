@@ -5,6 +5,11 @@ import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAOSQL;
 import API.DataLayer.UserDTO;
 import API.DataLayer.IUserDAO.DALException;
+import org.json.JSONObject;
+
+import javax.jws.soap.SOAPBinding;
+import java.util.zip.DataFormatException;
+
 
 public class UserController implements IUserController{
 
@@ -13,56 +18,68 @@ public class UserController implements IUserController{
     /**
      * @Author Simon, Claes
      * calls 'getDBUser' to send a IUserDTO to the API.
-     * @param id The Id of the User we desire userdata from
+     * @param username The Id of the User we desire userdata from
      * @return IUserDTO:
      */
     @Override
-    public IUserDTO convertUser(int id) {
-        IUserDTO user = new UserDTO(4, "this didn't work");
+    public JSONObject convertUser(String username) {
+        JSONObject json = new JSONObject();
         try{
-            user = UserDAO.getUser(id);
+           IUserDTO user = UserDAO.getUser(username);
             if(user == null){
-                user = new UserDTO();
-                user.setUsername("no user");
+                json.put("code", "-2");
+                json.put("ERROR Msg", "User is null");
             }
-
+            else{
+                String name = user.getUsername();
+                int elo = user.getElo();
+                json.put("code", "1");
+                json.put("username", name);
+                json.put("elo", elo);
+            }
+            return json;
         }catch(IUserDAO.DALException e){
-            e.getMessage();
-            //FixMe WARNING: BAD PRACTICE: [nice to have:] make this error statement say something about what went wrong.
-            user = new UserDTO(-1, "Something went wrong");
-        }
-        try {
-            IUserDTO newUser = UserDAO.getScore(user);
-            return newUser;
-
-        }catch(DALException e){
-            user.addScore(-500);
-            return user;
-        }
-    }
-    //FixMe possible issues with error-handling here.
-    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
-    public String checkScore(int id, int score){
-        try{
-            String returnMessage = UserDAO.newScore(id, score);
-            return returnMessage;
-
-        }catch(DALException e){
-            e.printStackTrace();
-            return "Something went wrong, user-score NOT added" + e.getMessage();
+            json.put("code", "-3");
+            json.put("ERROR Msg", "Something went wrong");
+            json.put("Stack-Trace", e.getMessage());
+            return json;
         }
     }
 
+
     //FixMe possible issues with error-handling here.
     //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
-    public String createUser(String username, String password){
-        try{
-            String returnMessage = UserDAO.createUser(username, password);
-            return returnMessage;
+    public JSONObject createUser(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
 
+        JSONObject output = new JSONObject();
+        try{
+            String code = UserDAO.createUser(username,password);
+            output.put("code", code);
+            return output;
         }catch(DALException e){
-            e.getMessage();
-            return "Soemthing went wrong, user NOT added"+e.getMessage();
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, user not added");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
+        }
+    }
+
+    public JSONObject setElo(JSONObject input){
+        String username = input.getString("username");
+        int elo = input.getInt("elo");
+
+        JSONObject output = new JSONObject();
+        try{
+            String code = UserDAO.setElo(username, elo);
+            output.put("code", code);
+            return output;
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, elo not found");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
         }
     }
 
@@ -70,17 +87,21 @@ public class UserController implements IUserController{
      * @Author Simon
      * Calls 'chechHash' to compare password, with the saved and hashed password.
      * This is for user-validation.
-     * @param id
-     * @param password
+     * @param input
      * @return boolean: whether the password is correct.
      */
-    public boolean userValidation(int id, String password){
+    public JSONObject userValidation(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
+        JSONObject output = new JSONObject();
         try{
-            boolean result = UserDAO.checkHash(id, password);
-            return result;
+            String result = UserDAO.checkHash(username, password);
+            return output.put("code", result);
         }catch(DALException e){
-            e.getMessage();
-            return false;
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, validation incomplete");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
         }
     }
 }

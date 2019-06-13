@@ -3,9 +3,10 @@ package jersey.APIServices;
 import API.Controller.IUserController;
 import API.Controller.UserController;
 import API.DataLayer.IUserDTO;
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
+import org.json.JSONObject;
 
+
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -46,67 +47,59 @@ public class UserService {
 
     /**This function sendes'rest-request'.
      * This returns data on a desired user
-     * @param id the user whos data you want
+     * @param username the user whos data you want
      * @return All the data there is on a given user.
      */
-    @Path("/{id}")
+
+
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public IUserDTO requestUser(@PathParam("id") int id){
+    public String requestUser(@PathParam("username") String username){
         IUserController userController = new UserController();
-        IUserDTO user = userController.convertUser(id);
-        return user;
-    }
-
-    /**
-     * @Author Simon, Claes
-     * This adds a new score for a user (w/ 'id')
-     * @param id
-     * @param score
-     * @return String: whether successful or not.
-     */
-    @Path("/{id}/{score}")
-    @GET
-    @Produces("text/HTML")
-    public String requestUser(@PathParam("id") int id, @PathParam("score") int score){
-        IUserController userController = new UserController();
-        String returnStatement = userController.checkScore(id, score);
-        return returnStatement;
+        JSONObject json = userController.convertUser(username);
+        return json.toString();
     }
 
     /**
      * @Author Simon, Claes
      * Creates a user.
-     * @param username
-     * @param password
+     * @param msg
      * @return String: whether successful or not.
      */
-    @Path("/createUser/{username}&{password}")
-    @GET
-    @Produces("text/HTML")
-    public String createUser(@PathParam("username") String username, @PathParam("password") String password){
+    @Path("/createUser")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String createUser(JSONObject msg){
         IUserController userController = new UserController();
-        String returnStatement = userController.createUser(username, password);
-        return returnStatement;
+        JSONObject json = userController.createUser(msg);
+        return json.toString();
     }
 
     /**
      * @Author Simon
      * compares given password with the user's hashed database-password.
-     * @param id
-     * @param password
+     * @param jsonInput
      * @return String: whether the password was correct or not.
      */
-    @Path("/checkUser/{id}&{password}")
-    @GET
-    @Produces("text/HTML")
-    public String userValidation(@PathParam("id") int id, @PathParam("password") String password){
-
+    @Path("/checkUser")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String userValidation(JSONObject jsonInput){
         IUserController userController = new UserController();
-        boolean result = userController.userValidation(id, password);
-        if(result == true)
-            return "Access Granted";
-        else
-            return "Access Denied";
+        JSONObject json = userController.userValidation(jsonInput);
+        return json.toString();
+    }
+
+    @Path("/setElo")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String setElo(JSONObject input){
+        IUserController userController = new UserController();
+        JSONObject json = userController.setElo(input);
+        return json.toString();
     }
 }
