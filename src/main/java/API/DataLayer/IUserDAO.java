@@ -3,6 +3,7 @@ package API.DataLayer;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IUserDAO {
     /**@author Claes, Simon
@@ -42,6 +43,8 @@ public interface IUserDAO {
     String checkHash(String username, String password) throws DALException;
 
     String setElo(String username, int elo) throws DALException;
+
+    List<IUserDTO> getAll() throws DALException;
 
     /**
      * Customizable exception for explaining Database Access Layer exceptions

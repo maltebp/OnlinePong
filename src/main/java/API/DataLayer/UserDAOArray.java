@@ -2,6 +2,7 @@
 package API.DataLayer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to act as database, by using a local ArrayList
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * @author Andreas and Kristian
  */
 
-abstract class UserDAOArray implements IUserDAO{
+    public class UserDAOArray implements IUserDAO{
 
     ArrayList<IUserDTO> userList = createArray();
 
@@ -63,6 +64,16 @@ abstract class UserDAOArray implements IUserDAO{
 
     public String checkHash(String username, String password) {
         return "true";
+    }
+
+    @Override
+    public String setElo(String username, int elo) throws DALException {
+        return null;
+    }
+
+    @Override
+    public List<IUserDTO> getAll() throws DALException {
+        return null;
     }
 }
 

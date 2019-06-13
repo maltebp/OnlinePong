@@ -1,6 +1,7 @@
 package API.Controller;
 
 import API.DataLayer.IUserDTO;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface IUserController {
@@ -24,4 +25,6 @@ public interface IUserController {
     JSONObject userValidation(JSONObject input);
 
     JSONObject setElo(JSONObject input);
+
+    JSONArray getAll();
 }

@@ -4,8 +4,11 @@ package API.DataLayer;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Factory;
+import jersey.APIServices.UserService;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Communication to SQL database
@@ -135,6 +138,25 @@ public class UserDAOSQL implements IUserDAO{
            preparedStatement.setString(2, username);
            preparedStatement.execute();
            return "0";
+
+        }catch(SQLException e){
+            throw new DALException("-1");
+        }
+    }
+
+    public List<IUserDTO> getAll() throws DALException{
+        try(Connection con = createConnection()){
+            String query = "SELECT username, elo FROM users ORDER BY elo DESC";
+            ResultSet set = con.createStatement().executeQuery(query);
+            ArrayList<IUserDTO> users= new ArrayList<>();
+
+            int i = 0;
+            while(set.next() && i < 10){
+                IUserDTO tempUser = new UserDTO(set.getString("username"), set.getInt("elo"));
+                users.add(tempUser);
+                i++;
+            }
+            return users;
 
         }catch(SQLException e){
             throw new DALException("-1");
