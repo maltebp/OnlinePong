@@ -4,7 +4,7 @@
 
 function isSamePasswords() {
     var pass = document.getElementById("password").value;
-    var pass2 = document.getElementById("password2").value;
+    var pass2 = document.getElementById("passwConf").value;
     return (pass === pass2);
 }
 
