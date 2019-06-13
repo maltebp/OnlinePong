@@ -1,6 +1,5 @@
 package gameserver.control;
 
-import gameserver.model.Match;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 
