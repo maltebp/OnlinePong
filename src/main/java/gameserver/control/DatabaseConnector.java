@@ -4,15 +4,13 @@ import gameserver.model.Player;
 
 public class DatabaseConnector {
 
-    public Player getPlayer(){
-        return null;
+    public void setPlayerInformation(Player player) {
     }
 
-    public boolean authenticatePlayer(){
+    public boolean authenticatePlayer(String username, String password){
         return true;
     }
 
     public void updateElo(Player player){
-
     }
 }

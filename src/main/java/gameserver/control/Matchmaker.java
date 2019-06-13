@@ -72,7 +72,7 @@ public class Matchmaker extends Thread{
                             player.setMatchedOpponent(opponent);
 
                             matchedPlayers.add(opponent);
-                            player.setMatchedOpponent(player);
+                            opponent.setMatchedOpponent(player);
                         }else{
                             player.incrementTimeWaited(MATCHMAKING_FREQ);
                         }
@@ -84,7 +84,7 @@ public class Matchmaker extends Thread{
                     Can't do this in the other loop. */
                 for(MatchPlayer player : matchedPlayers){
                     lookingForMatch.remove(player);
-                    sender.sendFoundGame(player.getPlayer());
+                    sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
                     player.setHasAcceptedMatch(false);
                 }
 

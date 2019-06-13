@@ -46,8 +46,11 @@ public abstract class Sender {
      * CODE: 102
      * Informs client that a game has been found
      */
-    public void sendFoundGame( Player player ){
-        sendMessage(player, getCodeMsg(102).toString());
+    public void sendFoundGame( Player player, Player opponent ){
+        JSONObject msg = getCodeMsg(102);
+        msg.put("username",opponent.getUsername());
+        msg.put("rating",opponent.getRating());
+        sendMessage(player, msg.toString());
     }
 
 

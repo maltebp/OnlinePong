@@ -21,6 +21,7 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
 
     public GameServer(Sender sender){
@@ -46,7 +47,7 @@ public class GameServer {
                 case 1:
                     String username = msg.getString("username");
                     String password = msg.getString("password");
-                    if( playerController.addPlayer(player, username, password) ){
+                    if( playerController.addPlayer(player, username, password, databaseConnector) ){
                         matchmaker.addPlayer(player);
                     }
                     break;
@@ -83,6 +84,11 @@ public class GameServer {
         matchmaker.removePlayer(player);
         matchController.removePlayer(player);
         playerController.removePlayer(player);
+    }
+
+
+    public void setDatabaseConnector(DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
     }
 
 }
