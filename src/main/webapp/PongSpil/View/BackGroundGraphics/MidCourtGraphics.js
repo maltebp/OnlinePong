@@ -6,7 +6,7 @@
  *
  * @Author Jacob Riis
  */
-var midCourtGraphics = new MidcourtGraphics();  //the object for the midcourt graphics which is for objects of lines
+var midCourtGraphics = new MidcourtGraphics();  //the object for the midcourt graphics which is for model of lines
 
 /**
  *  Constructor of midCourtGraphic object, holding 4 instances of MidCourtLine

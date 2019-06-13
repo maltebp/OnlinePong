@@ -1,5 +1,5 @@
 /**
- * Score objects and the update
+ * Score model and the update
  *
  * @Author Kristian Andersen and Jacob Riis
  */
