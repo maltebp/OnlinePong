@@ -9,6 +9,7 @@ function isSamePasswords() {
 }
 
 $('form').on('submit', function(event){
+    event.preventDefault();
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
         delete userObj.passwConf;
@@ -17,15 +18,18 @@ $('form').on('submit', function(event){
 
         $.ajax({
             type: 'POST',
-            url: url + 'createUser', //Hvad skal der stå her?
-            dataType: 'json',
+            // url: url + '/createUser', //Hvad skal der stå her?
+            url: 'localhost:8080/rest/service/createUser', //Hvad skal der stå her?
+            dataType: 'json',                   //What is expected back
             data: JSON.stringify(userObj),
-            contentType: 'application/json',
+            contentType: 'application/json',    //What is wanted to send
             success: function(data) {
-                alert(data) //Skal lige gøres sådan som vi vil have det
+                alert("Success!: "+ data) //Skal lige gøres sådan som vi vil have det
+            },
+            error: function(data) {
+                alert('Error in operation: ' + JSON.stringify(data));
             }
         });
-        window.alert('Success!.. I think');
         return false;
     }
 });
