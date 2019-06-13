@@ -95,7 +95,7 @@ public class Matchmaker extends Thread{
      */
     public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
         // TODO: Create decribing comments for algorithm
-        player.incrementTimeWaited(RATING_DIFF_TIME_FACTOR*MATCHMAKING_FREQ);
+        player.incrementRatingWindow(RATING_DIFF_TIME_FACTOR*MATCHMAKING_FREQ);
 
         MatchPlayer bestOpponent = null;
         double bestOpponentRatingDiff = 0;
@@ -103,7 +103,7 @@ public class Matchmaker extends Thread{
         for (MatchPlayer opponent : opponents) {
             double ratingDiff = player.getRatingDifference(opponent);
 
-            if (ratingDiff < player.ratingWindow && (bestOpponent == null || bestOpponentRatingDiff > ratingDiff)) {
+            if (ratingDiff < player.getRatingWindow() && ratingDiff<opponent.getRatingWindow() && (bestOpponent == null || bestOpponentRatingDiff > ratingDiff)) {
                 bestOpponent = opponent;
                 bestOpponentRatingDiff = ratingDiff;
             }

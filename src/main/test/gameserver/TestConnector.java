@@ -1,9 +1,14 @@
+package gameserver;
+
 import gameserver.control.GameServer;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 import org.json.JSONObject;
 
+import static java.lang.Thread.sleep;
+
 public class TestConnector extends Sender {
+
     private GameServer server = new GameServer(this);
 
     void recieveMessage(Player player, String message){
