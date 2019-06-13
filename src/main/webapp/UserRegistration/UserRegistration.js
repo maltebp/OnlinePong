@@ -23,12 +23,14 @@ $('form').on('submit', function(event){
             data: JSON.stringify(userObj),
             contentType: 'application/json',    //What is want to send
             success: function(data) {
-                alert("Success !: "+ JSON.stringify(data)); //Skal lige gøres sådan som vi vil have det
+                alert("Success !: "+ JSON.stringify(data)); //Write so it does what we want, gets {'code':'1'} returned atm
             },
             error: function(data) {
                 alert('Error in operation: ' + JSON.stringify(data));
             }
         });
         return false;
+    } else {
+        document.getElementById("registerFailMsg").innerHTML = "Passwords didn't match";
     }
 });
