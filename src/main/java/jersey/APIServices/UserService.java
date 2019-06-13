@@ -71,9 +71,9 @@ public class UserService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String createUser(JSONObject msg){
+    public String createUser(   String msg){
         IUserController userController = new UserController();
-        JSONObject json = userController.createUser(msg);
+        JSONObject json = userController.createUser(new JSONObject(msg));
         return json.toString();
     }
 

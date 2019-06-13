@@ -18,13 +18,12 @@ $('form').on('submit', function(event){
 
         $.ajax({
             type: 'POST',
-            // url: url + '/createUser', //Hvad skal der stå her?
-            url: 'localhost:8080/rest/service/createUser', //Hvad skal der stå her?
-            dataType: 'json',                   //What is expected back
+            url: url + '/createUser',           //Path
+            dataType: 'json',                   //What is expect back
             data: JSON.stringify(userObj),
-            contentType: 'application/json',    //What is wanted to send
+            contentType: 'application/json',    //What is want to send
             success: function(data) {
-                alert("Success!: "+ data) //Skal lige gøres sådan som vi vil have det
+                alert("Success !: "+ JSON.stringify(data)); //Skal lige gøres sådan som vi vil have det
             },
             error: function(data) {
                 alert('Error in operation: ' + JSON.stringify(data));
