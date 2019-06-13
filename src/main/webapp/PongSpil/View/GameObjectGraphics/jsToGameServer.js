@@ -4,8 +4,6 @@ var connection = null;
 var chosenScore = 10;
 
 
-
-
 function createConnection() {
 
     connection = new WebSocket("ws://localhost:8080/gameserver");
@@ -41,20 +39,25 @@ function decodeEvent(jsonObject){
 
     switch (jsonObject.code) {
 
-        case 101: findingGame(jsonObject);
+        case 101:
+            findingGame(jsonObject);
             break;
 
-        case 102: initializeGame();
+        case 102:
+            acceptGame002();
+            initializeGame();
+            //initialize(chosenScore);
             break;
 
-        case 103:gameStart103and10();
+        case 103: sendGameState103and010();
             break;
-        
-        case 10: console.log(obj);
-            player2Movement(obj.paddle);    //Update the opponent paddle
-            ballMovement(obj.ball);         //Update the ball
-            playerScores(obj.scores);       //Update the scores
-            gameStart103and10();
+
+        case 10:
+            console.log(jsonObject);
+            player2Movement(jsonObject.paddle);    //Update the opponent paddle
+            ballMovement(jsonObject.ball);         //Update the ball
+            playerScores(jsonObject.scores);       //Update the scores
+            sendGameState103and010();
             break;
     }
 
@@ -68,12 +71,15 @@ function connection(){
 
 function findingGame(jsonObject){
 
-    startButton.style.display = 'none';
+
     document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n\n Please wait..."
     //whileLoading(true);
 }
 
-
+/**
+ * Bare for sjov
+ * @param run
+ */
 function whileLoading(run){
     var run = true;
     while(run){
@@ -87,13 +93,40 @@ function whileLoading(run){
 }
 
 function initializeGame(){
+    startButton.style.display = 'none';
+    document.getElementById("loading").innerHTML = "A game has been found..."
     canvas.style.display = 'inline';
     setupGame(chosenScore);
     animate(runGame);
 }
 
-function gameStart103and10(){
+
+function acceptGame002(){
+
+    var obj = {
+        "code": 002
+    };
+    var jsonString = JSON.stringify(obj);
+    connection.send(jsonString);
+}
+
+function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
+    console.log()
+    var position = {
+        "code": gsObj.code,
+        "ball": {
+            "x": gsObj.ball.x,
+            "y": gsObj.ball.y,
+            "xVel": gsObj.ball.x_speed,
+            "yVel": gsObj.ball.y_speed,
+            "speed": gsObj.ball.speed
+        },
+        "paddle": {"y": gsObj.paddle.y, "yVel": gsObj.paddle.yVel}, "scores": [player1.score.score, player2.score.score]
+    };
+
+
     console.log(gsObj);
+    console.log(position);
     connection.send(JSON.stringify(gsObj));
 }
