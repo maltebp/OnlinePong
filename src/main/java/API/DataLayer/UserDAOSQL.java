@@ -120,7 +120,7 @@ public class UserDAOSQL implements IUserDAO{
 
             if(set.next()){
                 String dbPass = set.getString("password");
-                if(argon2.verify(dbPass, password));{
+                if(argon2.verify(dbPass, password)){
                     return "1";
                 }
             }

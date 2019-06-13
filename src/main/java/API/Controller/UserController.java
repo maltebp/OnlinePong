@@ -126,4 +126,21 @@ public class UserController implements IUserController{
             return null;
         }
     }
+
+    public static void main(String[] args) {
+        IUserController userController = new UserController();
+        JSONObject jUser = new JSONObject();
+        jUser.put("username", "simon");
+        jUser.put("password", "newPass");
+        JSONObject createResponse = userController.createUser(jUser);
+        System.out.println(createResponse.toString());
+        JSONObject jUserWrong = new JSONObject();
+        jUser.put("username", "simon");
+        jUser.put("password", "wrongPass");
+        JSONObject valResponse = userController.userValidation(jUser);
+        System.out.println(valResponse.toString());
+
+
+
+    }
 }
