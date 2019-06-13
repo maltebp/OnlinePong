@@ -1,12 +1,14 @@
 
 var connection = null;
 
+var chosenScore = 10;
+
 
 
 
 function createConnection() {
 
-    connection = new WebSocket("ws://localhost:8080/communication");
+    connection = new WebSocket("ws://localhost:8080/gameserver");
 
     connection.onopen = function () {
         var user = {
@@ -20,7 +22,7 @@ function createConnection() {
     }
 
     connection.onmessage = function (event) {
-
+        console.log(event.data);
         var obj = JSON.parse(event.data);
 
         decodeEvent(obj);
@@ -45,12 +47,14 @@ function decodeEvent(jsonObject){
         case 102: initializeGame();
             break;
 
-        case 103: break;
+        case 103:gameStart103and10();
+            break;
         
         case 10: console.log(obj);
             player2Movement(obj.paddle);    //Update the opponent paddle
             ballMovement(obj.ball);         //Update the ball
             playerScores(obj.scores);       //Update the scores
+            gameStart103and10();
             break;
     }
 
@@ -86,4 +90,10 @@ function initializeGame(){
     canvas.style.display = 'inline';
     setupGame(chosenScore);
     animate(runGame);
+}
+
+function gameStart103and10(){
+    var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
+    console.log(gsObj);
+    connection.send(JSON.stringify(gsObj));
 }

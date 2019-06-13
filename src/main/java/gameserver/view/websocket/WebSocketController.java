@@ -41,6 +41,7 @@ public class WebSocketController extends Sender {
         try {
             if( session.isOpen() ){
                 session.getBasicRemote().sendText(message);
+                System.out.println(message);
             }
         }catch(Exception e){
             e.printStackTrace();
