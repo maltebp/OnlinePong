@@ -37,7 +37,7 @@ class PlayerController {
 
             if( !usernameExists(username)){
                 players.add(player);
-                return false;
+                return true;
             }else{
                 System.out.println("Already logged in");
                 sender.sendAlreadyLoggedIn(player);
