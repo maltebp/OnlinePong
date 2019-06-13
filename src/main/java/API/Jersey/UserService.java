@@ -1,8 +1,7 @@
-package jersey.APIServices;
+package API.Jersey;
 
 import API.Controller.IUserController;
 import API.Controller.UserController;
-import API.DataLayer.IUserDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

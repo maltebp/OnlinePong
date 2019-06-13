@@ -1,7 +1,5 @@
 package API.DataLayer;
 
-import java.util.ArrayList;
-
 public class UserDTO implements IUserDTO {
     String username;
     String password;

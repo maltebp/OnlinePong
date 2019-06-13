@@ -2,9 +2,7 @@ package API.DataLayer;
 
 
 import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Factory;
-import jersey.APIServices.UserService;
 
 import java.sql.*;
 import java.util.ArrayList;

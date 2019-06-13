@@ -1,7 +1,5 @@
 package API.DataLayer;
 
-import java.util.ArrayList;
-
 public interface IUserDTO {
     /**@author Claes and Simon
      * this class is an object that carries data between processes.

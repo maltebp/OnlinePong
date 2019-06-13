@@ -72,7 +72,7 @@ import java.util.List;
     }
 
     @Override
-    public List<IUserDTO> getAll() throws DALException {
+    public List<IUserDTO> getTopTen() throws DALException {
         return null;
     }
 }
