@@ -130,6 +130,14 @@ public class UserDAOSQL implements IUserDAO{
         }
     }
 
+    /**
+     * @Author Simon
+     * set the Elo of a player in the database.
+     * @param username
+     * @param elo
+     * @return String: error message.
+     * @throws DALException
+     */
     public String setElo(String username, int elo) throws DALException{
         try(Connection con = createConnection()){
            String query = "UPDATE users SET elo = ? WHERE username = ?";
@@ -144,7 +152,13 @@ public class UserDAOSQL implements IUserDAO{
         }
     }
 
-    public List<IUserDTO> getAll() throws DALException{
+    /**
+     * @Author Simon
+     * Get the 10 users with highest elo rating.
+     * @return IUserDTO List.
+     * @throws DALException
+     */
+    public List<IUserDTO> getTopTen() throws DALException{
         try(Connection con = createConnection()){
             String query = "SELECT username, elo FROM users ORDER BY elo DESC";
             ResultSet set = con.createStatement().executeQuery(query);

@@ -18,13 +18,11 @@ public interface IUserController {
      */
     JSONObject convertUser(String username);
 
-    //JSONObject addScore(JSONObject input);
-
     JSONObject createUser(JSONObject input);
 
     JSONObject userValidation(JSONObject input);
 
     JSONObject setElo(JSONObject input);
 
-    JSONArray getAll();
+    JSONArray getTopTen();
 }

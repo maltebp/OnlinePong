@@ -42,9 +42,16 @@ public interface IUserDAO {
      */
     String checkHash(String username, String password) throws DALException;
 
+    /**
+     * updates the elo of a player in the database
+     * @param username
+     * @param elo
+     * @return String: error message
+     * @throws DALException
+     */
     String setElo(String username, int elo) throws DALException;
 
-    List<IUserDTO> getAll() throws DALException;
+    List<IUserDTO> getTopTen() throws DALException;
 
     /**
      * Customizable exception for explaining Database Access Layer exceptions

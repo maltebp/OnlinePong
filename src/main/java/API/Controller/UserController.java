@@ -109,11 +109,11 @@ public class UserController implements IUserController{
         }
     }
 
-    public JSONArray getAll(){
+    public JSONArray getTopTen(){
         JSONArray jUsers = new JSONArray();
 
         try{
-            List<IUserDTO> iUsers = UserDAO.getAll();
+            List<IUserDTO> iUsers = UserDAO.getTopTen();
             for(IUserDTO x: iUsers){
                 JSONObject jObject = new JSONObject();
                 jObject.put("username", x.getUsername());
@@ -125,22 +125,5 @@ public class UserController implements IUserController{
         }catch(DALException e){
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        IUserController userController = new UserController();
-        JSONObject jUser = new JSONObject();
-        jUser.put("username", "simon");
-        jUser.put("password", "newPass");
-        JSONObject createResponse = userController.createUser(jUser);
-        System.out.println(createResponse.toString());
-        JSONObject jUserWrong = new JSONObject();
-        jUser.put("username", "simon");
-        jUser.put("password", "wrongPass");
-        JSONObject valResponse = userController.userValidation(jUser);
-        System.out.println(valResponse.toString());
-
-
-
     }
 }
