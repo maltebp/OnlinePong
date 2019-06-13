@@ -22,7 +22,6 @@ function createConnection() {
     connection.onmessage = function (event) {
         console.log(event.data);
         var obj = JSON.parse(event.data);
-
         decodeEvent(obj);
     }
 }
@@ -59,6 +58,18 @@ function decodeEvent(jsonObject){
             playerScores(jsonObject.scores);       //Update the scores
             sendGameState103and010();
             break;
+
+        case 201: wrongUserNameOrPassword();
+            break;
+
+        case 202: userAlreadyLoggedIn();
+            break;
+
+        case 203: unableToAuthendizise();
+            break;
+        case 210:
+            opponentDisconected();
+            break;
     }
 
 }
@@ -94,7 +105,7 @@ function whileLoading(run){
 
 function initializeGame(){
     startButton.style.display = 'none';
-    document.getElementById("loading").innerHTML = "A game has been found..."
+    document.getElementById("loading").innerHTML = "A game has been found...";
     canvas.style.display = 'inline';
     setupGame(chosenScore);
     animate(runGame);
@@ -125,8 +136,28 @@ function sendGameState103and010(){
         "paddle": {"y": gsObj.paddle.y, "yVel": gsObj.paddle.yVel}, "scores": [player1.score.score, player2.score.score]
     };
 
-
     console.log(gsObj);
     console.log(position);
     connection.send(JSON.stringify(gsObj));
+}
+
+
+function opponentDisconected(){
+    document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
+    document.getElementById("loading").innerHTML = "";
+    animate(endGame());
+}
+
+function userAlreadyLoggedIn(){
+    document.getElementById("loading").innerHTML = "You are already logged in... Please Wait"
+}
+
+function unableToAuthendizise(){
+    document.getElementById("messagesFromServer").innerHTML = "Unable to make authendication\n Please try again lator";
+    connection.close();
+}
+
+function wrongUserNameOrPassword(){
+    document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
+    connection.close();
 }
