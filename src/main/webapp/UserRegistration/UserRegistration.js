@@ -5,26 +5,26 @@
 function isSamePasswords() {
     var pass = document.getElementById("password").value;
     var pass2 = document.getElementById("password2").value;
-    window.alert(pass + ", " + pass2);
     return (pass === pass2);
 }
 
-$('#form').on('submit', function(event){
+$('form').on('submit', function(event){
     window.alert("submit btn called");
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
-        window.alert(userObj);
-        // $.ajax({
-        //     type: 'POST',
-        //     url: url + 'createUser', //Hvad skal der stå her?
-        //     dataType: 'json',
-        //     data: JSON.stringify(userObj),
-        //     contentType: 'application/json',
-        //     success: function(data) {
-        //         alert(data) //Skal lige gøres sådan som vi vil have det
-        //     }
-        // });
+        delete userObj.passwConf;
 
+        $.ajax({
+            type: 'POST',
+            url: url + 'createUser', //Hvad skal der stå her?
+            dataType: 'json',
+            data: JSON.stringify(userObj),
+            contentType: 'application/json',
+            success: function(data) {
+                alert(data) //Skal lige gøres sådan som vi vil have det
+            }
+        });
+        window.alert('Success!.. I think');
         return false;
     }
 });
