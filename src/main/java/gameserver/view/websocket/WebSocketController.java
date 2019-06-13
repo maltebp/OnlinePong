@@ -39,7 +39,7 @@ public class WebSocketController extends Sender {
     public void sendMessage(Player player, String message ){
         Session session = sessions.get(player);
         try {
-            if( !session.isOpen() ){
+            if( session.isOpen() ){
                 session.getBasicRemote().sendText(message);
             }
         }catch(Exception e){
