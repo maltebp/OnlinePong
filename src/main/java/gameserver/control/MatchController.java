@@ -28,16 +28,17 @@ class MatchController {
      * Sets a match as started by adding it to the
      * ongoing match list (playerGame)
      */
-    void startMatch(Match match){
-        playerGame.put(match.getPlayer(1), match);
-        playerGame.put(match.getPlayer(2), match);
+    void startMatch(Player player1, Player player2){
+        Match match = new Match(player1, player2);
+        playerGame.put(player1, match);
+        playerGame.put(player2, match);
 
         // Randomize the initializing player
         Random rnd = new Random();
         boolean player1Starting = rnd.nextBoolean();
 
-        sender.sendStartGame(match.getPlayer(1), player1Starting);
-        sender.sendStartGame(match.getPlayer(1), !player1Starting);
+        sender.sendStartGame(player1, player1Starting);
+        sender.sendStartGame(player2, !player1Starting);
     }
 
 

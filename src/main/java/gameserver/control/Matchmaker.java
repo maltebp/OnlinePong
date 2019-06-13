@@ -28,15 +28,13 @@ public class Matchmaker extends Thread{
     private static final double MATCHMAKING_FREQ = 3;
     private static final double MAX_RATING_DIFF = 500;
     private static final double RATING_DIFF_TIME_FACTOR = 4;
+    private static final double INITIAL_RATING_WINDOW = 100;
 
     // List of players looking for a match
-    private LinkedList<Player> lookingForMatch = new LinkedList<>();
+    private HashMap<Player, MatchPlayer> matchPlayers = new HashMap<>();
+    private LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
 
-    // List of players the matchmaker is waiting match acceptenance from (msg code 002)
-    private HashMap<Player, Match> awaitingAccept = new HashMap<>();
 
-    // List of the players and how long they've waited
-    private HashMap<Player, Double> timeWaited = new HashMap<>();
 
 
     Matchmaker(Sender sender, MatchController matchController){
@@ -56,29 +54,30 @@ public class Matchmaker extends Thread{
         try {
 
             while (true) {
-                LinkedList<Match> newMatches = new LinkedList<>();
-                LinkedList<Player> remainingPlayers = new LinkedList<>(lookingForMatch);
+                LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
+                LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
 
-                for (Player player : lookingForMatch) {
+                for (MatchPlayer player : lookingForMatch) {
                     if( remainingPlayers.remove(player) ){
-                        Player opponent = findMatch(player, timeWaited.get(player), remainingPlayers);
+                        MatchPlayer opponent = findMatch(player, remainingPlayers);
                         if( opponent != null ){
-                            newMatches.add( new Match(player, opponent));
                             remainingPlayers.remove(opponent);
+
+                            matchedPlayers.add(player);
+                            player.setMatchedOpponent(opponent);
+
+                            matchedPlayers.add(opponent);
+                            player.setMatchedOpponent(player);
                         }else{
-                            double currentTimeWaited = timeWaited.get(player);
-                            timeWaited.replace(player, currentTimeWaited+MATCHMAKING_FREQ);
+                            player.incrementTimeWaited(MATCHMAKING_FREQ);
                         }
                     }
                 }
 
-                for(Match match : newMatches){
-                    lookingForMatch.remove(match.getPlayer(1));
-                    lookingForMatch.remove(match.getPlayer(2));
-                    awaitingAccept.put(match.getPlayer(1), match);
-                    awaitingAccept.put(match.getPlayer(2), match);
-                    sender.sendFoundGame(match.getPlayer(1));
-                    sender.sendFoundGame(match.getPlayer(2));
+                for(MatchPlayer player : matchedPlayers){
+                    lookingForMatch.remove(player);
+                    sender.sendFoundGame(player.getPlayer());
+                    player.setHasAcceptedMatch(false);
                 }
 
                 sleep((long) MATCHMAKING_FREQ * 1000);
@@ -88,33 +87,25 @@ public class Matchmaker extends Thread{
         }
     }
 
-
     /**
      * Evaluate if the Player should be matched against any of the possible
      * opponents.
      *
-     * @param timeWaited The time period (seconds) the Player has waited for a match (NOT IMPLEMENTED)
      * @param opponents A list of possible opponents for the Player
      */
-    private Player findMatch(Player player, double timeWaited, List<Player> opponents) {
-        double playerRating = player.getRating();
-        double allowedRatingDiff = timeWaited * RATING_DIFF_TIME_FACTOR;
+    public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
+        // TODO: Create decribing comments for algorithm
+        player.incrementTimeWaited(RATING_DIFF_TIME_FACTOR*MATCHMAKING_FREQ);
 
-        // Adjusting difference to limit
-        allowedRatingDiff = (allowedRatingDiff > MAX_RATING_DIFF) ? MAX_RATING_DIFF : allowedRatingDiff;
+        MatchPlayer bestOpponent = null;
+        double bestOpponentRatingDiff = 0;
 
-        Player bestOpponent = null;
-        double bestOpponentRatingDiff = -1;
-        double ratingDiff;
-        double opponentRating;
+        for (MatchPlayer opponent : opponents) {
+            double ratingDiff = player.getRatingDifference(opponent);
 
-        for (Player opponent : opponents) {
-            opponentRating = opponent.getRating();
-            ratingDiff = (opponentRating > playerRating) ? opponentRating - playerRating : playerRating - opponentRating;
-
-            if (ratingDiff < allowedRatingDiff && (bestOpponentRatingDiff == -1 || bestOpponentRatingDiff > opponentRating)) {
+            if (ratingDiff < player.ratingWindow && (bestOpponent == null || bestOpponentRatingDiff > ratingDiff)) {
                 bestOpponent = opponent;
-                bestOpponentRatingDiff = opponentRating;
+                bestOpponentRatingDiff = ratingDiff;
             }
         }
 
@@ -127,11 +118,11 @@ public class Matchmaker extends Thread{
      * Initializes the match if both Players have accepted.
      */
     void playerAcceptsMatch(Player player){
-        Match match = awaitingAccept.get(player);
-        if( match != null ){
-            match.playerAccepts(player);
-            if(match.playersAccepted()){
-                matchController.startMatch(match);
+        MatchPlayer matchPlayer = matchPlayers.get(player);
+        if( matchPlayer.getMatchedOpponent() != null ){
+            matchPlayer.setHasAcceptedMatch(true);
+            if( matchPlayer.hasAcceptedMatch()){
+                matchController.startMatch(player, matchPlayer.getMatchedOpponent().getPlayer());
             }
         }else{
             // TODO: Implement error
@@ -144,8 +135,9 @@ public class Matchmaker extends Thread{
      * a match.
      */
     void addPlayer(Player player){
-        lookingForMatch.add(player);
-        timeWaited.put(player, 0.0);
+        MatchPlayer matchmakingPlayer = new MatchPlayer(player);
+        matchPlayers.put(player, matchmakingPlayer);
+        lookingForMatch.add(matchmakingPlayer);
         sender.sendFindingGame(player, 0);
     }
 
@@ -156,19 +148,79 @@ public class Matchmaker extends Thread{
      *
      * Used if the Player disconnects or if the Player
      * doesn't accept a match.
+     * Will add the Player's opponent to matchmaking again
+     * and send a "findingGame" to the player.
      */
     void removePlayer(Player player){
-        if( !lookingForMatch.remove(player) ){
-            Match match = awaitingAccept.remove(player);
-            if( match != null ){
-                Player opponent = match.getOpponent(player);
-                awaitingAccept.remove(player);
-                awaitingAccept.remove(opponent);
-                addPlayer(opponent);
+        MatchPlayer matchPlayer = matchPlayers.get(player);
+        if( !lookingForMatch.remove(matchPlayer) ){
+            MatchPlayer opponent = matchPlayer.getMatchedOpponent();
+            if( opponent != null ){
+                opponent.setMatchedOpponent(null);
+                opponent.setHasAcceptedMatch(false);
+                lookingForMatch.add(opponent);
+                sender.sendFindingGame(opponent.getPlayer(), 0);
             }
         }
-
     }
 
 
+    /**
+     * A wrapper class for a Player object and additional information
+     * about the Player only needed for matchmaking
+     */
+    private class MatchPlayer {
+        private Player player;
+
+        // The window of difference allowed between this player and other players to be matched
+        private double ratingWindow = INITIAL_RATING_WINDOW;
+        private boolean hasAcceptedMatch = false;
+        private double timeWaited = 0;
+        private MatchPlayer matchedOpponent;
+
+
+        MatchPlayer(Player player ){
+            this.player = player;
+        }
+
+
+        void incrementRatingWindow( double rating ){
+            ratingWindow += rating;
+            ratingWindow = (ratingWindow > MAX_RATING_DIFF) ? MAX_RATING_DIFF : ratingWindow;
+        }
+
+        void incrementTimeWaited(double time){
+            timeWaited += time;
+        }
+
+        double getRatingWindow(){
+            return ratingWindow;
+        }
+
+        double getRatingDifference(MatchPlayer opponent){
+            double playerRating = player.getRating();
+            double opponentRating = opponent.getPlayer().getRating();
+            return (opponentRating > playerRating) ? opponentRating - playerRating : playerRating - opponentRating;
+        }
+
+        void setHasAcceptedMatch(boolean flag){
+            hasAcceptedMatch = flag;
+        }
+
+        boolean hasAcceptedMatch(){
+            return hasAcceptedMatch;
+        }
+
+        public MatchPlayer getMatchedOpponent() {
+            return matchedOpponent;
+        }
+
+        public void setMatchedOpponent(MatchPlayer matchedOpponent) {
+            this.matchedOpponent = matchedOpponent;
+        }
+
+        Player getPlayer(){
+            return player;
+        }
+    }
 }
