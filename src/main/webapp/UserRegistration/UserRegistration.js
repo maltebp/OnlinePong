@@ -9,10 +9,11 @@ function isSamePasswords() {
 }
 
 $('form').on('submit', function(event){
-    window.alert("submit btn called");
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
         delete userObj.passwConf;
+        // var string = JSON.stringify(userObj);
+        // window.alert(string);
 
         $.ajax({
             type: 'POST',
