@@ -54,13 +54,19 @@ public class Matchmaker extends Thread{
         try {
 
             while (true) {
+
+                // List of players we have found a match for
                 LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
+
+                // Copying the list so we can remove players as we evaluate they can't be matched
                 LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
 
                 for (MatchPlayer player : lookingForMatch) {
                     if( remainingPlayers.remove(player) ){
+
                         MatchPlayer opponent = findMatch(player, remainingPlayers);
                         if( opponent != null ){
+                            // A match has been found
                             remainingPlayers.remove(opponent);
 
                             matchedPlayers.add(player);
@@ -74,6 +80,9 @@ public class Matchmaker extends Thread{
                     }
                 }
 
+                /*  Removing Matched players from the list of players
+                    looking for a match, and sending correct message.
+                    Can't do this in the other loop. */
                 for(MatchPlayer player : matchedPlayers){
                     lookingForMatch.remove(player);
                     sender.sendFoundGame(player.getPlayer());
@@ -94,7 +103,18 @@ public class Matchmaker extends Thread{
      * @param opponents A list of possible opponents for the Player
      */
     public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
-        // TODO: Create decribing comments for algorithm
+        /*  How it works:
+            It checks each available opponent for the player ('opponents')
+            The rating difference between the player and the BEST opponent
+            fulfills following criteria:
+                - It's less than player window
+                - It's less than opponent window
+                - It's the smallest difference of all possible
+                    opponents for player
+            The window for a player is increased everytime it runs the algorithm
+            without finding a match.
+         */
+
         player.incrementRatingWindow(RATING_DIFF_TIME_FACTOR*MATCHMAKING_FREQ);
 
         MatchPlayer bestOpponent = null;
