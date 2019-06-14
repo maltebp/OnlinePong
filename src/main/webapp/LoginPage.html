@@ -13,10 +13,31 @@
                 <p> Don't have an account? <a href=javascript:switchPage("RegisterPage.html")>Register</a> </p>
                 <p id="messagesFromServer"></p><p id="loading"></p>
 
-            <!--<canvas class="InnerGameScreen" id="game"></canvas> //TODO Delete when sure it works-->
+                <canvas class="InnerGameScreen" id="game"></canvas> //TODO Delete when sure it works
+
             </form>
         </div>
         <script src="PongSpil/Model/jsToGameServer.js"></script>
+
+        <!-- Remember the order of the scripts!-->
+        <!-- First we get the backgrounds Graphics-->
+        <script src="PongSpil/GlobalVariables.js"></script>
+        <script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>
+        <script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>
+        <script src="PongSpil/View/BackGroundGraphics/MidCourtLine.js"></script>
+        <script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>
+
+        <!-- Then we get the model and the Game Functions/Logic-->
+        <script src="PongSpil/Model/GameStateObject.js"></script>
+        <script src="PongSpil/Model/SetupGame.js"></script>
+        <script src="PongSpil/Model/jsToGameServer.js"></script>
+
+        <!-- Finally we get the GameObjects that we play the game with-->
+        <script src="PongSpil/View/Render.js"></script>
+        <script src="PongSpil/View/GameObjectGraphics/Score.js"></script>
+        <script src="PongSpil/View/GameObjectGraphics/Paddle.js"></script>
+        <script src="PongSpil/View/GameObjectGraphics/Ball.js"></script>
+        <script src="PongSpil/View/GameObjectGraphics/Players.js"></script>
     </body>
 </html>
 
