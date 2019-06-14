@@ -1,0 +1,11 @@
+/*-----    Startbuttons position for game    -----*/
+#startButton {
+    position: center;
+    /*top: 48%;
+    left: 47.5%;*/
+}
+
+/*-----    This specieftes the style of the  box in the middel box    -----*/
+.loginPage {
+    text-align: center;
+}

@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="1; URL=/OnlineTennisExtreme.html">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Online Tennis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetIndex.css">
+    <script type="text/javascript" src="jquery-3.4.1.js"></script>
 </head>
-<body>
+<body class="body">
+
+<header class="header">
+    <img src="pong.gif">
+    <h1>Online Tennis</h1>
+</header>
+
+<div class="centerContainer">
+    <div class="leftBox"></div>
+
+    <div id='dynamicContainer' class="dynamicContainer"></div>
+
+    <script type="text/javascript">
+        function switchPage(page){
+            $("#dynamicContainer").load(page);
+        }
+    </script>
+    <script type="text/javascript">switchPage("LoginPage.html")</script>
+
+    <div class="rightBox"></div>
+</div>
+
+<footer class="footer">
+    <address>Anker Engelunds Vej 1 Building 101A, 2800 Kgs. Lyngby</address>
+</footer>
 
 </body>
 </html>

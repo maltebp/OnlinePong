@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetLogin.css">
+    </head>
+    <body>
+        <div class="loginPage">
+            <form name="loginForm" class="loginForm" action="#" >
+
+                <h2>Login </h2>
+                <p>Username: <input id="Username" type="text" Username=""></p>
+                <p>Password: <input id="Password" type="password" Password ="" ></p>
+                <p><button type="button" id="startButton" onclick="createConnection()">Login</button></p>
+                <p> Don't have an account? <a href="RegisterPage.html">Register</a> </p>
+                <p id="messagesFromServer"></p><p id="loading"></p>
+
+            <!--<canvas class="InnerGameScreen" id="game"></canvas> //TODO Delete when sure it works-->
+            </form>
+        </div>
+        <script src="PongSpil/Model/jsToGameServer.js"></script>
+    </body>
+</html>
+
+
+

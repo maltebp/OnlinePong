@@ -5,23 +5,23 @@ making sure that the padding stays inside of the box and that it does not break 
     box-sizing: border-box;
 }
 /*-----    This specifies the the style for the entire body tag    -----*/
-.Body {
+.body {
     font-family: Calibri;
     margin: 0;
 }
 /*-----    This specify the style of the TopFrame box    -----*/
-.TopFrame {
+.header {
     background-color: black;
     padding: 2px;
     font-size: 25px;
 }
 /*-----   This specifies the style of the content in the TopFrame box   -----*/
-.TopFrame img {
+.header img {
     float: left;
     width: 215px;
     height: 125px;
 }
-.TopFrame h1 {
+.header h1 {
     left: 10px;
     color: rgb(240, 238, 238);
     text-align:left;
@@ -54,7 +54,7 @@ body::after {
 }
 
 /*-----    This specifies the style of the Footer box    -----*/
-.Footer {
+.footer {
     background-color: black;
     padding: 10px;
     text-align: center;
