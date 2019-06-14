@@ -23,12 +23,4 @@ public class Match {
         return (player == player1) ? player2 : player1;
     }
 
-
-    /**
-     * @param index 1 or 2 (Player 1 or Player 2)
-     */
-    public Player getPlayer(int index){
-        return (index == 1) ? player1 : player2;
-    }
-
 }
