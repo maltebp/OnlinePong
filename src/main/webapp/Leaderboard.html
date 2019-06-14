@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="jquery-3.4.1.js"></script> <!-- TODO Hav kun i index? -->
-    <script src="jquery.miranda.min.js"></script>
-</head>
-<body>
 
-    <div>
-        <table>
-            <caption>Leaderboard:</caption>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Elo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>[[username]]</td>
-                    <td>[[eloRating]]</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+</head>
+    <body>
+
+        <div>
+            <table id="topTen">
+                <caption>Leaderboard:</caption>
+                    <tr>
+                        <th>Username</th>
+                        <th>Elo</th>
+                    </tr>
+
+            </table>
+        </div>
+
+    <script src="jquery-3.4.1.js"></script>
+    <script src="jquery.miranda.min.js"></script>
+
+
 
 </body>
 </html>
+
+<script>
+$(document).ready(function () {
+    $.getJSON(url + "/get10", function (data) {
+        var userData = "";
+        $.each(data, function (key, value) {
+            userData += '<tr>';
+            userData += '<td>'+value.username+'</td>';
+            userData += '<td>'+value.elo+'</td>';
+            userData += '</tr>';
+        });
+        $('#topTen').append(userData);
+    });
+});
+</script>
