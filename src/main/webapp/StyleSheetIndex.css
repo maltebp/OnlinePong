@@ -42,8 +42,14 @@ making sure that the padding stays inside of the box and that it does not break 
 .leftBox {
     float:left;
     width: 15%;
-    padding: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: rgb(119, 128, 128);
+}
+
+li{
+    margin:5px;
+    font-weight: bold;
 }
 
 .dynamicContainer {
