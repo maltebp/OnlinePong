@@ -105,7 +105,6 @@ public class EloAlgorithmTest {
         for(int rating=0; rating<=30; rating++){
             int winnerChange = algorithm.calculateWinnerChange( rating, rating);
             int loserChange = algorithm.calculateLoserChange(rating, rating);
-            System.out.println(rating +":\t"+winnerChange + " / "+loserChange);
             assertTrue(rating+loserChange >= 0);
             assertTrue(winnerChange > 0);
         }
