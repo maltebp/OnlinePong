@@ -17,7 +17,7 @@ function createConnection() {
         };
         console.log(user);
         connection.send(JSON.stringify(user));
-    }
+    };
 
     connection.onmessage = function (event) {
         console.log(event.data);
@@ -52,11 +52,7 @@ function decodeEvent(jsonObject){
             break;
 
         case 10:
-            console.log(jsonObject);
-            player2Movement(jsonObject.paddle);    //Update the opponent paddle
-            ballMovement(jsonObject.ball);         //Update the ball
-            playerScores(jsonObject.scores);       //Update the scores
-            sendGameState103and010();
+            gameDataUpdatedata();
             break;
 
         case 201: wrongUserNameOrPassword();
@@ -74,6 +70,15 @@ function decodeEvent(jsonObject){
 
 }
 
+
+function gameDataUpdatedata(){
+    console.log(jsonObject);
+    player2Movement(jsonObject.paddle);    //Update the opponent paddle
+    ballMovement(jsonObject.ball);         //Update the ball
+    playerScores(jsonObject.scores);       //Update the scores
+    sendGameState103and010();
+}
+
 function connection(){
     document.getElementById("messagesFromServer").innerHTML = "You are now connected...";
     startButton.style.display = 'none';
@@ -81,27 +86,10 @@ function connection(){
 }
 
 function findingGame(jsonObject){
-
-
     document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n\n Please wait..."
     //whileLoading(true);
 }
 
-/**
- * Bare for sjov
- * @param run
- */
-function whileLoading(run){
-    var run = true;
-    while(run){
-        var loadString = "";
-        for(var i =0; i < 5; i=0) {
-            loadString.concat(". ");
-            document.getElementById("loading").innerHTML = loadString;
-
-        }
-    }
-}
 
 function initializeGame(){
     startButton.style.display = 'none';
@@ -113,7 +101,6 @@ function initializeGame(){
 
 
 function acceptGame002(){
-
     var obj = {
         "code": 002
     };
@@ -123,7 +110,7 @@ function acceptGame002(){
 
 function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
-    console.log()
+    console.log();
     var position = {
         "code": gsObj.code,
         "ball": {
@@ -145,7 +132,9 @@ function sendGameState103and010(){
 function opponentDisconected(){
     document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
     document.getElementById("loading").innerHTML = "";
-    animate(endGame());
+    canvas.style.display ="none";
+    //animate(endGame());
+    connection.close;
 }
 
 function userAlreadyLoggedIn(){
@@ -159,5 +148,7 @@ function unableToAuthendizise(){
 
 function wrongUserNameOrPassword(){
     document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
-    connection.close();
+    connection.close;
+
+
 }
