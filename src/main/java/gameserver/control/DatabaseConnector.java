@@ -2,11 +2,8 @@ package gameserver.control;
 
 import gameserver.model.Player;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 public class DatabaseConnector {
     Decoder decodeMessages = new Decoder();
@@ -56,20 +53,13 @@ public class DatabaseConnector {
 
 
         //Sending JSONOBject
-        try(OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
+        decodeMessages.sendmessagesToAPI(connection,jsonInputString);
 
 
-            jsonObject = decodeMessages.readInputStream(connection);
+        jsonObject = decodeMessages.readInputStream(connection);
 
-            //The message from the API is decoded
-            return decodeMessages.decodeMessage(jsonObject);
-
-        }catch (IOException e){
-            e.getMessage();
-        }
-          return false;
+        //Reading response from API
+        return decodeMessages.decodeMessage(jsonObject);
 
     }
 
@@ -93,17 +83,13 @@ public class DatabaseConnector {
         String jsonInputString = jsonObject.toString();
 
         //Sending JSONOBject
-        try(OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
+        decodeMessages.sendmessagesToAPI(connection,jsonInputString);
 
-            jsonObject = decodeMessages.readInputStream(connection);
+        //Reading input from API
+        jsonObject = decodeMessages.readInputStream(connection);
 
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
+        //Checking the respons from API
+        decodeMessages.decodeMessage(jsonObject);
 
     }
 
@@ -121,7 +107,7 @@ public class DatabaseConnector {
 
         System.out.println("setPlayerInformation");
         con.setPlayerInformation(malte);
-        malte.setRating(333);
+        malte.setRating(900);
 
         System.out.println("updateElo");
         con.updateElo(malte);

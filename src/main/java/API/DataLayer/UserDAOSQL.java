@@ -143,7 +143,7 @@ public class UserDAOSQL implements IUserDAO{
            preparedStatement.setInt(1, elo);
            preparedStatement.setString(2, username);
            preparedStatement.execute();
-           return "0";
+           return "1";
 
         }catch(SQLException e){
             throw new DALException("-1");
