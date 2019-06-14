@@ -1,8 +1,8 @@
-package jersey.APIServices;
+package API.Jersey;
 
 import API.Controller.IUserController;
 import API.Controller.UserController;
-import API.DataLayer.IUserDTO;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -61,7 +61,7 @@ public class UserService {
         return json.toString();
     }
 
-    /**
+    /**x
      * @Author Simon, Claes
      * Creates a user.
      * @param msg
@@ -71,35 +71,46 @@ public class UserService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String createUser(   String msg){
+    public String createUser(String msg){
         IUserController userController = new UserController();
-        JSONObject json = userController.createUser(new JSONObject(msg));
-        return json.toString();
+        JSONObject output = userController.createUser(new JSONObject(msg));
+        return output.toString();
     }
 
     /**
      * @Author Simon
      * compares given password with the user's hashed database-password.
-     * @param jsonInput
+     * @param msg
      * @return String: whether the password was correct or not.
      */
-    @Path("/checkUser")
+    @Path("/AuthUser")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String userValidation(JSONObject jsonInput){
+    public String userValidation(String msg){
         IUserController userController = new UserController();
-        JSONObject json = userController.userValidation(jsonInput);
-        return json.toString();
+        JSONObject output = userController.userValidation(new JSONObject(msg));
+        return output.toString();
     }
 
     @Path("/setElo")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String setElo(JSONObject input){
+    public String setElo(String msg){
         IUserController userController = new UserController();
-        JSONObject json = userController.setElo(input);
+        JSONObject json = userController.setElo(new JSONObject(msg));
         return json.toString();
     }
+
+
+    @Path("/get10")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String get10(){
+        IUserController userController = new UserController();
+        JSONArray json = userController.getTopTen();
+        return json.toString();
+    }
+
 }
