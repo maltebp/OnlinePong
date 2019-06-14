@@ -6,12 +6,15 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class DatabaseConnector {
-Decoder decodeMessages = new Decoder();
-static String url = "";
+    Decoder decodeMessages = new Decoder();
+
 
     /**
      * Retrieve information about the user from the databse
@@ -27,12 +30,40 @@ static String url = "";
     /**
      * Authenticates a given username + password combination
      */
-    public boolean authenticatePlayer(String username, String password){
+    public boolean authenticatePlayer(String username, String password) {
+
+        //Create connection
+        String resource = "/AuthUser";
+        URL urlForResource = decodeMessages.createURL(resource);
+        HttpURLConnection connection = decodeMessages.createConnection(urlForResource);
+
+
+        //Create JSONObject to sent
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username", username);
+        jsonObject.put("password",password);
+
+        String jsonInputString = jsonObject.toString();
+
+
+        //Sending JSONOBject
+        try(OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+
+
+            jsonObject = decodeMessages.readInputStream(connection);
 
 
 
-        //TODO: Implement this
-        return true;
+            //The message from the API is decoded
+            return decodeMessages.decodeMessage(jsonObject);
+
+        }catch (IOException e){
+            e.getMessage();
+        }
+          return false;
+
     }
 
 
@@ -43,6 +74,12 @@ static String url = "";
      */
     public void updateElo(Player player){
         //TODO: Implement this
+    }
+
+
+    public static void main(String[] args) {
+        DatabaseConnector con = new DatabaseConnector();
+        con.authenticatePlayer("Andreas","123");
     }
 }
 /*
