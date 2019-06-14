@@ -1,20 +1,25 @@
+<html>
+    <head>
+        <!--StyleSheet not needed for this class-->
+    </head>
+    <body>
+        <div>
+            <h2>User Registration</h2>
+            <form id="form">
+                <label for="userName">Username: </label><br>
+                <input type="text" name="username" id="userName"><br><br>
+                <label id="lblPassword" for="password">Password: </label><br>
+                <input type="password" name='password' placeholder="Password" id="password"><br>
+                <input type="password" placeholder="Confirm password" id="passwConf"><br>
+                <label id="registerFailMsg" style="color:red;"> </label><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 
-    <!--<div class="registerPage">-->
-        <h2>User Registration</h2>
-        <form id="form">
-            <label for="userName">Username: </label><br>
-            <input type="text" name="username" id="userName"><br><br>
-            <label id="lblPassword" for="password">Password: </label><br>
-            <input type="password" name='password' placeholder="Password" id="password"><br>
-            <input type="password" placeholder="Confirm password" id="passwConf"><br>
-            <label id="registerFailMsg" style="color:red;"> </label><br><br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+        <!--<script type="text/javascript" src="jquery-3.4.1.js"></script>-->
+        <script type="text/javascript" src="jquery.serializejson.js"></script>
 
-    <!--<script type="text/javascript" src="jquery-3.4.1.js"></script>-->
-    <script type="text/javascript" src="jquery.serializejson.js"></script>
-
-    <script src="UserFunctionality/RegistrationVariables.js"></script>
-    <script src="UserFunctionality/UserRegistration.js"></script>
-
+        <script src="UserFunctionality/RegistrationVariables.js"></script>
+        <script src="UserFunctionality/UserRegistration.js"></script>
+    </body>
+</html>

@@ -46,6 +46,10 @@ making sure that the padding stays inside of the box and that it does not break 
     background-color: rgb(119, 128, 128);
 }
 
+.dynamicContainer {
+    text-align: center;
+}
+
 /*-----    This specifies the style of the right box    -----*/
 .rightBox {
     float: right;
