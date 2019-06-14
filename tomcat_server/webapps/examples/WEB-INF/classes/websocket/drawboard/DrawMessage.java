@@ -28,7 +28,7 @@ import java.awt.geom.Rectangle2D;
  * Note that we use primitive types instead of Point, Color etc.
  * to reduce object allocation.<br><br>
  *
- * TODO: But a Color objects needs to be created anyway for drawing this
+ * TODO: But a Color model needs to be created anyway for drawing this
  * onto a Graphics2D object, so this probably does not save much.
  */
 public final class DrawMessage {

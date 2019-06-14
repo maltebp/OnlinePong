@@ -5,7 +5,7 @@
  */
 
 /**
- * Sets up a new game with new game objects and a chosen final score, then sets the game as running
+ * Sets up a new game with new game model and a chosen final score, then sets the game as running
  *
  * @param chosenScore   The score to reach to win the game
  */
