@@ -1,9 +1,11 @@
 package API.Controller;
 
 import API.DataLayer.IUserDTO;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public interface IUserController {
-    /** @author Claes
+    /** @author Claes and Simon
      *  The purpose of this class is error handeling,
      *  and as a controller it is naturally the thing responsable for
      *  the communication between 'view'part(the part that the User of the API sees) and
@@ -11,14 +13,16 @@ public interface IUserController {
      *  crazy control freak, who does not want any of its emploiess to talk
      *  to anyone else of its emploiess. So that it have full control of all
      *  communication thi-hii #writingDocumentationCanBeFun
-     * @param id The Id of the User we desire userdata from
+     * @param username The Id of the User we desire userdata from
      * @return a User convert to a object that can be used in the local code
      */
-    IUserDTO convertUser(int id);
+    JSONObject convertUser(String username);
 
-    String checkScore(int id, int score);
+    JSONObject createUser(JSONObject input);
 
-    String createUser(String username, String password);
+    JSONObject userValidation(JSONObject input);
 
-    boolean userValidation(int id, String password);
+    JSONObject setElo(JSONObject input);
+
+    JSONArray getTopTen();
 }

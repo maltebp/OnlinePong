@@ -26,6 +26,7 @@
         </plugins>
     </build>
 
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -58,7 +59,6 @@
             <version>4.0.1</version>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -84,6 +84,12 @@
             <groupId>de.mkammerer</groupId>
             <artifactId>argon2-jvm</artifactId>
             <version>2.5</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-moxy</artifactId>
+        <version>2.27</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->

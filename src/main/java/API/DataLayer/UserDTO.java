@@ -1,26 +1,15 @@
 package API.DataLayer;
 
-import java.util.ArrayList;
-
 public class UserDTO implements IUserDTO {
-    private int userId;
     String username;
     String password;
-    ArrayList<Integer> scores = new ArrayList<>();
+    int elo;
 
-    public UserDTO(int userId, String username) {
-        this.userId = userId;
+    public UserDTO(String username) {
         this.username = username;
     }
     public UserDTO(){}
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    public UserDTO(String username, int elo) {this. username = username; this.elo = elo;}
 
     public String getUsername() {
         return username;
@@ -30,23 +19,19 @@ public class UserDTO implements IUserDTO {
         this.username = username;
     }
 
-    public ArrayList<Integer> getScores() {
-        return scores;
-    }
-
-    public void setScores(ArrayList<Integer> scores) {
-        this.scores = scores;
-    }
-
-    public void addScore(int score){
-        scores.add(score);
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getElo() {
+        return elo;
+    }
+
+    public void setElo(int elo) {
+        this.elo = elo;
     }
 }

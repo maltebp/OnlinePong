@@ -1,6 +1,8 @@
+
 package API.DataLayer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to act as database, by using a local ArrayList
@@ -8,7 +10,8 @@ import java.util.ArrayList;
  *
  * @author Andreas and Kristian
  */
-public class UserDAOArray implements IUserDAO {
+
+    public class UserDAOArray implements IUserDAO{
 
     ArrayList<IUserDTO> userList = createArray();
 
@@ -19,14 +22,14 @@ public class UserDAOArray implements IUserDAO {
      */
     private ArrayList<IUserDTO> createArray() {
         for(int i = 0; i<10; i++){
-            userList.add(new UserDTO(i, "Test"+i));
+            userList.add(new UserDTO("Test"+i));
         }
         return null;
     }
 
     @Override
-    public IUserDTO getUser(int id) throws DALException {
-        IUserDTO user = searchUser(id);
+    public IUserDTO getUser(String username) throws DALException {
+        IUserDTO user = searchUser(username);
         if (user != null) {
             return user;
         } else {
@@ -34,30 +37,11 @@ public class UserDAOArray implements IUserDAO {
         }
     }
 
-    @Override
-    public IUserDTO getScore(IUserDTO user) throws DALException {
-        IUserDTO foundUser = searchUser(user.getUserId());
-        if (foundUser != null) {
-            return foundUser;
-        } else {
-            throw new DALException("User doesn't exist");
-        }
-    }
 
-    @Override
-    public String newScore(int id, int score) throws DALException {
-        try {
-            IUserDTO user = searchUser(id);
-            user.addScore(score);
-            return "Score added to the user";
-        } catch (NullPointerException e) {
-            throw new DALException("User doesn't exist - " + e.getMessage());
-        }
-    }
 
     @Override
     public String createUser(String username, String password) throws DALException {
-        IUserDTO user = new UserDTO(userList.size()+1,username);
+        IUserDTO user = new UserDTO(username);
         user.setPassword(password);
         userList.add(user);
         return "User is created";
@@ -66,20 +50,30 @@ public class UserDAOArray implements IUserDAO {
     /**
      * Search through the ArrayList for User by its ID
      *
-     * @param id    ID of User
+     * @param username    username of User
      * @return      User object
      */
-    private IUserDTO searchUser(int id) {
+    private IUserDTO searchUser(String username) {
         for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getUserId() == i) {
+            if (userList.get(i).getUsername().equals(username)) {
                 return userList.get(i);
             }
         }
         return null;
     }
 
+    public String checkHash(String username, String password) {
+        return "true";
+    }
+
     @Override
-    public boolean checkHash(int id, String password) {
-        return true;
+    public String setElo(String username, int elo) throws DALException {
+        return null;
+    }
+
+    @Override
+    public List<IUserDTO> getTopTen() throws DALException {
+        return null;
     }
 }
+
