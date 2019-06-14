@@ -3,7 +3,7 @@ package gameserver.control;
 import gameserver.model.Player;
 
 public class DatabaseConnector {
-
+Decoder decodeMessages = new Decoder();
 
     /**
      * Retrieve information about the user from the databse
