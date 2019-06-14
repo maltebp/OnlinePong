@@ -1,6 +1,7 @@
 package API.Controller;
 
 import API.DataLayer.IUserDTO;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface IUserController {
@@ -17,11 +18,11 @@ public interface IUserController {
      */
     JSONObject convertUser(String username);
 
-    //JSONObject addScore(JSONObject input);
-
     JSONObject createUser(JSONObject input);
 
     JSONObject userValidation(JSONObject input);
 
     JSONObject setElo(JSONObject input);
+
+    JSONArray getTopTen();
 }

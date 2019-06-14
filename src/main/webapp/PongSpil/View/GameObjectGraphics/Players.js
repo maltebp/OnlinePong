@@ -1,11 +1,11 @@
 /**
- * Player objects and the update and rendering functions for them
+ * Player model and the update and rendering functions for them
  *
  * @Author  Kristian Andersen and Jacob Riis
  */
 
 /**
- * Constructor for Player objects with their paddle and scores and their respectively starting positions
+ * Constructor for Player model with their paddle and scores and their respectively starting positions
  */
 function Player1() {
     this.paddle = new Paddle(10, 175, 10, 50);

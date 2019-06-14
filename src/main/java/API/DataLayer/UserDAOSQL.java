@@ -2,10 +2,11 @@ package API.DataLayer;
 
 
 import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Factory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Communication to SQL database
@@ -117,7 +118,7 @@ public class UserDAOSQL implements IUserDAO{
 
             if(set.next()){
                 String dbPass = set.getString("password");
-                if(argon2.verify(dbPass, password));{
+                if(argon2.verify(dbPass, password)){
                     return "1";
                 }
             }
@@ -127,6 +128,14 @@ public class UserDAOSQL implements IUserDAO{
         }
     }
 
+    /**
+     * @Author Simon
+     * set the Elo of a player in the database.
+     * @param username
+     * @param elo
+     * @return String: error message.
+     * @throws DALException
+     */
     public String setElo(String username, int elo) throws DALException{
         try(Connection con = createConnection()){
            String query = "UPDATE users SET elo = ? WHERE username = ?";
@@ -134,10 +143,39 @@ public class UserDAOSQL implements IUserDAO{
            preparedStatement.setInt(1, elo);
            preparedStatement.setString(2, username);
            preparedStatement.execute();
-           return "0";
+           return "1";
 
         }catch(SQLException e){
             throw new DALException("-1");
+        }
+    }
+    public List<IUserDTO> getTopTen() throws DALException{
+        try(Connection con = createConnection()){
+            String query = "SELECT username, elo FROM users ORDER BY elo DESC";
+            ResultSet set = con.createStatement().executeQuery(query);
+            ArrayList<IUserDTO> users= new ArrayList<>();
+
+            int i = 0;
+            while(set.next() && i < 10){
+                IUserDTO tempUser = new UserDTO(set.getString("username"), set.getInt("elo"));
+                users.add(tempUser);
+                i++;
+            }
+            return users;
+
+        }catch(SQLException e){
+            throw new DALException("-1");
+        }
+    }
+
+    public void deleteUser(String username) throws DALException{
+        try(Connection con = createConnection()){
+            String query = "DELETE FROM users WHERE username = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1,username);
+            preparedStatement.execute();
+            }catch(SQLException e) {
+            e.getMessage();
         }
     }
 }

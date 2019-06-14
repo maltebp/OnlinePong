@@ -1,8 +1,7 @@
 package API.DataLayer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IUserDAO {
     /**@author Claes, Simon
@@ -41,7 +40,32 @@ public interface IUserDAO {
      */
     String checkHash(String username, String password) throws DALException;
 
+    /**
+     * updates the elo of a player in the database
+     * @param username
+     * @param elo
+     * @return String: error message
+     * @throws DALException
+     */
     String setElo(String username, int elo) throws DALException;
+
+    /**
+     * @author Simon
+     * Get the 10 users with highest elo rating.
+     * @return IUserDTO List.
+     * @throws DALException
+     */
+    List<IUserDTO> getTopTen() throws DALException;
+
+    /**
+     * @author Simon
+     * Deleting users in the DB.
+     * This function is exclusively for testing purposes.
+     * @param username
+     * @throws DALException
+     */
+    public void deleteUser(String username) throws DALException;
+
 
     /**
      * Customizable exception for explaining Database Access Layer exceptions

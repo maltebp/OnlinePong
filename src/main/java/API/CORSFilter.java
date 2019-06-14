@@ -1,4 +1,4 @@
-package jersey;
+package API;
 
 
 import javax.annotation.Priority;

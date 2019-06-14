@@ -1,7 +1,5 @@
 package API.DataLayer;
 
-import java.util.ArrayList;
-
 public class UserDTO implements IUserDTO {
     String username;
     String password;
@@ -11,6 +9,7 @@ public class UserDTO implements IUserDTO {
         this.username = username;
     }
     public UserDTO(){}
+    public UserDTO(String username, int elo) {this. username = username; this.elo = elo;}
 
     public String getUsername() {
         return username;

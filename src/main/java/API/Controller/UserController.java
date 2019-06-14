@@ -5,9 +5,13 @@ import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAOSQL;
 import API.DataLayer.UserDTO;
 import API.DataLayer.IUserDAO.DALException;
+import com.sun.deploy.cache.DefaultLocalApplicationProperties;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.DataFormatException;
 
 
@@ -104,4 +108,30 @@ public class UserController implements IUserController{
             return output;
         }
     }
+
+    public JSONArray getTopTen(){
+        JSONArray jUsers = new JSONArray();
+
+        try{
+            List<IUserDTO> iUsers = UserDAO.getTopTen();
+            for(IUserDTO x: iUsers){
+                JSONObject jObject = new JSONObject();
+                jObject.put("username", x.getUsername());
+                jObject.put("elo", x.getElo());
+                jUsers.put(jObject);
+            }
+            return jUsers;
+
+        }catch(DALException e){
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        IUserController userController = new UserController();
+        JSONArray jUsers;
+        jUsers = userController.getTopTen();
+        System.out.println(jUsers.toString());
+    }
+
 }
