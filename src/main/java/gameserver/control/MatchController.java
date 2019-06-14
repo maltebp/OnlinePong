@@ -47,6 +47,8 @@ class MatchController {
      * of that player.
      */
     void dataRecieved( Player player, String dataMsg ){
+        //TODO: remote sout
+        System.out.println("Datatecived: "+dataMsg);
         Match match = playerGame.get(player);
         Player opponent = match.getOpponent(player);
         if(opponent != null ){

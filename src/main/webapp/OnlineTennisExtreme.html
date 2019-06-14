@@ -38,7 +38,7 @@
                         <h2>Login </h2>
                         <p>Username: <input id="Username" type="text" Username=""></p>
                         <p>Password: <input id="Password" type="password" Password ="" ></p>
-                        <p><button type="button" id="startButton" onclick="createConnection();">Login</button></p>
+                        <p><button type="button" id="startButton" onclick="createConnection()">Login</button></p>
                         <p> Don't have an account? <a href="RegisterPage.html">Register</a> </p>
                         <p id ="messagesFromServer"></p><p id="loading"></p>
 
@@ -50,7 +50,6 @@
             </div>
             <!-- Remember the order of the scripts!-->
             <!-- First we get the backgrounds Graphics-->
-            <script src="PongSpil/View/GameObjectGraphics/jsToGameServer.js"></script>
             <script src="PongSpil/GlobalVariables.js"></script>
             <script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>
             <script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>
@@ -61,6 +60,7 @@
             <script src="PongSpil/Model/GameStateObject.js"></script>
             <script src="PongSpil/Model/Initialize.js"></script>
             <script src="PongSpil/Model/SetupGame.js"></script>
+            <script src="PongSpil/Model/jsToGameServer.js"></script>
 
             <!-- Finally we get the GameObjects that we play the game with-->
             <script src="PongSpil/View/Render.js"></script>

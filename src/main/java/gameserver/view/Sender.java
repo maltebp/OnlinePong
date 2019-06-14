@@ -3,6 +3,8 @@ package gameserver.view;
 import gameserver.model.Player;
 import org.json.JSONObject;
 
+import javax.websocket.Session;
+
 
 /**
  * Defines methods for sending messages to a Player. Is to be implemented
