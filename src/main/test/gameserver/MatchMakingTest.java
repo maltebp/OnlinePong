@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 import static java.lang.Thread.sleep;
 
-public class EloTest {
+public class MatchMakingTest {
 
     private TestConnector connector;
 
@@ -61,7 +61,7 @@ public class EloTest {
     @Test
     public void testSeperateWindows() throws InterruptedException{
 
-        TestPlayer jacob = connectPlayer("Jacob", 1000);
+        TestPlayer jacob = connectPlayer("Jacob", 1337);
 
         sleep(10000);
         // Jacobs window should now be 36, allowing him to match up with Andreas

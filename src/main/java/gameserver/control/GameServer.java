@@ -64,6 +64,17 @@ public class GameServer {
                         matchController.dataRecieved(player, textMessage);
                     break;
 
+                case 11:
+                    if( playerController.playerIsAuthenticated(player)) {
+                        Player opponent = matchController.playerHasWon(player, textMessage);
+                        //matchController.adjustRating(player, opponent);
+                        databaseConnector.updateElo(player);
+                        databaseConnector.updateElo(opponent);
+                        removePlayer(player);
+                        removePlayer(opponent);
+                    }
+
+
                 // Code not recognized
                 default:
                     sender.sendWrongMessageFormat(player, "Unknown code");

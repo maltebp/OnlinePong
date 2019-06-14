@@ -57,6 +57,36 @@ class MatchController {
 
 
     /**
+     * Signals that the opponent of a Player has won
+     * the match.
+     * Run by GameServer after recieving a 011 message
+     * from losing player.
+     *
+     * @param player Losing player sending message
+     * @param message Message containing code (possible extra information in the future)
+     * @return The winning Player of the match
+     */
+    Player playerHasWon(Player player, String message) {
+        Match match = playerGame.get(player);
+        if( match != null ){
+            playerGame.remove(player);
+            Player opponent = match.getOpponent(player);
+            if(opponent != null ){
+                playerGame.remove(opponent);
+                sender.sendMessage(opponent, message);
+            }
+        }
+        return null;
+    }
+/*
+
+    void adjustRating(Player winner, Player loser){
+
+        Player winnerChance =
+
+    }*/
+
+    /**
      * Removes a Player from its match, if its
      * participating in one.
      *
@@ -90,4 +120,6 @@ class MatchController {
             playerGame.remove(player);
         }
     }
+
+
 }
