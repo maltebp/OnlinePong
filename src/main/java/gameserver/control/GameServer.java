@@ -2,6 +2,7 @@ package gameserver.control;
 
 import gameserver.model.Player;
 import gameserver.view.Sender;
+import gameserver.view.websocket.WebSocketController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ public class GameServer {
         playerController = new PlayerController(sender);
         matchController = new MatchController(sender);
         matchmaker = new Matchmaker(sender, matchController);
+
     }
 
 
@@ -62,6 +64,8 @@ public class GameServer {
                     if( playerController.playerIsAuthenticated(player))
                         matchController.dataRecieved(player, textMessage);
                     break;
+
+                    //When closing the connection (e.g if the password or username i wrong
 
                 // Code not recognized
                 default:
