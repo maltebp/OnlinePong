@@ -16,26 +16,31 @@ public class Decoder {
 
 
 
-        public HttpURLConnection createConnection(URL urlForPOSTRequest){
+        public HttpURLConnection createConnection(URL urlForPOSTRequest, String requestType) {
             try {
                 HttpURLConnection connection = (HttpURLConnection) urlForPOSTRequest.openConnection();
 
-                connection.setRequestMethod("POST");
+
+                //Designing the request
+                connection.setRequestMethod(requestType);
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setRequestProperty("Accept", "application/json");
 
                 //Enable writing to outputStream
                 connection.setDoOutput(true);
                 return connection;
-            }catch (ProtocolException x){
-                x.getMessage();
-                }catch (IOException e){
-                    e.getMessage();
-                }
+
+            } catch (ProtocolException x) {
+                x.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace();
 
 
-            return null;
+
+            }return null;
         }
+
 
         public JSONObject readInputStream(HttpURLConnection connection){
 
@@ -50,8 +55,6 @@ public class Decoder {
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }
-                System.out.println(response.toString());
-
 
                 //Converting stringbuffer to JSON object
                 JSONObject obj = new JSONObject(response.toString());
@@ -96,8 +99,6 @@ public class Decoder {
             }
             return answer;
     }
-
-
 }
 
 

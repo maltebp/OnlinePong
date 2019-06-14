@@ -96,11 +96,11 @@ public class UserService {
     @Path("/setElo")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String setElo(String msg){
+    //@Produces(MediaType.APPLICATION_JSON)
+    public void setElo(String msg){
         IUserController userController = new UserController();
         JSONObject json = userController.setElo(new JSONObject(msg));
-        return json.toString();
+        //return json.toString();
     }
 
 
@@ -111,5 +111,14 @@ public class UserService {
         IUserController userController = new UserController();
         JSONArray json = userController.getTopTen();
         return json.toString();
+    }
+
+    public static void main(String[] args) {
+        JSONObject palyer = new JSONObject();
+        palyer.put("username","Andreas");
+        palyer.put("elo",200);
+
+        UserService service = new UserService();
+        service.setElo(palyer.toString());
     }
 }

@@ -2,13 +2,9 @@ package gameserver.control;
 
 import gameserver.model.Player;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -23,7 +19,20 @@ public class DatabaseConnector {
      * @param player Player object to put the data into
      */
     public void setPlayerInformation(Player player) {
-        //TODO: Implement this
+
+
+        String resource = "/"+player.getUsername();
+        URL urlForResource = decodeMessages.createURL(resource);
+        HttpURLConnection connection = decodeMessages.createConnection(urlForResource, "GET");
+
+        JSONObject jsonObject = decodeMessages.readInputStream(connection);
+
+        //Here we can update whatever we want
+        player.setRating(jsonObject.getInt("elo"));
+
+        System.out.println(jsonObject.get("username"));
+        System.out.println(player.getRating());
+
     }
 
 
@@ -35,7 +44,7 @@ public class DatabaseConnector {
         //Create connection
         String resource = "/AuthUser";
         URL urlForResource = decodeMessages.createURL(resource);
-        HttpURLConnection connection = decodeMessages.createConnection(urlForResource);
+        HttpURLConnection connection = decodeMessages.createConnection(urlForResource, "POST");
 
 
         //Create JSONObject to sent
@@ -54,8 +63,6 @@ public class DatabaseConnector {
 
             jsonObject = decodeMessages.readInputStream(connection);
 
-
-
             //The message from the API is decoded
             return decodeMessages.decodeMessage(jsonObject);
 
@@ -73,120 +80,53 @@ public class DatabaseConnector {
      * @param player Player object to retrieve Elo-rating from
      */
     public void updateElo(Player player){
-        //TODO: Implement this
+
+        String resource = "/setElo";
+        URL urlForResource = decodeMessages.createURL(resource);
+        HttpURLConnection connection = decodeMessages.createConnection(urlForResource, "POST");
+
+        //Create JSONObject to sent
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username", player.getUsername());
+        jsonObject.put("elo",player.getRating());
+
+        String jsonInputString = jsonObject.toString();
+
+        //Sending JSONOBject
+        try(OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+
+            jsonObject = decodeMessages.readInputStream(connection);
+
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+
     }
 
 
     public static void main(String[] args) {
+
+        Player malte = new Player();
+
+
+        malte.setUsername("Andreas");
         DatabaseConnector con = new DatabaseConnector();
+
+        System.out.println("authendicate Player");
         con.authenticatePlayer("Andreas","123");
+
+        System.out.println("setPlayerInformation");
+        con.setPlayerInformation(malte);
+        malte.setRating(333);
+
+        System.out.println("updateElo");
+        con.updateElo(malte);
+
+        System.out.println("setPlayerInformation");
+        con.setPlayerInformation(malte);
     }
 }
-/*
-
-    public static boolean getUserStats(int id) {
-        url = url + id;
-
-        try {
-            URL urlForGetRequest = new URL(url);
-
-
-            HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
-
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
-
-
-
-            JSONObject respons = getResponseFromRest(connection);
-
-            System.out.println(respons.get("userId"));
-
-            return true;
-
-        }catch (IOException e){
-            e.getMessage();
-        }
-        return false;
-
-
-
-
-        try {
-            URL urlForGetRequest = new URL(url);
-
-            HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
-
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("userid", Integer.toString(id) );
-
-
-            //If the HTTP responsecode is 202
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                String readLine = null;
-                BufferedReader in = new BufferedReader(
-
-                        new InputStreamReader(connection.getInputStream()));
-
-                StringBuffer response = new StringBuffer();
-
-                while ((readLine = in.readLine()) != null) {
-
-                    response.append(readLine);
-
-                }
-                in.close();
-
-                String res = response.toString();
-
-
-                JSONObject ob1 = generateObject(res);
-
-                System.out.println(ob1.getString("username"));
-
-                System.out.println(res);
-                return true;
-            }
-
-        } catch (IOException e) {
-            e.getMessage();
-        }
-        return false;
-
-
-
-    }
-
-
-    private static JSONObject getResponseFromRest(HttpURLConnection conn) {
-        HttpURLConnection connection = conn;
-        try {
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                String readLine = null;
-                BufferedReader in = new BufferedReader(
-
-                        new InputStreamReader(connection.getInputStream()));
-
-                StringBuffer responded = new StringBuffer();
-
-                while ((readLine = in.readLine()) != null) {
-
-                    responded.append(readLine);
-
-                }
-                in.close();
-
-                System.out.println(responded.toString());
-
-                JSONObject obj = new JSONObject(responded.toString());
-
-                return obj;
-            }
-
-        } catch (IOException e) {
-            e.getMessage();
-        }
-        return null;
-    }
- */
