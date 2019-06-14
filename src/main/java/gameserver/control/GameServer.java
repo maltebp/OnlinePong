@@ -22,6 +22,7 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
 
     public GameServer(Sender sender){
@@ -48,7 +49,7 @@ public class GameServer {
                 case 1:
                     String username = msg.getString("username");
                     String password = msg.getString("password");
-                    if( playerController.addPlayer(player, username, password) ){
+                    if( playerController.addPlayer(player, username, password, databaseConnector) ){
                         matchmaker.addPlayer(player);
                     }
                     break;
@@ -65,7 +66,12 @@ public class GameServer {
                         matchController.dataRecieved(player, textMessage);
                     break;
 
-                    //When closing the connection (e.g if the password or username i wrong
+                case 11:
+                    if( playerController.playerIsAuthenticated(player)) {
+                        matchController.matchFinished(player, false);
+                        playerController.removePlayer(player);
+                    }
+                    break;
 
                 // Code not recognized
                 default:
