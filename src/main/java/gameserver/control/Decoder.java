@@ -57,9 +57,8 @@ public class Decoder {
             }
 
             //Converting stringbuffer to JSON object
-            JSONObject obj = new JSONObject(response.toString());
+            return new JSONObject(response.toString());
 
-            return obj;
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -84,11 +83,11 @@ public class Decoder {
         boolean answer = false;
         switch (Integer.parseInt(code)) {
             case 1:
-                System.out.println("Success");
+                System.out.println("Success, positiv respons from API");
                 answer = true;
                 break;
             case 0:
-                System.out.println("User does not exist");
+                System.out.println("API failed to execute requestt");
                 answer = false;
                 break;
             case -2:

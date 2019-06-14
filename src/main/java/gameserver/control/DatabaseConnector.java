@@ -23,12 +23,11 @@ public class DatabaseConnector {
         HttpURLConnection connection = decodeMessages.createConnection(urlForResource, "GET");
 
         JSONObject jsonObject = decodeMessages.readInputStream(connection);
-
+        decodeMessages.decodeMessage(jsonObject);
         //Here we can update whatever we want
         player.setRating(jsonObject.getInt("elo"));
 
-        System.out.println(jsonObject.get("username"));
-        System.out.println(player.getRating());
+
 
     }
 
