@@ -49,7 +49,7 @@ class MatchController {
      * Player participating in a match to the opponent
      * of that player.
      */
-    void dataRecieved( Player player, String dataMsg ){
+    void dataRecieved(Player player, String dataMsg ){
         Match match = playerGame.get(player);
         Player opponent = match.getOpponent(player);
         if(opponent != null ){

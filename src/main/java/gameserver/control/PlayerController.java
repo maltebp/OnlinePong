@@ -32,12 +32,13 @@ class PlayerController {
      *
      * @return Whether or not the player was validated
      */
-    boolean addPlayer( Player player, String username, String password, DatabaseConnector databaseConnector ){
+    boolean addPlayer(Player player, String username, String password, DatabaseConnector databaseConnector ){
 
         if( databaseConnector.authenticatePlayer(username, password) ){
 
             if( !usernameExists(username)){
                 players.add(player);
+                player.setUsername(username);
                 databaseConnector.setPlayerInformation(player);
                 return true;
             }else{

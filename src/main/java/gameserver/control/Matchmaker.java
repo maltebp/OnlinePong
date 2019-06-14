@@ -84,8 +84,8 @@ public class Matchmaker extends Thread{
                     Can't do this in the other loop. */
                 for(MatchPlayer player : matchedPlayers){
                     lookingForMatch.remove(player);
-                    sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
                     player.setHasAcceptedMatch(false);
+                    sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
                 }
 
                 sleep((long) MATCHMAKING_FREQ * 1000);
@@ -136,11 +136,13 @@ public class Matchmaker extends Thread{
      * Signals that a Player accepts a match.
      * Initializes the match if both Players have accepted.
      */
-    void playerAcceptsMatch(Player player){
+    synchronized void playerAcceptsMatch(Player player){
         MatchPlayer matchPlayer = matchPlayers.get(player);
         if( matchPlayer.getMatchedOpponent() != null ){
             matchPlayer.setHasAcceptedMatch(true);
-            if( matchPlayer.hasAcceptedMatch()){
+            if( matchPlayer.getMatchedOpponent().hasAcceptedMatch() ){
+                matchPlayers.remove(player);
+                matchPlayers.remove(matchPlayer.getMatchedOpponent().getPlayer());
                 matchController.startMatch(player, matchPlayer.getMatchedOpponent().getPlayer());
             }
         }else{
@@ -172,13 +174,15 @@ public class Matchmaker extends Thread{
      */
     void removePlayer(Player player){
         MatchPlayer matchPlayer = matchPlayers.get(player);
-        if( !lookingForMatch.remove(matchPlayer) ){
-            MatchPlayer opponent = matchPlayer.getMatchedOpponent();
-            if( opponent != null ){
-                opponent.setMatchedOpponent(null);
-                opponent.setHasAcceptedMatch(false);
-                lookingForMatch.add(opponent);
-                sender.sendFindingGame(opponent.getPlayer(), 0);
+        if(matchPlayer != null ){
+            if( !lookingForMatch.remove(matchPlayer) ){
+                MatchPlayer opponent = matchPlayer.getMatchedOpponent();
+                if( opponent != null ){
+                    opponent.setMatchedOpponent(null);
+                    opponent.setHasAcceptedMatch(false);
+                    lookingForMatch.add(opponent);
+                    sender.sendFindingGame(opponent.getPlayer(), 0);
+                }
             }
         }
     }

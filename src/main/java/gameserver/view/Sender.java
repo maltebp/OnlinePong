@@ -46,7 +46,7 @@ public abstract class Sender {
      * CODE: 102
      * Informs client that a game has been found
      */
-    public void sendFoundGame( Player player, Player opponent ){
+    public void sendFoundGame(Player player, Player opponent ){
         JSONObject msg = getCodeMsg(102);
         msg.put("username",opponent.getUsername());
         msg.put("rating",opponent.getRating());
@@ -60,7 +60,7 @@ public abstract class Sender {
      *
      * @param initUpdate If the client is to start data transmission
      */
-    public void sendStartGame( Player player, boolean initUpdate ){
+    public void sendStartGame(Player player, boolean initUpdate ){
         JSONObject msg = getCodeMsg(103);
         msg.put( "initUpdate", initUpdate );
         sendMessage(player, msg.toString());
@@ -76,7 +76,7 @@ public abstract class Sender {
      * @param ratingChange The change occured to the recievers rating after match
      * @param opponentRatingChange The change occured to the opponent's rating after match
      */
-    public void sendGameFinished( Player player, boolean hasWon, int ratingChange, int opponentRatingChange){
+    public void sendGameFinished(Player player, boolean hasWon, int ratingChange, int opponentRatingChange){
         JSONObject msg = getCodeMsg(104);
         msg.put("hasWon", hasWon);
         msg.put("ratingChange", ratingChange);

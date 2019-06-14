@@ -69,6 +69,7 @@ public class GameServer {
                         matchController.matchFinished(player, false);
                         playerController.removePlayer(player);
                     }
+                    break;
 
                 // Code not recognized
                 default:
