@@ -30,11 +30,9 @@ public class Matchmaker extends Thread{
     private static final double INITIAL_RATING_WINDOW = 100;
 
     // List of players looking for a match
-    private HashMap<Player, MatchPlayer> matchPlayers = new HashMap<>();
-    private LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
+    private final HashMap<Player, MatchPlayer> matchPlayers = new HashMap<>();
+    private final LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
 
-    // TODO: Consider if this should remain
-    private final Object listLock = new Object();
 
 
 
@@ -58,14 +56,17 @@ public class Matchmaker extends Thread{
 
             while (true) {
 
-                // List of players we have found a match for
-                LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
-
-                // Copying the list so we can remove players as we evaluate they can't be matched
-                LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
 
 
-                synchronized (listLock){
+                synchronized (lookingForMatch){
+                    // List of players we have found a match for
+                    LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
+
+                    // Copying the list so we can remove players as we evaluate they can't be matched
+                    LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
+
+
+
                     for (MatchPlayer player : lookingForMatch) {
                         if( remainingPlayers.remove(player) ){
 
@@ -166,8 +167,10 @@ public class Matchmaker extends Thread{
     void addPlayer(Player player){
         MatchPlayer matchmakingPlayer = new MatchPlayer(player);
         matchPlayers.put(player, matchmakingPlayer);
-        lookingForMatch.add(matchmakingPlayer);
         sender.sendFindingGame(player, 0);
+        synchronized (lookingForMatch){
+            lookingForMatch.add(matchmakingPlayer);
+        }
     }
 
 
@@ -183,13 +186,15 @@ public class Matchmaker extends Thread{
     void removePlayer(Player player){
         MatchPlayer matchPlayer = matchPlayers.get(player);
         if(matchPlayer != null ){
-            if( !lookingForMatch.remove(matchPlayer) ){
-                MatchPlayer opponent = matchPlayer.getMatchedOpponent();
-                if( opponent != null ){
-                    opponent.setMatchedOpponent(null);
-                    opponent.setHasAcceptedMatch(false);
-                    lookingForMatch.add(opponent);
-                    sender.sendFindingGame(opponent.getPlayer(), 0);
+            synchronized (lookingForMatch) {
+                if (!lookingForMatch.remove(matchPlayer)) {
+                    MatchPlayer opponent = matchPlayer.getMatchedOpponent();
+                    if (opponent != null) {
+                        opponent.setMatchedOpponent(null);
+                        opponent.setHasAcceptedMatch(false);
+                        lookingForMatch.add(opponent);
+                        sender.sendFindingGame(opponent.getPlayer(), 0);
+                    }
                 }
             }
         }
