@@ -1,4 +1,4 @@
-package gameserver.control;
+package gameserver.control.ratingalgorithm;
 
 public interface RatingAlgorithm {
 

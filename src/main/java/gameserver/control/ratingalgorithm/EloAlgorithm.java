@@ -1,5 +1,7 @@
-package gameserver.control;
+package gameserver.control.ratingalgorithm;
 
+
+import gameserver.control.ratingalgorithm.RatingAlgorithm;
 
 /**
  * ELO-RATING

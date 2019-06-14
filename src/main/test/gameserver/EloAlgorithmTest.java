@@ -1,6 +1,6 @@
 package gameserver;
 
-import gameserver.control.EloAlgorithm;
+import gameserver.control.ratingalgorithm.EloAlgorithm;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

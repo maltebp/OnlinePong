@@ -1,5 +1,7 @@
 package gameserver.control;
 
+import gameserver.control.ratingalgorithm.EloAlgorithm;
+import gameserver.control.ratingalgorithm.RatingAlgorithm;
 import gameserver.model.Match;
 import gameserver.model.Player;
 import gameserver.view.Sender;
