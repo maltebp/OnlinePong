@@ -66,14 +66,9 @@ public class GameServer {
 
                 case 11:
                     if( playerController.playerIsAuthenticated(player)) {
-                        Player opponent = matchController.playerHasWon(player, textMessage);
-                        //matchController.adjustRating(player, opponent);
-                        databaseConnector.updateElo(player);
-                        databaseConnector.updateElo(opponent);
-                        removePlayer(player);
-                        removePlayer(opponent);
+                        matchController.matchFinished(player, false);
+                        playerController.removePlayer(player);
                     }
-
 
                 // Code not recognized
                 default:
@@ -95,11 +90,6 @@ public class GameServer {
         matchmaker.removePlayer(player);
         matchController.removePlayer(player);
         playerController.removePlayer(player);
-    }
-
-
-    public void setDatabaseConnector(DatabaseConnector databaseConnector){
-        this.databaseConnector = databaseConnector;
     }
 
 }

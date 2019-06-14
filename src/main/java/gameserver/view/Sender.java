@@ -67,6 +67,24 @@ public abstract class Sender {
     }
 
 
+
+    /**
+     * CODE: 104
+     * Informs client that the game has finished, either by
+     *
+     * @param hasWon True: reciever has won, False: reciever has lost
+     * @param ratingChange The change occured to the recievers rating after match
+     * @param opponentRatingChange The change occured to the opponent's rating after match
+     */
+    public void sendGameFinished( Player player, boolean hasWon, int ratingChange, int opponentRatingChange){
+        JSONObject msg = getCodeMsg(104);
+        msg.put("hasWon", hasWon);
+        msg.put("ratingChange", ratingChange);
+        msg.put("opponentRatingChange",opponentRatingChange);
+        sendMessage(player, msg.toString());
+    }
+
+
     // ERROR MESSAGES ---------------------------------------------------
 
     /**
@@ -135,9 +153,14 @@ public abstract class Sender {
      * during the match.
      * Match will be stopped and connection to client closed.
      */
-    public void sendOpponentDisconnected(Player player){
-        sendMessage(player, getCodeMsg(210).toString());
+    public void sendOpponentDisconnected(Player player, int ratingChange, int opponentRatingChange){
+        JSONObject msg = getCodeMsg(210);
+        msg.put("ratingChange", ratingChange);
+        msg.put("opponentRatingChange",opponentRatingChange);
+        sendMessage(player, msg.toString());
     }
+
+
 
 
     /**
