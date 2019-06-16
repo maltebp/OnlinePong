@@ -59,10 +59,10 @@ public class APIConnector implements DatabaseConnector {
         jsonObject.put("username", player.getUsername());
         jsonObject.put("elo",player.getRating());
 
-        connection.close();
-
         //Sending JSONOBject
         connection.sendMessage(jsonObject);
+        connection.getResponse(); // We need to read response before the database will update
+        connection.close();
     }
 
 

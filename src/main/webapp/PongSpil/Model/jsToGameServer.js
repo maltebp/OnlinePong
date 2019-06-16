@@ -5,7 +5,7 @@ var chosenScore = 10;
 
 function createConnection() {
 
-    connection = new WebSocket("ws://localhost/gameserver");
+    connection = new WebSocket("ws://localhost:8080/gameserver");
 
     connection.onopen = function () {
         initializingMessage001();
