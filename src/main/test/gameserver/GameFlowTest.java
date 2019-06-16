@@ -113,4 +113,6 @@ public class GameFlowTest {
         malte = connectPlayer("malte", "pandekage", 0 );
         assertSame(ClientState.WAITING_FOR_GAME, malte.getState());
     }
+
+
 }

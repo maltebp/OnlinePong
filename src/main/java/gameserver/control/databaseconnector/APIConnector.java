@@ -2,20 +2,17 @@ package gameserver.control.databaseconnector;
 
 import gameserver.model.Player;
 import org.json.JSONObject;
-import java.net.URL;
-
-
 
 public class APIConnector implements DatabaseConnector {
 
-    private APIConnection decodeMessages = new APIConnection();
 
     public void setPlayerInformation(Player player) {
 
         String resource = "/"+player.getUsername();
-        URL urlForResource = decodeMessages.createURL(resource);
-        decodeMessages.createConnection(urlForResource, "GET");
-        JSONObject jsonObject = decodeMessages.getResponse();
+
+        APIConnection connection = new APIConnection(resource, "GET");
+        JSONObject jsonObject = connection.getResponse();
+        connection.close();
 
         //Here we can update whatever we want
         player.setRating(jsonObject.getInt("elo"));
@@ -29,8 +26,7 @@ public class APIConnector implements DatabaseConnector {
 
         //Create connection
         String resource = "/AuthUser";
-        URL urlForResource = decodeMessages.createURL(resource);
-        decodeMessages.createConnection(urlForResource, "POST");
+        APIConnection connection = new APIConnection(resource, "POST");
 
         //Create JSONObject to send
         JSONObject jsonObject = new JSONObject();
@@ -38,8 +34,10 @@ public class APIConnector implements DatabaseConnector {
         jsonObject.put("password",password);
 
         //Sending JSONOBject
-        decodeMessages.sendMessage(jsonObject);
-        jsonObject = decodeMessages.getResponse();
+        connection.sendMessage(jsonObject);
+        jsonObject = connection.getResponse();
+
+        connection.close();
 
         //Reading response from API
         return jsonObject.getInt("code") == 1;
@@ -54,16 +52,17 @@ public class APIConnector implements DatabaseConnector {
     public void updateElo(Player player){
 
         String resource = "/setElo";
-        URL urlForResource = decodeMessages.createURL(resource);
-        decodeMessages.createConnection(urlForResource, "POST");
+        APIConnection connection = new APIConnection(resource, "POST");
 
         //Create JSONObject to sent
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username", player.getUsername());
         jsonObject.put("elo",player.getRating());
 
+        connection.close();
+
         //Sending JSONOBject
-        decodeMessages.sendMessage(jsonObject);
+        connection.sendMessage(jsonObject);
     }
 
 

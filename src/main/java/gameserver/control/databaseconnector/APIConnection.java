@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 
@@ -17,13 +18,11 @@ public class APIConnection {
     private static final String API_URL = "http://localhost:8080/rest/service";
     private HttpURLConnection connection;
 
-
-    public void createConnection(URL resourceURL, String requestType) {
+    public APIConnection(String resourceUrl, String requestType){
         try {
-            if(connection != null){
-                connection.disconnect();
-            }
-            connection = (HttpURLConnection) resourceURL.openConnection();
+
+            URL url = createURL(resourceUrl);
+            connection = (HttpURLConnection) url.openConnection();
 
             //Designing the request
             connection.setRequestMethod(requestType);
@@ -75,8 +74,11 @@ public class APIConnection {
         }
     }
 
+    public void close(){
+        connection.disconnect();
+    }
 
-    public URL createURL(String resource) {
+    private URL createURL(String resource) {
         try {
             return new URL(API_URL.concat(resource));
         } catch (MalformedURLException e) {
