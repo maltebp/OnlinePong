@@ -151,13 +151,11 @@ function initializingMessage001(){
 function finishedGame(jsonObject){
 console.log("Finishing Game");
     endGame();
-if(jsonObject.hasWon===true) {
-        console.log("EndGane");
-
-        document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
+    if(jsonObject.hasWon===true) {
+            document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
     }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game:(";}
 
-    document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
+document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
 console.log("Should have printed");
 
 }
@@ -167,7 +165,6 @@ function  checkForWinner(){
     if(player2.score.score === chosenScore) {
         var winner = {"code": 11};
         var jsonString = JSON.stringify(winner);
-        console.log(winner.code);
         connection.send(jsonString);
     }
 

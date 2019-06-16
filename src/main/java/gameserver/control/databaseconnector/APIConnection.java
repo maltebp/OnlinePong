@@ -14,7 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * APIConnection class contains a constructor for the connection, and methods for managing that connection.
- * These methods are: getResponse from API(recieving bytes from InPutStream), send a message into OutputStream.
+ * These methods are: getResponse from API(recieving bytes from InPutStream), send a message into OutputStream,
+ * and close connection.
  *
  */
 public class APIConnection {
@@ -22,6 +23,11 @@ public class APIConnection {
     private static final String API_URL = "http://localhost:8080/rest/service";
     private HttpURLConnection connection;
 
+    /**
+     * Constructor: Creates the connection to the requested URL. The connection headder, is set by the request type.
+     * @param resourceUrl
+     * @param requestType
+     */
     public APIConnection(String resourceUrl, String requestType){
         try {
 
@@ -40,7 +46,10 @@ public class APIConnection {
         }
     }
 
-
+    /**
+     * Retrives the message from the inputStream.
+     * @return
+     */
     public JSONObject getResponse() {
 
         try (BufferedReader br = new BufferedReader(
@@ -65,7 +74,10 @@ public class APIConnection {
         return null;
     }
 
-
+    /**
+     * Sends the message to the outputstream.
+     * @param jsonObject
+     */
     public void sendMessage(JSONObject jsonObject) {
         String jsonString = jsonObject.toString();
 
@@ -78,6 +90,9 @@ public class APIConnection {
         }
     }
 
+    /**
+     * Closing the nonnection.
+     */
     public void close(){
         connection.disconnect();
     }
