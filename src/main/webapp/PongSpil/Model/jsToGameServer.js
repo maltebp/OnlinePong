@@ -91,7 +91,7 @@ function initializeGame(){
 
 function acceptGame002(){
     var obj = {
-        "code": 002
+        "code": 2
     };
     var jsonString = JSON.stringify(obj);
     connection.send(jsonString);
