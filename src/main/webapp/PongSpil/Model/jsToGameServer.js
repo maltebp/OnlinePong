@@ -81,7 +81,7 @@ function findingGame(jsonObject){
 
 
 function initializeGame(){
-    startButton.style.display = 'none';
+
     document.getElementById("loading").innerHTML = "A game has been found...";
     canvas.style.display = 'inline';
     setupGame(chosenScore);
@@ -131,6 +131,7 @@ function unableToAuthendizise(){
 
 function wrongUserNameOrPassword(){
     document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
+    startButton.style.display = 'inline';
     connection.close();
 
 
@@ -142,10 +143,12 @@ function initializingMessage001(){
         "username": document.forms["loginForm"]["Username"].value,
         "password": document.forms["loginForm"]["Password"].value
 
+
     };
     console.log(user);
     connection.send(JSON.stringify(user));
     startButton.style.display = 'none';
+
 }
 
 function finishedGame(jsonObject){
