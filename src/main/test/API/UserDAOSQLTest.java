@@ -21,13 +21,13 @@ public class UserDAOSQLTest {
     @Test
     public void getUser() {
 
-        try{
+        try {
             testDAO.createUser("testUser", "pass");
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
             assertEquals("testUser", user.getUsername());
             assertEquals(500, user.getElo());
-        }catch(IUserDAO.DALException e){
+        } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
 
@@ -40,32 +40,32 @@ public class UserDAOSQLTest {
             IUserDTO user = testDAO.getUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
             assertEquals(500, user.getElo());
-        }catch(IUserDAO.DALException e){
+        } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
     }
 
     @Test
     public void checkHash() {
-        try{
+        try {
             testDAO.createUser("swoldbye", "pass");
             String output = testDAO.checkHash("swoldbye", "pass");
             assertEquals("1", output);
             testDAO.deleteUser("swoldbye");
-        }catch(IUserDAO.DALException e){
+        } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
     }
 
     @Test
     public void setElo() {
-        try{
+        try {
             testDAO.createUser("testUser", "pass");
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
             assertEquals(500, user.getElo());
             testDAO.deleteUser("testUser");
-        }catch(IUserDAO.DALException e){
+        } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
     }
@@ -98,7 +98,7 @@ public class UserDAOSQLTest {
             users = testDAO.getTopTen();
 
             int elo = 999999999;
-            for(int i = 0; i < 7; i++) {
+            for (int i = 0; i < 7; i++) {
                 assertEquals(elo, users.get(i).getElo());
                 elo--;
             }
@@ -116,9 +116,8 @@ public class UserDAOSQLTest {
             testDAO.deleteUser("eloTest7");
             testDAO.deleteUser("eloTest8");
             testDAO.deleteUser("eloTest9");
-        }catch(IUserDAO.DALException e){
-                fail(e.getMessage());
-            }
+        } catch (IUserDAO.DALException e) {
+            fail(e.getMessage());
         }
     }
 }
