@@ -42,7 +42,6 @@ function decodeEvent(jsonObject){
             break;
 
         case 104:
-            console.log("code 104 ending game");
             finishedGame(jsonObject);
             break;
 
@@ -100,23 +99,18 @@ function acceptGame002(){
 function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
     if(player2.score.score===chosenScore){
-        console.log("check for winner");
         checkForWinner();
     }
     else{
         console.log("NO WINNER YET;");
         connection.send(JSON.stringify(gsObj));
     }
-
-
 }
 
 
 function opponentDisconected(){
     document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
     document.getElementById("loading").innerHTML = "";
-    //canvas.style.display ="none";
-    //animate(endGame());
     connection.close();
 }
 
@@ -149,15 +143,12 @@ function initializingMessage001(){
 }
 
 function finishedGame(jsonObject){
-console.log("Finishing Game");
     endGame();
-    if(jsonObject.hasWon===true) {
+    if(jsonObject.hasWon === true) {
             document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
     }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game:(";}
 
-document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
-console.log("Should have printed");
-
+    document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
 }
 
 function  checkForWinner(){
