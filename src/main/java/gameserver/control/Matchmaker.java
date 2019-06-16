@@ -34,10 +34,6 @@ public class Matchmaker extends Thread{
     private final LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
 
 
-
-
-
-
     Matchmaker(Sender sender, MatchController matchController){
         this.matchController = matchController;
         this.sender = sender;
@@ -53,18 +49,13 @@ public class Matchmaker extends Thread{
     @Override
     public void run(){
         try {
-
             while (true) {
-
-
-
                 synchronized (lookingForMatch){
                     // List of players we have found a match for
                     LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
 
                     // Copying the list so we can remove players as we evaluate they can't be matched
                     LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
-
 
 
                     for (MatchPlayer player : lookingForMatch) {

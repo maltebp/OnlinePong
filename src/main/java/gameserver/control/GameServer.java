@@ -1,8 +1,9 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.APIConnector;
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
-import gameserver.view.websocket.WebSocketController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,15 +23,14 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
-    private DatabaseConnector databaseConnector = new DatabaseConnector();
+    private DatabaseConnector databaseConnector = new APIConnector();
 
 
     public GameServer(Sender sender){
         this.sender = sender;
         playerController = new PlayerController(sender);
-        matchController = new MatchController(sender);
+        matchController = new MatchController(sender, databaseConnector);
         matchmaker = new Matchmaker(sender, matchController);
-
     }
 
 
@@ -74,8 +74,6 @@ public class GameServer {
                     }
                     break;
 
-
-
                 // Code not recognized
                 default:
                     sender.sendWrongMessageFormat(player, "Unknown code");
@@ -96,6 +94,12 @@ public class GameServer {
         matchmaker.removePlayer(player);
         matchController.removePlayer(player);
         playerController.removePlayer(player);
+    }
+
+
+    public void setDatabaseConnector(DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
+        matchController.setDatabaseConnector(databaseConnector);
     }
 
 }

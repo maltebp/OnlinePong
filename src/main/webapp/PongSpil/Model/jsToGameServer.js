@@ -46,7 +46,8 @@ function decodeEvent(jsonObject){
             finishedGame(jsonObject);
             break;
 
-        case 201: wrongUserNameOrPassword();
+        case 201:
+            wrongUserNameOrPassword();
             break;
 
         case 202: userAlreadyLoggedIn();
