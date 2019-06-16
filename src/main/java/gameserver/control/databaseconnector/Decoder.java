@@ -1,4 +1,4 @@
-package gameserver.control;
+package gameserver.control.databaseconnector;
 
 import org.json.JSONObject;
 
@@ -77,6 +77,7 @@ public class Decoder {
         }
         return null;
     }
+
 
     public boolean decodeMessage(JSONObject msg) {
         String code = msg.getString("code");

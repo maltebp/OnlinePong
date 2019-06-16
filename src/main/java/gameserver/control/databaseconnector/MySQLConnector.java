@@ -1,22 +1,18 @@
-package gameserver.control;
+package gameserver.control.databaseconnector;
 
 import gameserver.model.Player;
 import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DatabaseConnector {
-    Decoder decodeMessages = new Decoder();
 
 
-    /**
-     * Retrieve information about the user from the databse
-     * and updates the given player object with the information
-     *
-     * @param player Player object to put the data into
-     */
+public class MySQLConnector implements DatabaseConnector {
+
+    private Decoder decodeMessages = new Decoder();
+
+
     public void setPlayerInformation(Player player) {
-
 
         String resource = "/"+player.getUsername();
         URL urlForResource = decodeMessages.createURL(resource);
@@ -24,11 +20,9 @@ public class DatabaseConnector {
 
         JSONObject jsonObject = decodeMessages.readInputStream(connection);
         decodeMessages.decodeMessage(jsonObject);
+
         //Here we can update whatever we want
         player.setRating(jsonObject.getInt("elo"));
-
-
-
     }
 
 
@@ -42,18 +36,13 @@ public class DatabaseConnector {
         URL urlForResource = decodeMessages.createURL(resource);
         HttpURLConnection connection = decodeMessages.createConnection(urlForResource, "POST");
 
-
-        //Create JSONObject to sent
+        //Create JSONObject to send
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username", username);
         jsonObject.put("password",password);
 
-        String jsonInputString = jsonObject.toString();
-
-
         //Sending JSONOBject
-        decodeMessages.sendmessagesToAPI(connection,jsonInputString);
-
+        decodeMessages.sendmessagesToAPI(connection, jsonObject.toString());
 
         jsonObject = decodeMessages.readInputStream(connection);
 
@@ -79,17 +68,14 @@ public class DatabaseConnector {
         jsonObject.put("username", player.getUsername());
         jsonObject.put("elo",player.getRating());
 
-        String jsonInputString = jsonObject.toString();
-
         //Sending JSONOBject
-        decodeMessages.sendmessagesToAPI(connection,jsonInputString);
+        decodeMessages.sendmessagesToAPI(connection, jsonObject.toString());
 
         //Reading input from API
         jsonObject = decodeMessages.readInputStream(connection);
 
         //Checking the respons from API
         decodeMessages.decodeMessage(jsonObject);
-
     }
 
 
@@ -99,7 +85,7 @@ public class DatabaseConnector {
 
 
         malte.setUsername("Andreas");
-        DatabaseConnector con = new DatabaseConnector();
+        MySQLConnector con = new MySQLConnector();
 
         System.out.println("authendicate Player");
         con.authenticatePlayer("Andreas","123");

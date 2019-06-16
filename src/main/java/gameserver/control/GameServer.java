@@ -1,8 +1,8 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.MySQLConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
-import gameserver.view.websocket.WebSocketController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +22,7 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
-    private DatabaseConnector databaseConnector = new DatabaseConnector();
+    private MySQLConnector databaseConnector = new MySQLConnector();
 
 
     public GameServer(Sender sender){
@@ -100,7 +100,7 @@ public class GameServer {
     }
 
 
-    public void setDatabaseConnector(DatabaseConnector databaseConnector){
+    public void setDatabaseConnector(MySQLConnector databaseConnector){
         this.databaseConnector = databaseConnector;
     }
 

@@ -1,5 +1,6 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.MySQLConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ class PlayerController {
      *
      * @return Whether or not the player was validated
      */
-    boolean addPlayer( Player player, String username, String password, DatabaseConnector databaseConnector ){
+    boolean addPlayer( Player player, String username, String password, MySQLConnector databaseConnector ){
 
         if( databaseConnector.authenticatePlayer(username, password) ){
 
