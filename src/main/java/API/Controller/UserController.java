@@ -111,7 +111,6 @@ public class UserController implements IUserController{
 
     public JSONArray getTopTen(){
         JSONArray jUsers = new JSONArray();
-
         try{
             List<IUserDTO> iUsers = UserDAO.getTopTen();
             for(IUserDTO x: iUsers){

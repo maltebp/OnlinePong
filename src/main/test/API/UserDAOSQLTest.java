@@ -25,6 +25,7 @@ public class UserDAOSQLTest {
             testDAO.createUser("testUser", "pass");
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
+            testDAO.deleteUser("testUser");
             assertEquals("testUser", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
@@ -38,8 +39,9 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass");
             IUserDTO user = testDAO.getUser("swoldbye");
+            testDAO.deleteUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
-            assertEquals(500, user.getElo());
+            assertEquals(0, user.getElo());
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
@@ -50,6 +52,7 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass");
             String output = testDAO.checkHash("swoldbye", "pass");
+            testDAO.deleteUser("swoldbye");
             assertEquals("1", output);
             testDAO.deleteUser("swoldbye");
         } catch (IUserDAO.DALException e) {
@@ -63,8 +66,8 @@ public class UserDAOSQLTest {
             testDAO.createUser("testUser", "pass");
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
-            assertEquals(500, user.getElo());
             testDAO.deleteUser("testUser");
+            assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
@@ -86,7 +89,7 @@ public class UserDAOSQLTest {
             testDAO.createUser("eloTest5", "pass");
             testDAO.setElo("eloTest5", 999999994);
             testDAO.createUser("eloTest6", "pass");
-            testDAO.setElo("eloTest6", 999999993);
+            testDAO.setElo( "eloTest6", 999999993);
             testDAO.createUser("eloTest7", "pass");
             testDAO.setElo("eloTest7", 999999992);
             testDAO.createUser("eloTest8", "pass");
