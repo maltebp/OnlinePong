@@ -149,13 +149,6 @@ public class UserDAOSQL implements IUserDAO{
             throw new DALException("-1");
         }
     }
-
-    /**
-     * @Author Simon
-     * Get the 10 users with highest elo rating.
-     * @return IUserDTO List.
-     * @throws DALException
-     */
     public List<IUserDTO> getTopTen() throws DALException{
         try(Connection con = createConnection()){
             String query = "SELECT username, elo FROM users ORDER BY elo DESC";
@@ -172,6 +165,17 @@ public class UserDAOSQL implements IUserDAO{
 
         }catch(SQLException e){
             throw new DALException("-1");
+        }
+    }
+
+    public void deleteUser(String username) throws DALException{
+        try(Connection con = createConnection()){
+            String query = "DELETE FROM users WHERE username = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1,username);
+            preparedStatement.execute();
+            }catch(SQLException e) {
+            e.getMessage();
         }
     }
 }

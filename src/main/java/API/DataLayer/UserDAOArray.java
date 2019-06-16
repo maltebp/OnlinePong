@@ -75,5 +75,10 @@ import java.util.List;
     public List<IUserDTO> getTopTen() throws DALException {
         return null;
     }
+
+    @Override
+    public void deleteUser(String username) throws DALException {
+
+    }
 }
 

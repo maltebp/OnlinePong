@@ -113,12 +113,4 @@ public class UserService {
         return json.toString();
     }
 
-    public static void main(String[] args) {
-        JSONObject palyer = new JSONObject();
-        palyer.put("username","Andreas");
-        palyer.put("elo",200);
-
-        UserService service = new UserService();
-        service.setElo(palyer.toString());
-    }
 }
