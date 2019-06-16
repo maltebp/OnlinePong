@@ -1,6 +1,6 @@
 var connection = null;
 
-var chosenScore = 10;
+var chosenScore = 1;
 
 
 function createConnection() {
@@ -39,7 +39,10 @@ function decodeEvent(jsonObject){
 
         case 10:
             gameDataUpdatedata(jsonObject);
+            break;
 
+        case 104:
+            finishedGame(jsonObject);
             break;
 
         case 201: wrongUserNameOrPassword();
@@ -53,6 +56,8 @@ function decodeEvent(jsonObject){
         case 210:
             opponentDisconected();
             break;
+
+
     }
 
 }
@@ -92,8 +97,14 @@ function acceptGame002(){
 
 function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
-    console.log(gsObj);
-    connection.send(JSON.stringify(gsObj));
+        if(player1.score.score===chosenScore || player1.score.score === chosenScore){checkForWinner();
+        }
+        else{
+            console.log(gsObj);
+            connection.send(JSON.stringify(gsObj));
+        }
+
+
 }
 
 
@@ -131,4 +142,15 @@ function initializingMessage001(){
     console.log(user);
     connection.send(JSON.stringify(user));
     startButton.style.display = 'none';
+}
+
+function finishedGame(jsonObject){
+
+    if(jsonObject.winner===true) {
+        document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
+    }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game:(";}
+
+    document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
+
+
 }
