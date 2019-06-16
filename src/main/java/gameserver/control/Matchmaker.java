@@ -30,8 +30,10 @@ public class Matchmaker extends Thread{
     private static final double INITIAL_RATING_WINDOW = 100;
 
     // List of players looking for a match
-    private HashMap<Player, MatchPlayer> matchPlayers = new HashMap<>();
-    private LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
+    private final HashMap<Player, MatchPlayer> matchPlayers = new HashMap<>();
+    private final LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
+
+
 
 
 
@@ -54,39 +56,46 @@ public class Matchmaker extends Thread{
 
             while (true) {
 
-                // List of players we have found a match for
-                LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
 
-                // Copying the list so we can remove players as we evaluate they can't be matched
-                LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
 
-                for (MatchPlayer player : lookingForMatch) {
-                    if( remainingPlayers.remove(player) ){
+                synchronized (lookingForMatch){
+                    // List of players we have found a match for
+                    LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
 
-                        MatchPlayer opponent = findMatch(player, remainingPlayers);
-                        if( opponent != null ){
-                            // A match has been found
-                            remainingPlayers.remove(opponent);
+                    // Copying the list so we can remove players as we evaluate they can't be matched
+                    LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
 
-                            matchedPlayers.add(player);
-                            player.setMatchedOpponent(opponent);
 
-                            matchedPlayers.add(opponent);
-                            opponent.setMatchedOpponent(player);
-                        }else{
-                            player.incrementTimeWaited(MATCHMAKING_FREQ);
+
+                    for (MatchPlayer player : lookingForMatch) {
+                        if( remainingPlayers.remove(player) ){
+
+                            MatchPlayer opponent = findMatch(player, remainingPlayers);
+                            if( opponent != null ){
+                                // A match has been found
+                                remainingPlayers.remove(opponent);
+
+                                matchedPlayers.add(player);
+                                player.setMatchedOpponent(opponent);
+
+                                matchedPlayers.add(opponent);
+                                opponent.setMatchedOpponent(player);
+                            }else{
+                                player.incrementTimeWaited(MATCHMAKING_FREQ);
+                            }
                         }
                     }
-                }
 
                 /*  Removing Matched players from the list of players
                     looking for a match, and sending correct message.
                     Can't do this in the other loop. */
-                for(MatchPlayer player : matchedPlayers){
-                    lookingForMatch.remove(player);
-                    sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
-                    player.setHasAcceptedMatch(false);
+                    for(MatchPlayer player : matchedPlayers){
+                        lookingForMatch.remove(player);
+                        player.setHasAcceptedMatch(false);
+                        sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
+                    }
                 }
+
 
                 sleep((long) MATCHMAKING_FREQ * 1000);
             }
@@ -136,11 +145,13 @@ public class Matchmaker extends Thread{
      * Signals that a Player accepts a match.
      * Initializes the match if both Players have accepted.
      */
-    void playerAcceptsMatch(Player player){
+    synchronized void playerAcceptsMatch(Player player){
         MatchPlayer matchPlayer = matchPlayers.get(player);
         if( matchPlayer.getMatchedOpponent() != null ){
             matchPlayer.setHasAcceptedMatch(true);
-            if( matchPlayer.hasAcceptedMatch()){
+            if( matchPlayer.getMatchedOpponent().hasAcceptedMatch() ){
+                matchPlayers.remove(player);
+                matchPlayers.remove(matchPlayer.getMatchedOpponent().getPlayer());
                 matchController.startMatch(player, matchPlayer.getMatchedOpponent().getPlayer());
             }
         }else{
@@ -156,8 +167,10 @@ public class Matchmaker extends Thread{
     void addPlayer(Player player){
         MatchPlayer matchmakingPlayer = new MatchPlayer(player);
         matchPlayers.put(player, matchmakingPlayer);
-        lookingForMatch.add(matchmakingPlayer);
         sender.sendFindingGame(player, 0);
+        synchronized (lookingForMatch){
+            lookingForMatch.add(matchmakingPlayer);
+        }
     }
 
 
@@ -172,13 +185,17 @@ public class Matchmaker extends Thread{
      */
     void removePlayer(Player player){
         MatchPlayer matchPlayer = matchPlayers.get(player);
-        if( !lookingForMatch.remove(matchPlayer) ){
-            MatchPlayer opponent = matchPlayer.getMatchedOpponent();
-            if( opponent != null ){
-                opponent.setMatchedOpponent(null);
-                opponent.setHasAcceptedMatch(false);
-                lookingForMatch.add(opponent);
-                sender.sendFindingGame(opponent.getPlayer(), 0);
+        if(matchPlayer != null ){
+            synchronized (lookingForMatch) {
+                if (!lookingForMatch.remove(matchPlayer)) {
+                    MatchPlayer opponent = matchPlayer.getMatchedOpponent();
+                    if (opponent != null) {
+                        opponent.setMatchedOpponent(null);
+                        opponent.setHasAcceptedMatch(false);
+                        lookingForMatch.add(opponent);
+                        sender.sendFindingGame(opponent.getPlayer(), 0);
+                    }
+                }
             }
         }
     }

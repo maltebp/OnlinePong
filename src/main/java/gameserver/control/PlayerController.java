@@ -1,6 +1,5 @@
 package gameserver.control;
 
-import gameserver.control.databaseconnector.APIConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ class PlayerController {
 
             if( !usernameExists(username)){
                 players.add(player);
+                player.setUsername(username);
                 databaseConnector.setPlayerInformation(player);
                 return true;
             }else{

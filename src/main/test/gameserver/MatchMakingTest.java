@@ -1,7 +1,11 @@
 package gameserver;
 
+import gameserver.testobjects.ClientConnector;
+import gameserver.testobjects.ClientState;
+import gameserver.testobjects.ServerConnector;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
@@ -9,19 +13,17 @@ import static java.lang.Thread.sleep;
 
 public class MatchMakingTest {
 
-    private TestConnector connector;
+    private ServerConnector connector;
 
     @Before
     public void players(){
-        connector = new TestConnector();
+        connector = new ServerConnector();
     }
 
-    private TestPlayer connectPlayer(String username, int rating){
-        TestPlayer player = new TestPlayer();
-        player.setUsername(username);
-        player.setRating(rating);
-        connector.recieveMessage(player, "{ \"code\" : 1, \"username\":\"" + username + "\", \"password\":\"somepassword\"}" );
-        return player;
+    private ClientConnector connectPlayer(String username, int rating){
+        ClientConnector connection = new ClientConnector(username, "pass", rating, connector);
+        connection.findGame();
+        return connection;
     }
 
 
@@ -35,20 +37,21 @@ public class MatchMakingTest {
     @Test
     public void testMatchmaking() throws InterruptedException{
 
-        TestPlayer jacob = connectPlayer("Jacob", 1000);
-        TestPlayer andreas = connectPlayer("Andreas", 1150);
-        TestPlayer simon = connectPlayer("Simon", 1500);
+
+        ClientConnector jacob = connectPlayer("Jacob", 1000);
+        ClientConnector andreas = connectPlayer("Andreas", 1150);
+        ClientConnector simon = connectPlayer("Simon", 1500);
 
         sleep(10000);
-        assertTrue(!jacob.isMatched);
-        assertTrue(!andreas.isMatched);
-        assertTrue(!simon.isMatched);
+        assertNotSame(jacob.getState(), ClientState.IN_GAME);
+        assertNotSame(andreas.getState(), ClientState.IN_GAME);
+        assertNotSame(simon.getState(), ClientState.IN_GAME);
 
-        sleep(6000);
+        sleep(10000);
 
-        assertTrue(jacob.isMatched);
-        assertTrue(andreas.isMatched);
-        assertTrue(!simon.isMatched);
+        assertSame(jacob.getState(), ClientState.IN_GAME);
+        assertSame(andreas.getState(), ClientState.IN_GAME);
+        assertNotSame(simon.getState(), ClientState.IN_GAME);
     }
 
 
@@ -61,20 +64,20 @@ public class MatchMakingTest {
     @Test
     public void testSeperateWindows() throws InterruptedException{
 
-        TestPlayer jacob = connectPlayer("Jacob", 1337);
+        ClientConnector jacob = connectPlayer("Jacob", 1000);
 
         sleep(10000);
         // Jacobs window should now be 36, allowing him to match up with Andreas
 
-        TestPlayer andreas = connectPlayer("Andreas", 1130);
+        ClientConnector andreas = connectPlayer("Andreas", 1130);
 
         sleep(4000);
-        assertTrue(!jacob.isMatched);
-        assertTrue(!andreas.isMatched);
+        assertNotSame(jacob.getState(), ClientState.IN_GAME);
+        assertNotSame(andreas.getState(), ClientState.IN_GAME);
 
         sleep(10000);
         // Andreas' window should now match jacob
-        assertTrue(jacob.isMatched);
-        assertTrue(andreas.isMatched);
+        assertSame(jacob.getState(), ClientState.IN_GAME);
+        assertSame(andreas.getState(), ClientState.IN_GAME);
     }
 }

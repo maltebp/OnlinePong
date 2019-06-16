@@ -68,14 +68,10 @@ public class GameServer {
 
                 case 11:
                     if( playerController.playerIsAuthenticated(player)) {
-                        Player opponent = matchController.playerHasWon(player, textMessage);
-                        //matchController.adjustRating(player, opponent);
-                        databaseConnector.updateElo(player);
-                        databaseConnector.updateElo(opponent);
-                        removePlayer(player);
-                        removePlayer(opponent);
+                        matchController.matchFinished(player, false);
+                        playerController.removePlayer(player);
                     }
-
+                    break;
 
                 // Code not recognized
                 default:

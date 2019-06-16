@@ -1,5 +1,7 @@
 package gameserver.control;
 
+import gameserver.control.ratingalgorithm.EloAlgorithm;
+import gameserver.control.ratingalgorithm.RatingAlgorithm;
 import gameserver.model.Match;
 import gameserver.model.Player;
 import gameserver.view.Sender;
@@ -15,6 +17,8 @@ import java.util.Random;
 class MatchController {
 
     private Sender sender;
+    private RatingAlgorithm ratingAlgorithm = new EloAlgorithm();
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
     // A map of Players and the match they participate in
     private HashMap<Player, Match> playerGame = new HashMap<Player, Match>();
@@ -47,9 +51,7 @@ class MatchController {
      * Player participating in a match to the opponent
      * of that player.
      */
-    void dataRecieved( Player player, String dataMsg ){
-        //TODO: remote sout
-        System.out.println("Datatecived: "+dataMsg);
+    void dataRecieved(Player player, String dataMsg ){
         Match match = playerGame.get(player);
         Player opponent = match.getOpponent(player);
         if(opponent != null ){
@@ -59,69 +61,55 @@ class MatchController {
 
 
     /**
-     * Signals that the opponent of a Player has won
-     * the match.
-     * Run by GameServer after recieving a 011 message
-     * from losing player.
-     *
-     * @param player Losing player sending message
-     * @param message Message containing code (possible extra information in the future)
-     * @return The winning Player of the match
+     * @param loser Losing player sending message
      */
-    Player playerHasWon(Player player, String message) {
-        Match match = playerGame.get(player);
+    void matchFinished(Player loser, boolean disconnected) {
+        Match match = playerGame.get(loser);
         if( match != null ){
-            playerGame.remove(player);
-            Player opponent = match.getOpponent(player);
-            if(opponent != null ){
-                playerGame.remove(opponent);
-                sender.sendMessage(opponent, message);
+            Player winner = match.getOpponent(loser);
+            if(winner != null ){
+
+                // Updating rating
+                int loserRating = loser.getRating();
+                int winnerRating = winner.getRating();
+
+                int loserRatingChange = ratingAlgorithm.calculateLoserChange(winnerRating, loserRating);
+                int winnerRatingChange = ratingAlgorithm.calculateWinnerChange(winnerRating, loserRating);
+
+                loser.setRating( loserRating + loserRatingChange );
+                winner.setRating(winnerRating + winnerRatingChange);
+
+                databaseConnector.updateElo(loser);
+                databaseConnector.updateElo(winner);
+
+                playerGame.remove(loser);
+                playerGame.remove(winner);
+
+                if(disconnected){
+                    sender.sendOpponentDisconnected(winner, winnerRatingChange, loserRatingChange);
+                }else{
+                    sender.sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
+                    sender.sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
+                }
+
+            }else{
+                System.out.println("Error: player has no opponent");
             }
+        }else{
+            System.out.println("Error: Player has no match!");
         }
-        return null;
     }
-/*
 
-    void adjustRating(Player winner, Player loser){
-
-        Player winnerChance =
-
-    }*/
 
     /**
-     * Removes a Player from its match, if its
-     * participating in one.
-     *
-     * Called when a player loses connection
+     * Removes the player by checking if he/she
+     * is in a match, and if so it will finish the map
+     * with a disconnect signal
      */
     void removePlayer(Player player){
         Match match = playerGame.get(player);
-
-        if( match != null ){
-            Player opponent = match.getOpponent(player);
-            sender.sendOpponentDisconnected(opponent);
-            stopMatch(match);
+        if( match != null ) {
+            matchFinished(player, true);
         }
     }
-
-
-    /**
-     * Stops the match, and disconnect players
-     * still participating in the match.
-     *
-     * Is called by removePlayer()
-     * @param match
-     */
-    private void stopMatch(Match match){
-        Player player = match.getPlayer(1);
-        if(player != null){
-            playerGame.remove(player);
-        }
-        player = match.getPlayer(2);
-        if( player != null){
-            playerGame.remove(player);
-        }
-    }
-
-
 }
