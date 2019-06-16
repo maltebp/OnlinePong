@@ -145,10 +145,10 @@ function initializingMessage001(){
 function finishedGame(jsonObject){
     endGame();
     if(jsonObject.hasWon === true) {
-            document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
-    }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game:(";}
+            document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE GAME!!!!";
+    }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game :(";}
 
-    document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
+    document.getElementById("loading").innerHTML ="Your rating changed by: "+ jsonObject.ratingChange+". You opponents rating changed by:  "+jsonObject.oppRatingChange;
 }
 
 function  checkForWinner(){
