@@ -1,8 +1,9 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.APIConnector;
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
-import gameserver.view.websocket.WebSocketController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,14 +23,14 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
+    private DatabaseConnector databaseConnector = new APIConnector();
 
 
     public GameServer(Sender sender){
         this.sender = sender;
         playerController = new PlayerController(sender);
-        matchController = new MatchController(sender);
+        matchController = new MatchController(sender, databaseConnector);
         matchmaker = new Matchmaker(sender, matchController);
-
     }
 
 
@@ -48,7 +49,7 @@ public class GameServer {
                 case 1:
                     String username = msg.getString("username");
                     String password = msg.getString("password");
-                    if( playerController.addPlayer(player, username, password) ){
+                    if( playerController.addPlayer(player, username, password, databaseConnector) ){
                         matchmaker.addPlayer(player);
                     }
                     break;
@@ -65,7 +66,12 @@ public class GameServer {
                         matchController.dataRecieved(player, textMessage);
                     break;
 
-                    //When closing the connection (e.g if the password or username i wrong
+                case 11:
+                    if( playerController.playerIsAuthenticated(player)) {
+                        matchController.matchFinished(player, false);
+                        playerController.removePlayer(player);
+                    }
+                    break;
 
                 // Code not recognized
                 default:
@@ -87,6 +93,12 @@ public class GameServer {
         matchmaker.removePlayer(player);
         matchController.removePlayer(player);
         playerController.removePlayer(player);
+    }
+
+
+    public void setDatabaseConnector(DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
+        matchController.setDatabaseConnector(databaseConnector);
     }
 
 }

@@ -87,10 +87,11 @@
         </dependency>
 
         <dependency>
-        <groupId>org.glassfish.jersey.media</groupId>
-        <artifactId>jersey-media-moxy</artifactId>
-        <version>2.27</version>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-moxy</artifactId>
+            <version>2.27</version>
         </dependency>
+>>>>>>>>> Temporary merge branch 2
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -98,5 +99,9 @@
             <scope>test</scope>
         </dependency>
 
+<<<<<<<<< Temporary merge branch 1
+
+=========
+>>>>>>>>> Temporary merge branch 2
     </dependencies>
 </project>

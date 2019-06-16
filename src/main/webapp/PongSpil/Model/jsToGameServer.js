@@ -42,7 +42,8 @@ function decodeEvent(jsonObject){
 
             break;
 
-        case 201: wrongUserNameOrPassword();
+        case 201:
+            wrongUserNameOrPassword();
             break;
 
         case 202: userAlreadyLoggedIn();
@@ -117,8 +118,6 @@ function unableToAuthendizise(){
 function wrongUserNameOrPassword(){
     document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
     connection.close;
-
-
 }
 
 function initializingMessage001(){
