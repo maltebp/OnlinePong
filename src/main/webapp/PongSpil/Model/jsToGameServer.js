@@ -1,6 +1,6 @@
 var connection = null;
 
-var chosenScore = 1;
+var chosenScore = 10;
 
 
 function createConnection() {
@@ -115,7 +115,7 @@ function sendGameState103and010(){
 function opponentDisconected(){
     document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
     document.getElementById("loading").innerHTML = "";
-    canvas.style.display ="none";
+    //canvas.style.display ="none";
     //animate(endGame());
     connection.close();
 }
@@ -171,4 +171,45 @@ function  checkForWinner(){
         connection.send(jsonString);
     }
 
+}
+
+/**
+ * Updates the opponents paddle position and movement when he begins to move or stops moving.
+ *
+ * @param oppPaddle     The opponents paddle
+ */
+function player2Movement(oppPaddle) {
+    if(player2.paddle.y_speed !== oppPaddle.y_speed) {
+        player2.paddle.y = oppPaddle.y;
+        player2.paddle.y_speed = oppPaddle.y_speed;
+    }
+}
+
+/**
+ *
+ *
+ * @param oppBall   The balls position as the player sees it. This is only updated when it is at the opponents side, to
+ * secure a smooth experience when the player has to catch the ball
+ */
+function ballMovement(oppBall) {
+    if(ball.x > 400) {
+        ball.speed = oppBall.speed;
+        ball.x = width - oppBall.x;
+        ball.y = oppBall.y;
+        ball.x_speed = -oppBall.x_speed;
+        ball.y_speed = oppBall.y_speed;
+    }
+}
+
+/**
+ * Updates the score for the player if the opponent says either of them have a higher score. The control is to secure
+ * the points don't reset/gets cancelled
+ *
+ * @param scores    State of the scores as opponent sees them
+ */
+function playerScores(scores) {
+    if(scores[1] > player1.score.score || scores[0] > player2.score.score) {
+        player1.score.score = scores[1];
+        player2.score.score = scores[0];
+    }
 }

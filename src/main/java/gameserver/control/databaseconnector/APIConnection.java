@@ -12,7 +12,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * APIConnection class contains a constructor for the connection, and methods for managing that connection.
+ * These methods are: getResponse from API(recieving bytes from InPutStream), send a message into OutputStream.
+ *
+ */
 public class APIConnection {
 
     private static final String API_URL = "http://localhost:8080/rest/service";
@@ -21,7 +25,7 @@ public class APIConnection {
     public APIConnection(String resourceUrl, String requestType){
         try {
 
-            URL url = createURL(resourceUrl);
+            URL url = new URL(API_URL.concat(resourceUrl));
             connection = (HttpURLConnection) url.openConnection();
 
             //Designing the request
@@ -78,13 +82,6 @@ public class APIConnection {
         connection.disconnect();
     }
 
-    private URL createURL(String resource) {
-        try {
-            return new URL(API_URL.concat(resource));
-        } catch (MalformedURLException e) {
-            e.getMessage();
-        }
-        return null;
-    }
+
 }
 
