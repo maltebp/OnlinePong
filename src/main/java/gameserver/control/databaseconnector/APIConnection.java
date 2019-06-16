@@ -91,7 +91,7 @@ public class APIConnection {
     }
 
     /**
-     * Closing the nonnection.
+     * Closing the connection.
      */
     public void close(){
         connection.disconnect();
