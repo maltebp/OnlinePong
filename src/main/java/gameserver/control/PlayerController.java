@@ -32,11 +32,14 @@ class PlayerController {
      *
      * @return Whether or not the player was validated
      */
-    boolean addPlayer( Player player, String username, String password ){
-        if( authenticatePlayer(username, password) ){
+    boolean addPlayer(Player player, String username, String password, DatabaseConnector databaseConnector ){
+
+        if( databaseConnector.authenticatePlayer(username, password) ){
 
             if( !usernameExists(username)){
                 players.add(player);
+                player.setUsername(username);
+                databaseConnector.setPlayerInformation(player);
                 return true;
             }else{
                 System.out.println("Already logged in");
@@ -69,28 +72,16 @@ class PlayerController {
         }
     }
 
-
-    /**
-     * Checks if username and password identifies a user within the
-     * game database
-     */
-    private boolean authenticatePlayer(String username, String password){
-        return true;
-    }
-
-
     /**
      * Checks if a Player with a given username is already connected
      * to the game server.
      */
     private boolean usernameExists(String username){
-        return false;
-        // TODO: Turn this on
-        /*for( Player player : players ){
+        for( Player player : players ){
             if( player.getUsername().equals(username) ){
                 return true;
             }
         }
-        return false;*/
+        return false;
     }
 }
