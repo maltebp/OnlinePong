@@ -60,7 +60,8 @@ li{
 .rightBox {
     float: right;
     width: 15%;
-    padding: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: rgb(119, 128, 128);
 }
 
