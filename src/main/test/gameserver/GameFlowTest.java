@@ -35,8 +35,8 @@ public class GameFlowTest {
     public void testGameFinishSuccess() throws InterruptedException{
         connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
 
-        ClientConnector kristian = connectPlayer("Kristian", "", 1000);
-        ClientConnector simon = connectPlayer("Simon", "", 1000);
+        ClientConnector kristian = connectPlayer("Kristian", "pass", 1000);
+        ClientConnector simon = connectPlayer("Simon", "pass", 1000);
 
         sleep(3500);
 
@@ -52,8 +52,8 @@ public class GameFlowTest {
     public void testGameFinishDisconnect() throws InterruptedException{
         connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
 
-        ClientConnector kristian = connectPlayer("Kristian","", 1000);
-        ClientConnector simon = connectPlayer("Simon", "",1000);
+        ClientConnector kristian = connectPlayer("Kristian","pass", 1000);
+        ClientConnector simon = connectPlayer("Simon", "pass",1000);
 
         sleep(3500);
 
@@ -67,9 +67,9 @@ public class GameFlowTest {
     public void testDoubleMatch() throws InterruptedException{
         connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
 
-        ClientConnector kristian = connectPlayer("Kristian", "",1000);
-        ClientConnector simon = connectPlayer("Simon", "",1000);
-        ClientConnector claes = connectPlayer("Claes", "",1000);
+        ClientConnector kristian = connectPlayer("Kristian", "pass",1000);
+        ClientConnector simon = connectPlayer("Simon", "pass",1000);
+        ClientConnector claes = connectPlayer("Claes", "pass",1000);
 
         sleep(3500);
 
