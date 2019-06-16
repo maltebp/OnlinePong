@@ -126,12 +126,4 @@ public class UserController implements IUserController{
             return null;
         }
     }
-
-    public static void main(String[] args) {
-        IUserController userController = new UserController();
-        JSONArray jUsers;
-        jUsers = userController.getTopTen();
-        System.out.println(jUsers.toString());
-    }
-
 }
