@@ -1,6 +1,6 @@
 package gameserver.model;
 
-
+//todo: omnavngiv til DAO
 /**
  * Objects identifying player connections to
  * in the Game Server
