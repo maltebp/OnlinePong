@@ -34,7 +34,7 @@ making sure that the padding stays inside of the box and that it does not break 
     text-align: center;
     background-color: #b9b3b3;
 }
-/*-----    This specifies the style of the content in the middle  box with the register info    -----*/
+/*-----    This specifies the style of the content in the middle  box with the isSamePasswords info    -----*/
 .middleFrame {
     padding-top: 25px;
     width: 100%;
