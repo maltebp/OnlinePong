@@ -3,6 +3,7 @@ package gameserver;
 import gameserver.testobjects.ClientConnector;
 import gameserver.testobjects.ClientState;
 import gameserver.testobjects.ServerConnector;
+import gameserver.testobjects.TestDatabaseConnector;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ public class MatchMakingTest {
     @Before
     public void players(){
         connector = new ServerConnector();
+        connector.gameServer.setDatabaseConnector( new TestDatabaseConnector() );
     }
 
     private ClientConnector connectPlayer(String username, int rating){

@@ -1,6 +1,7 @@
 package gameserver.control;
 
 import gameserver.control.databaseconnector.APIConnector;
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 import org.json.JSONException;
@@ -22,15 +23,14 @@ public class GameServer {
     private MatchController matchController;
     private Matchmaker matchmaker;
     private PlayerController playerController;
-    private APIConnector databaseConnector = new APIConnector();
+    private DatabaseConnector databaseConnector = new APIConnector();
 
 
     public GameServer(Sender sender){
         this.sender = sender;
         playerController = new PlayerController(sender);
-        matchController = new MatchController(sender);
+        matchController = new MatchController(sender, databaseConnector);
         matchmaker = new Matchmaker(sender, matchController);
-
     }
 
 
@@ -96,8 +96,9 @@ public class GameServer {
     }
 
 
-    public void setDatabaseConnector(APIConnector databaseConnector){
+    public void setDatabaseConnector(DatabaseConnector databaseConnector){
         this.databaseConnector = databaseConnector;
+        matchController.setDatabaseConnector(databaseConnector);
     }
 
 }

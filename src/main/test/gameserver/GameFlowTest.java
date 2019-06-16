@@ -4,8 +4,12 @@ import gameserver.model.Player;
 import gameserver.testobjects.ClientConnector;
 import gameserver.testobjects.ClientState;
 import gameserver.testobjects.ServerConnector;
+import gameserver.testobjects.TestDatabaseConnector;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.ws.rs.client.Client;
+
 import static org.junit.Assert.*;
 
 import static java.lang.Thread.sleep;
@@ -20,8 +24,8 @@ public class GameFlowTest {
         connector = new ServerConnector();
     }
 
-    private ClientConnector connectPlayer(String username, int rating){
-        ClientConnector connection = new ClientConnector(username, "pass", rating, connector);
+    private ClientConnector connectPlayer(String username, String password, int rating){
+        ClientConnector connection = new ClientConnector(username, password, rating, connector);
         connection.findGame();
         return connection;
     }
@@ -29,8 +33,10 @@ public class GameFlowTest {
 
     @Test
     public void testGameFinishSuccess() throws InterruptedException{
-        ClientConnector kristian = connectPlayer("Kristian", 1000);
-        ClientConnector simon = connectPlayer("Simon", 1000);
+        connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
+
+        ClientConnector kristian = connectPlayer("Kristian", "", 1000);
+        ClientConnector simon = connectPlayer("Simon", "", 1000);
 
         sleep(3500);
 
@@ -44,8 +50,10 @@ public class GameFlowTest {
 
     @Test
     public void testGameFinishDisconnect() throws InterruptedException{
-        ClientConnector kristian = connectPlayer("Kristian", 1000);
-        ClientConnector simon = connectPlayer("Simon", 1000);
+        connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
+
+        ClientConnector kristian = connectPlayer("Kristian","", 1000);
+        ClientConnector simon = connectPlayer("Simon", "",1000);
 
         sleep(3500);
 
@@ -57,9 +65,11 @@ public class GameFlowTest {
 
     @Test
     public void testDoubleMatch() throws InterruptedException{
-        ClientConnector kristian = connectPlayer("Kristian", 1000);
-        ClientConnector simon = connectPlayer("Simon", 1000);
-        ClientConnector claes = connectPlayer("Claes", 1000);
+        connector.gameServer.setDatabaseConnector(new TestDatabaseConnector());
+
+        ClientConnector kristian = connectPlayer("Kristian", "",1000);
+        ClientConnector simon = connectPlayer("Simon", "",1000);
+        ClientConnector claes = connectPlayer("Claes", "",1000);
 
         sleep(3500);
 
@@ -86,5 +96,21 @@ public class GameFlowTest {
 
         assertSame(ClientState.WON_GAME, kristian.getState());
         assertSame(ClientState.LOST_GAME, claes.getState());
+    }
+
+    @Test
+    public void testWrongUserNamePass() throws Exception{
+
+        ClientConnector malte = connectPlayer("malte", "pandekag", 0);
+
+        sleep(3000);
+        assertSame(ClientState.IDLE, malte.getState());
+
+        malte.closeConnection();
+
+        sleep(3000);
+
+        malte = connectPlayer("malte", "pandekage", 0 );
+        assertSame(ClientState.WAITING_FOR_GAME, malte.getState());
     }
 }

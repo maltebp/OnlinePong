@@ -1,5 +1,6 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.control.ratingalgorithm.EloAlgorithm;
 import gameserver.control.ratingalgorithm.RatingAlgorithm;
 import gameserver.model.Match;
@@ -18,12 +19,13 @@ class MatchController {
 
     private Sender sender;
     private RatingAlgorithm ratingAlgorithm = new EloAlgorithm();
-    private DatabaseConnector databaseConnector = new DatabaseConnector();
+    private DatabaseConnector databaseConnector;
 
     // A map of Players and the match they participate in
     private HashMap<Player, Match> playerGame = new HashMap<Player, Match>();
 
-    MatchController(Sender sender){
+    MatchController(Sender sender, DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
         this.sender = sender;
     }
 
@@ -111,5 +113,10 @@ class MatchController {
         if( match != null ) {
             matchFinished(player, true);
         }
+    }
+
+
+    public void setDatabaseConnector(DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
     }
 }

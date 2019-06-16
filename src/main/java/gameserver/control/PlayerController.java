@@ -1,5 +1,6 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.model.Player;
 import gameserver.view.Sender;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ class PlayerController {
     private Sender sender;
 
     // Validated users
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private ArrayList<Player> players = new ArrayList<>();
 
 
     PlayerController(Sender sender){
@@ -32,7 +33,7 @@ class PlayerController {
      *
      * @return Whether or not the player was validated
      */
-    boolean addPlayer( Player player, String username, String password, APIConnector databaseConnector ){
+    boolean addPlayer( Player player, String username, String password, DatabaseConnector databaseConnector ){
 
         if( databaseConnector.authenticatePlayer(username, password) ){
 

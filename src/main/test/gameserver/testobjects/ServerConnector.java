@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class ServerConnector extends Sender {
 
 
-    private GameServer server = new GameServer(this);
+    public GameServer gameServer = new GameServer(this);
     private HashMap<Player, ClientConnector> sessions = new HashMap<>();
     private HashMap<ClientConnector, Player> players = new HashMap<>();
 
@@ -26,12 +26,12 @@ public class ServerConnector extends Sender {
     }
 
     void closeConnection(ClientConnector session){
-        server.removePlayer(players.get(session));
+        gameServer.removePlayer(players.get(session));
     }
 
     void recieveMessage(ClientConnector session, String message){
         System.out.println("Server: "+message);
-        server.recieveMessage(players.get(session), message);
+        gameServer.recieveMessage(players.get(session), message);
     }
 
     @Override
