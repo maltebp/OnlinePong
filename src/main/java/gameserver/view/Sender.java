@@ -82,7 +82,7 @@ public abstract class Sender {
         JSONObject msg = getCodeMsg(104);
         msg.put("hasWon", hasWon);
         msg.put("ratingChange", ratingChange);
-        msg.put("opponentRatingChange",opponentRatingChange);
+        msg.put("oppRatingChange",opponentRatingChange);
         sendMessage(player, msg.toString());
     }
 

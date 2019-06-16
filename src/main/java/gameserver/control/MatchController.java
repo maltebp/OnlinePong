@@ -65,7 +65,7 @@ class MatchController {
     /**
      * @param loser Losing player sending message
      */
-    void matchFinished(Player loser, boolean disconnected) {
+    Player matchFinished(Player loser, boolean disconnected) {
         Match match = playerGame.get(loser);
         if( match != null ){
             Player winner = match.getOpponent(loser);
@@ -92,6 +92,7 @@ class MatchController {
                 }else{
                     sender.sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
                     sender.sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
+                    return winner;
                 }
 
             }else{
@@ -100,6 +101,7 @@ class MatchController {
         }else{
             System.out.println("Error: Player has no match!");
         }
+        return null;
     }
 
 
