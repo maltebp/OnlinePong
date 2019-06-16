@@ -1,18 +1,13 @@
 package API.Controller;
 
 import API.DataLayer.IUserDAO;
+import API.DataLayer.IUserDAO.DALException;
 import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAOSQL;
-import API.DataLayer.UserDTO;
-import API.DataLayer.IUserDAO.DALException;
-import com.sun.deploy.cache.DefaultLocalApplicationProperties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.jws.soap.SOAPBinding;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
 
 public class UserController implements IUserController{
