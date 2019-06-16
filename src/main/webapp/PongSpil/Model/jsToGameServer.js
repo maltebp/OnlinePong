@@ -42,6 +42,7 @@ function decodeEvent(jsonObject){
             break;
 
         case 104:
+            console.log("code 104 ending game");
             finishedGame(jsonObject);
             break;
 
@@ -97,12 +98,14 @@ function acceptGame002(){
 
 function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
-        if(player1.score.score===chosenScore || player1.score.score === chosenScore){checkForWinner();
-        }
-        else{
-            console.log(gsObj);
-            connection.send(JSON.stringify(gsObj));
-        }
+    if(player2.score.score===chosenScore){
+        console.log("check for winner");
+        checkForWinner();
+    }
+    else{
+        console.log("NO WINNER YET;");
+        connection.send(JSON.stringify(gsObj));
+    }
 
 
 }
@@ -113,7 +116,7 @@ function opponentDisconected(){
     document.getElementById("loading").innerHTML = "";
     canvas.style.display ="none";
     //animate(endGame());
-    connection.close;
+    connection.close();
 }
 
 function userAlreadyLoggedIn(){
@@ -127,7 +130,7 @@ function unableToAuthendizise(){
 
 function wrongUserNameOrPassword(){
     document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
-    connection.close;
+    connection.close();
 
 
 }
@@ -145,12 +148,26 @@ function initializingMessage001(){
 }
 
 function finishedGame(jsonObject){
+console.log("Finishing Game");
+    endGame();
+if(jsonObject.hasWon===true) {
+        console.log("EndGane");
 
-    if(jsonObject.winner===true) {
         document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE HAME!!!!";
     }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game:(";}
 
     document.getElementById("loading").innerHTML ="Rating cgange is: "+ jsonObject.ratingChange+", Upp rating change:  "+jsonObject.oppRatingChange;
+console.log("Should have printed");
 
+}
+
+function  checkForWinner(){
+
+    if(player2.score.score === chosenScore) {
+        var winner = {"code": 11};
+        var jsonString = JSON.stringify(winner);
+        console.log(winner.code);
+        connection.send(jsonString);
+    }
 
 }
