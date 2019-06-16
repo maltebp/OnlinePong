@@ -86,5 +86,7 @@ public class GameFlowTest {
 
         assertSame(ClientState.WON_GAME, kristian.getState());
         assertSame(ClientState.LOST_GAME, claes.getState());
+
+        kristian = connectPlayer("Kristian", 1000);
     }
 }

@@ -68,8 +68,9 @@ public class GameServer {
 
                 case 11:
                     if( playerController.playerIsAuthenticated(player)) {
-                        matchController.matchFinished(player, false);
+                        Player winner = matchController.matchFinished(player, false);
                         playerController.removePlayer(player);
+                        playerController.removePlayer(winner);
                     }
                     break;
 
