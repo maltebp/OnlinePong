@@ -11,7 +11,7 @@ function createConnection() {
 
     connection.onmessage = function (event) {
         var obj = JSON.parse(event.data);
-        switchPage('PongPage.html');
+        // switchPage('PongPage.html');
         decodeEvent(obj);
     }
 };

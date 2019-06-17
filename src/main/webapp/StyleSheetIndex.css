@@ -92,7 +92,7 @@ li{
 
 /*-----    This will get the middle boxes to stand on top of each other on small screens ( smartphones )    -----*/
 @media (max-width: 600px) {
-    .RightBox, .LeftBox, .OuterGameScreen, .loginPage {
+    .rightBox, .leftBox, .dynamicContainer {
         width: 100%;
         height: auto;
     }
