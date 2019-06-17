@@ -113,7 +113,7 @@ public class UserService {
         return json.toString();
     }
 
-    @Path("/DeleteUser")
+    @Path("/deleteUser")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

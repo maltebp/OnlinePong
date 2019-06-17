@@ -24,7 +24,7 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("testUser", "pass", 500);
             IUserDTO user = testDAO.getUser("testUser");
-            testDAO.deleteUser("testUser");
+            testDAO.forceDeleteUser("testUser");
             assertEquals("testUser", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
@@ -38,7 +38,7 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass", 500);
             IUserDTO user = testDAO.getUser("swoldbye");
-            testDAO.deleteUser("swoldbye");
+            testDAO.forceDeleteUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
@@ -51,9 +51,9 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass", 1000);
             String output = testDAO.checkHash("swoldbye", "pass");
-            testDAO.deleteUser("swoldbye");
+            testDAO.forceDeleteUser("swoldbye");
             assertEquals("1", output);
-            testDAO.deleteUser("swoldbye");
+            testDAO.forceDeleteUser("swoldbye");
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
@@ -65,7 +65,7 @@ public class UserDAOSQLTest {
             testDAO.createUser("testUser", "pass", 1000);
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
-            testDAO.deleteUser("testUser");
+            testDAO.forceDeleteUser("testUser");
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
@@ -98,20 +98,31 @@ public class UserDAOSQLTest {
             assertEquals(elo, users.get(8).getElo());
             assertEquals(elo, users.get(9).getElo());
 
-            testDAO.deleteUser("eloTest0");
-            testDAO.deleteUser("eloTest1");
-            testDAO.deleteUser("eloTest2");
-            testDAO.deleteUser("eloTest3");
-            testDAO.deleteUser("eloTest4");
-            testDAO.deleteUser("eloTest5");
-            testDAO.deleteUser("eloTest6");
-            testDAO.deleteUser("eloTest7");
-            testDAO.deleteUser("eloTest8");
-            testDAO.deleteUser("eloTest9");
+            testDAO.forceDeleteUser("eloTest0");
+            testDAO.forceDeleteUser("eloTest1");
+            testDAO.forceDeleteUser("eloTest2");
+            testDAO.forceDeleteUser("eloTest3");
+            testDAO.forceDeleteUser("eloTest4");
+            testDAO.forceDeleteUser("eloTest5");
+            testDAO.forceDeleteUser("eloTest6");
+            testDAO.forceDeleteUser("eloTest7");
+            testDAO.forceDeleteUser("eloTest8");
+            testDAO.forceDeleteUser("eloTest9");
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
     }
 
-
+    @Test
+    public void userDeleteUser(){
+        try {
+            testDAO.createUser("deleteTestUser", "pass", 1000);
+            String failCode = testDAO.userDeleteUser("deleteTestUser", "wrongPass");
+            String successCode = testDAO.userDeleteUser("deleteTestUser", "pass");
+            assertEquals("1", successCode);
+            assertEquals("-2", failCode);
+        }catch(IUserDAO.DALException e){
+            fail(e.getMessage());
+        }
+    }
 }
