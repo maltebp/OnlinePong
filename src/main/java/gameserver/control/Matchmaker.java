@@ -103,11 +103,11 @@ public class Matchmaker extends Thread{
      */
     public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
         /*  How it works:
-            It checks each available opponent for the player ('opponents')
-            The rating difference between the player and the BEST opponent
+            It checks each available opponentName for the player ('opponents')
+            The rating difference between the player and the BEST opponentName
             fulfills following criteria:
                 - It's less than player window
-                - It's less than opponent window
+                - It's less than opponentName window
                 - It's the smallest difference of all possible
                     opponents for player
             The window for a player is increased everytime it runs the algorithm
@@ -171,7 +171,7 @@ public class Matchmaker extends Thread{
      *
      * Used if the Player disconnects or if the Player
      * doesn't accept a match.
-     * Will add the Player's opponent to matchmaking again
+     * Will add the Player's opponentName to matchmaking again
      * and send a "findingGame" to the player.
      */
     void removePlayer(Player player){

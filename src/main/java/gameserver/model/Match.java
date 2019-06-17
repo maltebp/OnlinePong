@@ -16,7 +16,7 @@ public class Match {
 
     /**
      * @author Malte
-     * @param player The player of which you want the opponent
+     * @param player The player of which you want the opponentName
      * @return The player in the game suite which is not the parameter player.
      */
     public Player getOpponent(Player player){

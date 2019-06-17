@@ -76,7 +76,7 @@ public abstract class Sender {
      *
      * @param hasWon True: reciever has won, False: reciever has lost
      * @param ratingChange The change occured to the recievers rating after match
-     * @param opponentRatingChange The change occured to the opponent's rating after match
+     * @param opponentRatingChange The change occured to the opponentName's rating after match
      */
     public void sendGameFinished(Player player, boolean hasWon, int ratingChange, int opponentRatingChange){
         JSONObject msg = getCodeMsg(104);
@@ -151,7 +151,7 @@ public abstract class Sender {
 
     /**
      * CODE: 210
-     * Informs client that Player's opponent disconnected
+     * Informs client that Player's opponentName disconnected
      * during the match.
      * Match will be stopped and connection to client closed.
      */

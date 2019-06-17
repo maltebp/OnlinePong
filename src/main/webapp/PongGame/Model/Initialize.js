@@ -8,7 +8,7 @@
 // var connection;
 //
 // /**
-//  * Creates connection to the game server. When an opponent is found it sets up the game. When game is started, it generates and sends or retrieves the GameStateObject through the gameserver
+//  * Creates connection to the game server. When an opponentName is found it sets up the game. When game is started, it generates and sends or retrieves the GameStateObject through the gameserver
 //  *
 //  * @param chosenScore   What score to reach for winning the game
 //  */
@@ -37,7 +37,7 @@
 //         }
 //         else if(obj.code === 10) {
 //             console.log(obj);
-//             player2Movement(obj.paddle);    //Update the opponent paddle
+//             player2Movement(obj.paddle);    //Update the opponentName paddle
 //             ballMovement(obj.ball);         //Update the ball
 //             playerScores(obj.scores);       //Update the scores
 //         }
@@ -78,10 +78,10 @@
 // }
 //
 // /**
-//  * Updates the score for the player if the opponent says either of them have a higher score. The control is to secure
+//  * Updates the score for the player if the opponentName says either of them have a higher score. The control is to secure
 //  * the points don't reset/gets cancelled
 //  *
-//  * @param scores    State of the scores as opponent sees them
+//  * @param scores    State of the scores as opponentName sees them
 //  */
 // function playerScores(scores) {
 //     if(scores[1] > player1.score.score || scores[0] > player2.score.score) {
