@@ -68,9 +68,9 @@ var update = function(){
  */
 Player1.prototype.update = function() {
     if(keysDown["83"] === false && keysDown["87"] === true) { //Only 'W' is being pressed
-        this.paddle.y_speed = -4;
+        this.paddle.y_speed = -8;
     } else if(keysDown["83"] === true && keysDown["87"] === false) { //Only 'S' is being pressed
-        this.paddle.y_speed = 4;
+        this.paddle.y_speed = 8;
     } else {
         this.paddle.y_speed = 0;
     }

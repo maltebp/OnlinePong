@@ -1,9 +1,9 @@
 var connection = null;
-var chosenScore = 10;
+var chosenScore = 5;
 var opponentName = "";
 
 function startGame() {
-    connection = new WebSocket("ws://localhost:8080/gameserver");
+    connection = new WebSocket("ws://192.168.1.102:8080/gameserver");
 
     connection.onopen = function () {
         initializingMessage001();
