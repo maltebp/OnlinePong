@@ -1,4 +1,4 @@
-var connection = null;
+var connection; // Was null before. did'nt work before
 var chosenScore = 10;
 
 function createConnection() {
@@ -11,6 +11,7 @@ function createConnection() {
 
     connection.onmessage = function (event) {
         var obj = JSON.parse(event.data);
+        switchPage('PongPage.html');
         decodeEvent(obj);
     }
 };
@@ -20,13 +21,13 @@ function decodeEvent(jsonObject){
     switch (jsonObject.code) {
 
         case 101:
+
             findingGame(jsonObject);
             break;
 
         case 102:
             acceptGame002();
             initializeGame();
-            //initialize(chosenScore);
             break;
 
         case 103:
@@ -106,16 +107,16 @@ function opponentDisconected(){
 }
 
 function userAlreadyLoggedIn(){
-    document.getElementById("LoginTrouble").innerHTML = "You are already logged in... Please Wait"
+    document.getElementById("loginTrouble").innerHTML = "You are already logged in... Please Wait"
 }
 
 function unableToAuthendizise(){
-    document.getElementById("LoginTrouble").innerHTML = "Unable to make authendication\n Please try again lator";
+    document.getElementById("loginTrouble").innerHTML = "Unable to make authendication\n Please try again lator";
     connection.close();
 }
 
 function wrongUserNameOrPassword(){
-    document.getElementById("LoginTrouble").innerHTML = "Wrong username or password\n Please try again";
+    document.getElementById("loginTrouble").innerHTML = "Wrong username or password\n Please try again";
     startButton.style.display = 'inline';
     connection.close;
 }
