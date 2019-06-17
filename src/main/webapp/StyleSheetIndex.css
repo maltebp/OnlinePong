@@ -1,6 +1,4 @@
-/*-----    This is the stylesheet for the game page    -----*/
-
-
+/*-----    This is the stylesheet for the index page, and contains the general setup of the website    -----*/
 
 /*-----    The box-sizing property allows us to include the padding and border in the box's total width (and height), 
 making sure that the padding stays inside of the box and that it does not break    -----*/
@@ -74,13 +72,6 @@ li{
 .dynamicContainer p {
     text-align: center;
 }
-
-/*-----    This will clear the floats in the documents body after the columns are done //FixMe Important?   -----*/
-/*body::after {
-    content: "";
-    display: table;
-    clear: both;
-}*/
 
 /*-----    This specifies the style of the Footer box    -----*/
 .footer {

@@ -1,5 +1,3 @@
-
-
 var authenticating = false;
 
 let loadingAnimation = document.getElementById("loadingAnimation");
@@ -13,9 +11,7 @@ currUser = null;
 
 
 function authenticateUser(username, password){
-
     let data = JSON.stringify({username : username, password: password});
-    console.log(data);
 
     $.ajax({
         type: "post",
@@ -27,7 +23,6 @@ function authenticateUser(username, password){
             switch(result.code){
 
                 case "1":
-                    console.log("its working");
                     currUser = username;
                     currPassw = password;
                     switchPage("PongPage.html");
