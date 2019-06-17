@@ -1,4 +1,4 @@
-var connection; // Was null before. did'nt work before
+var connection; // Was null. did'nt work before
 var chosenScore = 10;
 
 function createConnection() {
