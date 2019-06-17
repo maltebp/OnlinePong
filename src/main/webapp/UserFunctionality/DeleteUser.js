@@ -9,25 +9,26 @@
  *
  */
 $('form').on('submit', function () {
+    var deleteUserObj = $('#deleteForm').serializeJSON();
 
-    var deleteUserObj = $('#loginForm').serializeJSON;
-        $.ajax({
-            type: 'POST',
-            url: url + '/deleteUser',           //Path
-            dataType: 'json',                   //What is expected back
-            data: JSON.stringify(deleteUserObj), //Converts JavaScript object into string, because a server needs the data as a string.
-            contentType: 'application/json',    //Writes in the header what kind of content we are dealing with.
-            success: function(data) {
-                alert("Success !: "+ JSON.stringify(data));
-            },
-            error: function(data) {
-                alert('Error in operation: ' + JSON.stringify(data));
-            }
-        });
-        return false;
+    console.log(deleteUserObj);
+
+    apiPost("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
+
+    return false;
 });
 
-function userDosentExist() {
-    document.getElementById('deleteFailMsg').innerHTML = "User doesn't exist.";
+function responseFromAPI(data) {
+
+    switch (data.code) {
+
+        case "1":
+            document.getElementById('deleteFailMsg').innerHTML = "User deleted. ";
+            break;
+
+        default:
+            document.getElementById('deleteFailMsg').innerHTML = "Some error. ";
+
+    }
 }
 
