@@ -104,10 +104,10 @@ public class UserService {
     }
 
 
-    @Path("/get10")
+    @Path("/getAll")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String get10(){
+    public String getAll(){
         IUserController userController = new UserController();
         JSONArray json = userController.getTopTen();
         return json.toString();

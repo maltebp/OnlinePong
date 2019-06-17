@@ -39,10 +39,14 @@ function decodeEvent(jsonObject){
 
         case 10:
             gameDataUpdatedata(jsonObject);
-
             break;
 
-        case 201: wrongUserNameOrPassword();
+        case 104:
+            finishedGame(jsonObject);
+            break;
+
+        case 201:
+            wrongUserNameOrPassword();
             break;
 
         case 202: userAlreadyLoggedIn();
@@ -53,6 +57,8 @@ function decodeEvent(jsonObject){
         case 210:
             opponentDisconected();
             break;
+
+
     }
 
 }
@@ -74,7 +80,7 @@ function findingGame(jsonObject){
 
 
 function initializeGame(){
-    startButton.style.display = 'none';
+
     document.getElementById("loading").innerHTML = "A game has been found...";
     canvas.style.display = 'inline';
     setupGame(chosenScore);
@@ -84,7 +90,7 @@ function initializeGame(){
 
 function acceptGame002(){
     var obj = {
-        "code": 002
+        "code": 2
     };
     var jsonString = JSON.stringify(obj);
     connection.send(jsonString);
@@ -92,17 +98,20 @@ function acceptGame002(){
 
 function sendGameState103and010(){
     var gsObj = new GameStateObject(10, player1.paddle, ball, [player1.score.score, player2.score.score]);
-    console.log(gsObj);
-    connection.send(JSON.stringify(gsObj));
+    if(player2.score.score===chosenScore){
+        checkForWinner();
+    }
+    else{
+        console.log("NO WINNER YET;");
+        connection.send(JSON.stringify(gsObj));
+    }
 }
 
 
 function opponentDisconected(){
     document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
     document.getElementById("loading").innerHTML = "";
-    canvas.style.display ="none";
-    //animate(endGame());
-    connection.close;
+    connection.close();
 }
 
 function userAlreadyLoggedIn(){
@@ -116,7 +125,8 @@ function unableToAuthendizise(){
 
 function wrongUserNameOrPassword(){
     document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
-    connection.close;
+    startButton.style.display = 'inline';
+    connection.close();
 
 
 }
@@ -127,8 +137,70 @@ function initializingMessage001(){
         "username": document.forms["loginForm"]["Username"].value,
         "password": document.forms["loginForm"]["Password"].value
 
+
     };
     console.log(user);
     connection.send(JSON.stringify(user));
     startButton.style.display = 'none';
+
+}
+
+function finishedGame(jsonObject){
+    endGame();
+    if(jsonObject.hasWon === true) {
+            document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE GAME!!!!";
+    }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game :(";}
+
+    document.getElementById("loading").innerHTML ="Your rating changed by: "+ jsonObject.ratingChange+". You opponents rating changed by:  "+jsonObject.oppRatingChange;
+}
+
+function  checkForWinner(){
+
+    if(player2.score.score === chosenScore) {
+        var winner = {"code": 11};
+        var jsonString = JSON.stringify(winner);
+        connection.send(jsonString);
+    }
+
+}
+
+/**
+ * Updates the opponents paddle position and movement when he begins to move or stops moving.
+ *
+ * @param oppPaddle     The opponents paddle
+ */
+function player2Movement(oppPaddle) {
+    if(player2.paddle.y_speed !== oppPaddle.y_speed) {
+        player2.paddle.y = oppPaddle.y;
+        player2.paddle.y_speed = oppPaddle.y_speed;
+    }
+}
+
+/**
+ *
+ *
+ * @param oppBall   The balls position as the player sees it. This is only updated when it is at the opponents side, to
+ * secure a smooth experience when the player has to catch the ball
+ */
+function ballMovement(oppBall) {
+    if(ball.x > 400) {
+        ball.speed = oppBall.speed;
+        ball.x = width - oppBall.x;
+        ball.y = oppBall.y;
+        ball.x_speed = -oppBall.x_speed;
+        ball.y_speed = oppBall.y_speed;
+    }
+}
+
+/**
+ * Updates the score for the player if the opponent says either of them have a higher score. The control is to secure
+ * the points don't reset/gets cancelled
+ *
+ * @param scores    State of the scores as opponent sees them
+ */
+function playerScores(scores) {
+    if(scores[1] > player1.score.score || scores[0] > player2.score.score) {
+        player1.score.score = scores[1];
+        player2.score.score = scores[0];
+    }
 }
