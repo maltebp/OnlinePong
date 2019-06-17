@@ -1,93 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Online Tennis</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetForGamePage.css">
-        
-    </head>
-    <body class="Body">
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+    <!--<head>-->
+        <!--<meta charset="utf-8">-->
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+        <!--<title>Online Tennis</title>-->
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="StyleSheetIndex.css">-->
+        <!---->
+    <!--</head>-->
+    <!--<body class="body">-->
 
-        <header class="TopFrame">
-            <img src="pong.gif">
-            <h1>Online Tennis</h1>
-        </header>
-
-        <section>
-
-            <nav class="LeftBox" class="BoxHeight">
-                <h2>Rules</h2>
-                <ul class="NavUl10">
-                    <li>Rule 1</li>
-                    <li>Rule 2</li>
-                    <li>Rule 3</li>
-                    <li>Rule 4</li>
-                    <li>Rule 5</li>
-                </ul> 
-            </nav>
-
-            <div class="OuterGameScreen" class="BoxHeight">
-
-                <div class="Div1">
-
-                    <!--TODO remove login.php-->
-                    <form name="loginForm" class="loginForm" action="#" >
-
-                        <h2>Login </h2>
-                        <p>Username: <input id="Username" type="text" Username=""></p>
-                        <p>Password: <input id="Password" type="password" Password ="" ></p>
-                        <p><button type="button" id="startButton" onclick="createConnection()">Login</button></p>
-                        <p> Don't have an account? <a href="RegisterPage.html">Register</a> </p>
-                        <p id ="messagesFromServer"></p><br><p id="loading"></p>
-
-                        <canvas class="InnerGameScreen" id="game"></canvas>
-
-                    </form>
-
-                </div>
-            </div>
-            <!-- Remember the order of the scripts!-->
-            <!-- First we get the backgrounds Graphics-->
-            <script src="PongSpil/GlobalVariables.js"></script>
-            <script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>
-            <script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>
-            <script src="PongSpil/View/BackGroundGraphics/MidCourtLine.js"></script>
-            <script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>
-
-            <!-- Then we get the model and the Game Functions/Logic-->
-            <script src="PongSpil/Model/GameStateObject.js"></script>
-
-            <script src="PongSpil/Model/SetupGame.js"></script>
-            <script src="PongSpil/Model/jsToGameServer.js"></script>
-
-            <!-- Finally we get the GameObjects that we play the game with-->
-            <script src="PongSpil/View/Render.js"></script>
-            <script src="PongSpil/View/GameObjectGraphics/Score.js"></script>
-            <script src="PongSpil/View/GameObjectGraphics/Paddle.js"></script>
-            <script src="PongSpil/View/GameObjectGraphics/Ball.js"></script>
-            <script src="PongSpil/View/GameObjectGraphics/Players.js"></script>
+        <!--<section>-->
 
 
-            <nav class="RightBox" class="BoxHeight">
 
-                <h2>Links</h2>
-                <ul class="NavUl2">
-                    <li>Github</li>
-                    <li>DTU</li>
-                    <li>Messenger</li>
-                    <li>Overleaf</li>
-                </ul>
+            <!--<div class="OuterGameScreen" class="BoxHeight"></div>-->
+            <!--&lt;!&ndash; Remember the order of the scripts!&ndash;&gt;-->
+            <!--&lt;!&ndash; First we get the backgrounds Graphics&ndash;&gt;-->
+            <!--<script src="PongSpil/GlobalVariables.js"></script>-->
+            <!--<script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>-->
+            <!--<script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>-->
+            <!--<script src="PongSpil/View/BackGroundGraphics/MidCourtLine.js"></script>-->
+            <!--<script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>-->
 
-            </nav>
+            <!--&lt;!&ndash; Then we get the model and the Game Functions/Logic&ndash;&gt;-->
+            <!--<script src="PongSpil/Model/GameStateObject.js"></script>-->
+            <!--<script src="PongSpil/Model/Initialize.js"></script>-->
+            <!--<script src="PongSpil/Model/SetupGame.js"></script>-->
+            <!--<script src="PongSpil/Model/jsToGameServer.js"></script>-->
 
-        </section>
+            <!--&lt;!&ndash; Finally we get the GameObjects that we play the game with&ndash;&gt;-->
+            <!--<script src="PongSpil/View/Render.js"></script>-->
+            <!--<script src="PongSpil/View/GameObjectGraphics/Score.js"></script>-->
+            <!--<script src="PongSpil/View/GameObjectGraphics/Paddle.js"></script>-->
+            <!--<script src="PongSpil/View/GameObjectGraphics/Ball.js"></script>-->
+            <!--<script src="PongSpil/View/GameObjectGraphics/Players.js"></script>-->
 
-        <footer class="Footer">
-            <address>Anker Engelunds Vej 1 Bygning 101A, 2800 Kgs. Lyngby</address>
-        </footer>
 
+        <!--</section>-->
 
-    </body>
-</html>
+    <!--</body>-->
+<!--</html>-->
