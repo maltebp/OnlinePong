@@ -81,17 +81,18 @@ public class UserDAOSQL implements IUserDAO{
      * @return String: Whether successful or not.
      * @throws DALException
      */
-    public String createUser(String username, String password) throws DALException {
+    public String createUser(String username, String password, int elo) throws DALException {
         Argon2 argon2 = Argon2Factory.create();
         String hashedPassword = argon2.hash(10, 65536, 1, password);
 
         try (Connection con = createConnection()) {
 
             //user_id is on AUTO_INCREMENT.
-            String query = "INSERT INTO users (username, password) VALUES(?,?)";
+            String query = "INSERT INTO users (username, password, elo) VALUES(?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, hashedPassword);
+            preparedStatement.setInt(3, elo);
             preparedStatement.execute();
             return"1";
         }catch(SQLException e){
@@ -122,7 +123,7 @@ public class UserDAOSQL implements IUserDAO{
                     return "1";
                 }
             }
-            return "0";
+            return "-1";
         }catch(SQLException e){
             throw new DALException("-1");
         }

@@ -28,7 +28,7 @@ public interface IUserDAO {
      * @return              String confirmation
      * @throws DALException
      */
-    String createUser(String username, String password) throws DALException;
+    String createUser(String username, String password, int elo) throws DALException;
 
     /**
      * Controls the password is correct through hashing

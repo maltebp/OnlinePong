@@ -22,8 +22,7 @@ public class UserDAOSQLTest {
     public void getUser() {
 
         try {
-            testDAO.createUser("testUser", "pass");
-            testDAO.setElo("testUser", 500);
+            testDAO.createUser("testUser", "pass", 500);
             IUserDTO user = testDAO.getUser("testUser");
             testDAO.deleteUser("testUser");
             assertEquals("testUser", user.getUsername());
@@ -37,11 +36,11 @@ public class UserDAOSQLTest {
     @Test
     public void createUser() {
         try {
-            testDAO.createUser("swoldbye", "pass");
+            testDAO.createUser("swoldbye", "pass", 500);
             IUserDTO user = testDAO.getUser("swoldbye");
             testDAO.deleteUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
-            assertEquals(0, user.getElo());
+            assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
             fail(e.getMessage());
         }
@@ -50,7 +49,7 @@ public class UserDAOSQLTest {
     @Test
     public void checkHash() {
         try {
-            testDAO.createUser("swoldbye", "pass");
+            testDAO.createUser("swoldbye", "pass", 1000);
             String output = testDAO.checkHash("swoldbye", "pass");
             testDAO.deleteUser("swoldbye");
             assertEquals("1", output);
@@ -63,7 +62,7 @@ public class UserDAOSQLTest {
     @Test
     public void setElo() {
         try {
-            testDAO.createUser("testUser", "pass");
+            testDAO.createUser("testUser", "pass", 1000);
             testDAO.setElo("testUser", 500);
             IUserDTO user = testDAO.getUser("testUser");
             testDAO.deleteUser("testUser");
@@ -76,26 +75,16 @@ public class UserDAOSQLTest {
     @Test
     public void getTopTen() {
         try {
-            testDAO.createUser("eloTest0", "pass");
-            testDAO.setElo("eloTest0", 999999999);
-            testDAO.createUser("eloTest1", "pass");
-            testDAO.setElo("eloTest1", 999999998);
-            testDAO.createUser("eloTest2", "pass");
-            testDAO.setElo("eloTest2", 999999997);
-            testDAO.createUser("eloTest3", "pass");
-            testDAO.setElo("eloTest3", 999999996);
-            testDAO.createUser("eloTest4", "pass");
-            testDAO.setElo("eloTest4", 999999995);
-            testDAO.createUser("eloTest5", "pass");
-            testDAO.setElo("eloTest5", 999999994);
-            testDAO.createUser("eloTest6", "pass");
-            testDAO.setElo( "eloTest6", 999999993);
-            testDAO.createUser("eloTest7", "pass");
-            testDAO.setElo("eloTest7", 999999992);
-            testDAO.createUser("eloTest8", "pass");
-            testDAO.setElo("eloTest8", 999999992);
-            testDAO.createUser("eloTest9", "pass");
-            testDAO.setElo("eloTest9", 999999992);
+            testDAO.createUser("eloTest0", "pass", 999999999);
+            testDAO.createUser("eloTest1", "pass", 999999998);
+            testDAO.createUser("eloTest2", "pass", 999999997);
+            testDAO.createUser("eloTest3", "pass", 999999996);
+            testDAO.createUser("eloTest4", "pass", 999999995);
+            testDAO.createUser("eloTest5", "pass", 999999994);
+            testDAO.createUser("eloTest6", "pass", 999999993);
+            testDAO.createUser("eloTest7", "pass", 999999992);
+            testDAO.createUser("eloTest8", "pass", 999999992);
+            testDAO.createUser("eloTest9", "pass", 999999992);
 
             List<IUserDTO> users;
             users = testDAO.getTopTen();
