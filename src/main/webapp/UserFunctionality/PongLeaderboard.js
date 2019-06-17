@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    $.getJSON(url + "/getTopTen", function (data) {
+    apiGet( "/getTopTen", function(data) {
         var userData = "";
         $.each(data, function (key, value) {
             userData += '<tr>';

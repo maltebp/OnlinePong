@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Controller which handles players connected to the
  * game server.
- * It validates users via authentication (username/password)
+ * It validates users via authenticating (username/password)
  * and duplicate Player checks (usernameExists()), and maintains
  * information about validated users.
  *
