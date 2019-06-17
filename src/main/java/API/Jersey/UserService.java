@@ -112,13 +112,15 @@ public class UserService {
         JSONArray json = userController.getTopTen();
         return json.toString();
     }
-/*
+
     @Path("/DeleteUser")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(){
-        IUserController
+    public String deleteUser(String msg){
+        IUserController userController = new UserController();
+        JSONObject output = userController.deleteUser(new JSONObject(msg));
+        return output.toString();
     }
-*/
+
 }

@@ -77,7 +77,12 @@ import java.util.List;
     }
 
     @Override
-    public String deleteUser(String username) throws DALException {
+    public String forceDeleteUser(String username) throws DALException {
+        return null;
+    }
+
+    @Override
+    public String userDeleteUser(String username, String password) throws DALException {
         return null;
     }
 

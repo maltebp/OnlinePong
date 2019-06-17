@@ -165,11 +165,13 @@ public class UserDAOSQL implements IUserDAO{
             return users;
 
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DALException("-1");
+
         }
     }
 
-    public String deleteUser(String username) throws DALException{
+    public String forceDeleteUser(String username) throws DALException{
         try(Connection con = createConnection()){
             String query = "DELETE FROM users WHERE username = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -177,7 +179,19 @@ public class UserDAOSQL implements IUserDAO{
             preparedStatement.execute();
             return "1";
             }catch(SQLException e) {
-                throw new DALException("-1");
+                throw new DALException("-1" + e.getMessage());
+        }
+    }
+
+    public String userDeleteUser(String username, String password) throws DALException{
+        try(Connection con = createConnection()){
+            String auth = checkHash(username, password);
+            if(auth.equals("1")){
+                return forceDeleteUser(username);
+            }
+            else return "-2";
+        }catch(SQLException e){
+            throw new DALException("-1");
         }
     }
 }

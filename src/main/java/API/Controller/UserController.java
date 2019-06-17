@@ -124,7 +124,29 @@ public class UserController implements IUserController{
             return jUsers;
 
         }catch(DALException e){
-            return null;
+            e.printStackTrace();
+            JSONArray errorArr = new JSONArray();
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("code", "-2");
+            errorObj.put("Message", "DALException occured.");
+            errorArr.put(errorObj);
+            return errorArr;
+        }
+    }
+
+    public JSONObject deleteUser(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
+
+        JSONObject output = new JSONObject();
+        try{
+            String code = UserDAO.userDeleteUser(username, password);
+            output.put("code", code);
+            return output;
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("errorMSG", e.getMessage());
+            return output;
         }
     }
 }
