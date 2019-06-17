@@ -1,25 +1,19 @@
 var connection = null;
 var chosenScore = 10;
 
-
 function createConnection() {
 
     connection = new WebSocket("ws://localhost:8080/gameserver");
 
     connection.onopen = function () {
-
         initializingMessage001();
     };
-    switchPage("PongPage.html");
 
     connection.onmessage = function (event) {
         var obj = JSON.parse(event.data);
         decodeEvent(obj);
     }
-}
-
-
-
+};
 
 function decodeEvent(jsonObject){
 
@@ -32,16 +26,15 @@ function decodeEvent(jsonObject){
         case 102:
             acceptGame002();
             initializeGame();
-
             //initialize(chosenScore);
             break;
 
-        case 103: sendGameState103and010();
+        case 103:
+            sendGameState103and010();
             break;
 
         case 10:
             gameDataUpdatedata(jsonObject);
-
             break;
 
         case 104:
@@ -52,18 +45,19 @@ function decodeEvent(jsonObject){
             wrongUserNameOrPassword();
             break;
 
-        case 202: userAlreadyLoggedIn();
+        case 202:
+            userAlreadyLoggedIn();
             break;
 
-        case 203: unableToAuthendizise();
+        case 203:
+            unableToAuthendizise();
             break;
+
         case 210:
             opponentDisconected();
             break;
     }
-
 }
-
 
 function gameDataUpdatedata(jsonObject){
     console.log(jsonObject);
@@ -73,12 +67,10 @@ function gameDataUpdatedata(jsonObject){
     sendGameState103and010();
 }
 
-
 function findingGame(jsonObject){
     document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n\n Please wait..."
     //whileLoading(true);
 }
-
 
 function initializeGame(){
 
@@ -87,7 +79,6 @@ function initializeGame(){
     setupGame(chosenScore);
     animate(runGame);
 }
-
 
 function acceptGame002(){
     var obj = {
@@ -108,7 +99,6 @@ function sendGameState103and010(){
     }
 }
 
-
 function opponentDisconected(){
     document.getElementById("messagesFromServer").innerHTML = "Opponent has been disconnected from the game\n You have won";
     document.getElementById("loading").innerHTML = "";
@@ -128,8 +118,6 @@ function wrongUserNameOrPassword(){
     document.getElementById("LoginTrouble").innerHTML = "Wrong username or password\n Please try again";
     startButton.style.display = 'inline';
     connection.close;
-
-
 }
 
 function initializingMessage001(){
@@ -137,13 +125,10 @@ function initializingMessage001(){
         "code": 1,
         "username": document.forms["loginForm"]["Username"].value,
         "password": document.forms["loginForm"]["Password"].value
-
-
     };
     console.log(user);
     connection.send(JSON.stringify(user));
     startButton.style.display = 'none';
-
 }
 
 function finishedGame(jsonObject){
@@ -162,7 +147,6 @@ function  checkForWinner(){
         var jsonString = JSON.stringify(winner);
         connection.send(jsonString);
     }
-
 }
 
 /**
