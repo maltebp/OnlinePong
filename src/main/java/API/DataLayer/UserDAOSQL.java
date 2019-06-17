@@ -169,14 +169,15 @@ public class UserDAOSQL implements IUserDAO{
         }
     }
 
-    public void deleteUser(String username) throws DALException{
+    public String deleteUser(String username) throws DALException{
         try(Connection con = createConnection()){
             String query = "DELETE FROM users WHERE username = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1,username);
             preparedStatement.execute();
+            return "1";
             }catch(SQLException e) {
-            e.getMessage();
+                throw new DALException("-1");
         }
     }
 }

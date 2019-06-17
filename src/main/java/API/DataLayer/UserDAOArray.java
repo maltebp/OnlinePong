@@ -77,8 +77,9 @@ import java.util.List;
     }
 
     @Override
-    public void deleteUser(String username) throws DALException {
-
+    public String deleteUser(String username) throws DALException {
+        return null;
     }
+
 }
 

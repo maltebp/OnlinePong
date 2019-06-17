@@ -64,7 +64,7 @@ public interface IUserDAO {
      * @param username
      * @throws DALException
      */
-    public void deleteUser(String username) throws DALException;
+    public String deleteUser(String username) throws DALException;
 
 
     /**
