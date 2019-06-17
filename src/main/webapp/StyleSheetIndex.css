@@ -36,6 +36,13 @@ making sure that the padding stays inside of the box and that it does not break 
     text-align:left; 
 }
 
+.centerContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    /*flex-basis: max-content;*/
+}
+
 /*-----    This specifies the style for the left box    -----*/
 .leftBox {
     float:left;
