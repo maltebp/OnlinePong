@@ -8,8 +8,8 @@ function isSamePasswords() {
     return (pass === pass2);
 }
 
-$('form').on('submit', function(event){
-    event.preventDefault();
+$('form').on('submit', function(){
+    // event.preventDefault();
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
         delete userObj.passwConf;

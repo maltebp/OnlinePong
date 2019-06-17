@@ -40,7 +40,7 @@ import java.util.List;
 
 
     @Override
-    public String createUser(String username, String password) throws DALException {
+    public String createUser(String username, String password, int elo) throws DALException {
         IUserDTO user = new UserDTO(username);
         user.setPassword(password);
         userList.add(user);
@@ -77,8 +77,14 @@ import java.util.List;
     }
 
     @Override
-    public void deleteUser(String username) throws DALException {
-
+    public String forceDeleteUser(String username) throws DALException {
+        return null;
     }
+
+    @Override
+    public String userDeleteUser(String username, String password) throws DALException {
+        return null;
+    }
+
 }
 
