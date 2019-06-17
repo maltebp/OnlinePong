@@ -1,11 +1,15 @@
 <html>
     <head>
         <script>
-            document.getElementById('messagesFromServer').innerHTML = "Hello " + currUser + "! Ready to play a game?";
+            currUser = "Malte";
+            document.getElementById('username').innerHTML = currUser;
             document.getElementById("playerElo").innerHTML = "Your current elo is: " + currElo;
         </script>
     </head>
     <body>
+
+    <p>Logged in as</p><br>
+    <p id="username" style="font-size: 30px; font-weight: bold;"></p>
 
     <div>
         <p id="messagesFromServer"></p><p id="loading"></p>
