@@ -1,8 +1,8 @@
-var connection; // Was null. did'nt work before
+var connection = null;
 var chosenScore = 10;
+var opponentName = "";
 
-function createConnection() {
-
+function startGame() {
     connection = new WebSocket("ws://localhost:8080/gameserver");
 
     connection.onopen = function () {
@@ -11,21 +11,19 @@ function createConnection() {
 
     connection.onmessage = function (event) {
         var obj = JSON.parse(event.data);
-        // switchPage('PongPage.html');
         decodeEvent(obj);
     }
-};
+}
 
 function decodeEvent(jsonObject){
-
     switch (jsonObject.code) {
 
         case 101:
-
             findingGame(jsonObject);
             break;
 
         case 102:
+            opponentName = jsonObject.username;
             acceptGame002();
             initializeGame();
             break;
@@ -56,6 +54,7 @@ function decodeEvent(jsonObject){
 
         case 210:
             opponentDisconected();
+            finishedGame(jsonObject);
             break;
     }
 }
@@ -70,12 +69,12 @@ function gameDataUpdatedata(jsonObject){
 
 function findingGame(jsonObject){
     document.getElementById("messagesFromServer").innerHTML = "Awating an opponent.\n Estimated to wait for a game is "+jsonObject.timeEstimate+"\n\n Please wait..."
-    //whileLoading(true);
 }
 
 function initializeGame(){
-
-    document.getElementById("loading").innerHTML = "A game has been found...";
+    document.getElementById("messagesFromServer").innerHTML = "You're playing against " + opponentName + ", good luck!";
+    document.getElementById("loading").innerHTML = "";
+    document.getElementById("playerElo").innerHTML = "";
     canvas.style.display = 'inline';
     setupGame(chosenScore);
     animate(runGame);
@@ -107,42 +106,48 @@ function opponentDisconected(){
 }
 
 function userAlreadyLoggedIn(){
-    document.getElementById("loginTrouble").innerHTML = "You are already logged in... Please Wait"
+    document.getElementById("messagesFromServer").innerHTML = "You are already logged in... Please Wait"
+    document.getElementById("newGameBtn").style.display = 'inline';
 }
 
 function unableToAuthendizise(){
-    document.getElementById("loginTrouble").innerHTML = "Unable to make authendication\n Please try again lator";
+    document.getElementById("messagesFromServer").innerHTML = "Unable to make authendication\n Please try again lator";
+    document.getElementById("newGameBtn").style.display = 'inline';
     connection.close();
 }
 
 function wrongUserNameOrPassword(){
-    document.getElementById("loginTrouble").innerHTML = "Wrong username or password\n Please try again";
-    startButton.style.display = 'inline';
+    document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
+    document.getElementById("newGameBtn").style.display = 'inline';
     connection.close;
 }
 
 function initializingMessage001(){
     var user = {
         "code": 1,
-        "username": document.forms["loginForm"]["Username"].value,
-        "password": document.forms["loginForm"]["Password"].value
+        "username": currUser,
+        "password": currPassw
     };
     console.log(user);
     connection.send(JSON.stringify(user));
-    startButton.style.display = 'none';
+    document.getElementById("newGameBtn").style.display = 'none';
 }
 
 function finishedGame(jsonObject){
     endGame();
+    currElo += jsonObject.ratingChange;
     if(jsonObject.hasWon === true) {
-            document.getElementById("messagesFromServer").innerHTML = "Congrats, YOU WON THE GAME!!!!";
-    }else{    document.getElementById("messagesFromServer").innerHTML = "Sorry, you have lost the game :(";}
-
-    document.getElementById("loading").innerHTML ="Your rating changed by: "+ jsonObject.ratingChange+". You opponents rating changed by:  "+jsonObject.oppRatingChange;
+        document.getElementById("messagesFromServer").innerHTML = "Congrats, you won against " + opponentName + "!";
+            document.getElementById("playerElo").innerHTML = "Your elo: " + currElo + "(+" + jsonObject.ratingChange + ")";
+    }else{
+        document.getElementById("messagesFromServer").innerHTML = "You have lost against " + opponentName;
+        document.getElementById("playerElo").innerHTML = "Your elo: " + currElo + "(" + jsonObject.ratingChange + ")";
+    }
+    document.getElementById("messagesFromServer").innerHTML += "\nYour opponents rating changed by: " + jsonObject.oppRatingChange;
+    document.getElementById("newGameBtn").style.display = 'inline';
 }
 
 function  checkForWinner(){
-
     if(player2.score.score === chosenScore) {
         var winner = {"code": 11};
         var jsonString = JSON.stringify(winner);

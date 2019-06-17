@@ -1,15 +1,19 @@
 <html>
+    <head>
+        <script>
+            document.getElementById('messagesFromServer').innerHTML = "Hello " + currUser + "! Ready to play a game?";
+            document.getElementById("playerElo").innerHTML = "Your current elo is: " + currElo;
+        </script>
+    </head>
     <body>
 
     <div>
-        <p id="messagesFromServer"></p><p id="loading"></p>
-        <button id="logoutButton">Logout</button>
-        <button id="newGameButton">Nyt spil</button>
+        <p id="messagesFromServer">oi</p><p id="loading"></p>
+        <p id="playerElo">This here?</p>
+        <button id="newGameBtn" onclick="startGame()">New Game</button>
 
+        <canvas class="InnerGameScreen" id="game"></canvas>
     </div>
-    <canvas class="InnerGameScreen" id="game">
-
-    </canvas>
 
     <!-- Remember the order of the scripts!-->
     <!-- First we get the backgrounds Graphics-->
