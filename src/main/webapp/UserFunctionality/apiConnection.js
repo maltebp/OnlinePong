@@ -1,6 +1,6 @@
 
 // The API for the URL
-let API_URL = "http://192.168.1.102:8080/rest/service";
+let API_URL = "http://62.79.16.17:8080/rest/service";
 
 
 /**
