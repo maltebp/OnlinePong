@@ -158,7 +158,7 @@ public abstract class Sender {
     public void sendOpponentDisconnected(Player player, int ratingChange, int opponentRatingChange){
         JSONObject msg = getCodeMsg(210);
         msg.put("ratingChange", ratingChange);
-        msg.put("opponentRatingChange",opponentRatingChange);
+        msg.put("oppRatingChange",opponentRatingChange);
         sendMessage(player, msg.toString());
     }
 

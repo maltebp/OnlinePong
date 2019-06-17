@@ -54,6 +54,7 @@ function decodeEvent(jsonObject){
 
         case 210:
             opponentDisconected();
+            finishedGame(jsonObject);
             break;
     }
 }
@@ -145,7 +146,6 @@ function finishedGame(jsonObject){
     document.getElementById("messagesFromServer").innerHTML += "\nYour opponents rating changed by: " + jsonObject.oppRatingChange;
     document.getElementById("newGameBtn").style.display = 'inline';
 }
-
 
 function  checkForWinner(){
     if(player2.score.score === chosenScore) {
