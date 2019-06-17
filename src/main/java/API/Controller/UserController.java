@@ -133,6 +133,8 @@ public class UserController implements IUserController{
         String username = input.getString("username");
         String password = input.getString("password");
 
+        System.out.println(username + " " + password);
+
         JSONObject output = new JSONObject();
         try{
             String code = UserDAO.userDeleteUser(username, password);

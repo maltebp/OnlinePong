@@ -5,7 +5,7 @@
     <body>
 
         <div class="deletePage">
-            <form id="deleteForm">
+            <form id="deleteForm" action="#" onsubmit="return false;">
 
                 <h2>Delete user</h2>
                 <p>To delete a user, input username and password.</p>
@@ -15,10 +15,11 @@
                 <input type="submit" value="delete"> <input type="button" value="Back" onclick="switchPage('LoginPage.html')">
 
             </form>
+
+
         </div>
 
         <script type="text/javascript" src="jquery.serializejson.js"></script>
-
         <script src="UserFunctionality/UserVariables.js"></script>
         <script src="UserFunctionality/DeleteUser.js"></script>
 

@@ -1,7 +1,9 @@
+
+
 var authenticating = false;
 
-let loadingAnimation = document.getElementById("loadingAnimation");
-let loginTroubleText = document.getElementById("loginTrouble");
+var loadingAnimation = document.getElementById("loadingAnimation");
+var loginTroubleText = document.getElementById("loginTrouble");
 loadingAnimation.style.display = 'none';
 loginTroubleText.style.display = 'none';
 
@@ -10,50 +12,50 @@ currPassw = null;
 currUser = null;
 
 
-function authenticateUser(username, password){
-    let data = JSON.stringify({username : username, password: password});
 
-    $.ajax({
-        type: "post",
-        url: url + "/AuthUser",
-        contentType: "application/json",
-        data: data,
-        success : function(result){
 
-            switch(result.code){
+function evaluateResponse(result){
 
-                case "1":
-                    currUser = username;
-                    currPassw = password;
-                    switchPage("PongPage.html");
-                    break;
+    switch(result.code){
 
-                case "-1":
-                    document.getElementById("loginTrouble").innerHTML = "Wrong username and/or password!";
-                    break;
+        case "1":
+            switchPage("PongPage.html");
+            break;
 
-                default:
-                    loginTroubleText.innerHTML = "An unexpected error occured!";
-                    loginTroubleText.style.display = "inline";
-            }
-            loadingAnimation.style.display = 'none';
-            authenticating = false;
-        },
-        error: function(data){
-            console.log("Error occured during login!");
-            console.log(data)
-        }
-    })
+        case "-1":
+            showError("Wrong username and/or password!");
+            currUser = "";
+            currPassw = "";
+            break;
+
+        default:
+            showError("An unexpected error occured!");
+            currUser = "";
+            currPassw = "";
+    }
+
+    loadingAnimation.style.display = 'none';
+    authenticating = false;
 }
 
 
-function dostuff(){
+function showError(errorMsg){
+    loginTroubleText.innerHTML = errorMsg;
+    loginTroubleText.style.display = "inline";
+}
+
+
+/* Submit the username / password written in the form
+    for authentication  */
+function authenticate(){
     if( !authenticating ) {
         authenticating = true;
         loadingAnimation.style.display = 'inline';
         loginTroubleText.style.display = 'none';
-        var username = document.forms["loginForm"]["username"].value;
-        var password = document.forms["loginForm"]["password"].value;
-        authenticateUser(username, password);
+        currUser = document.forms["loginForm"]["username"].value;
+        currPassw = document.forms["loginForm"]["password"].value;
+        let userData = JSON.stringify({username : currUser, password: currPassw});
+        apiPost("/AuthUser", evaluateResponse, userData);
     }
 }
+
