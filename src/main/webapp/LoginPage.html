@@ -1,44 +1,22 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetLogin.css">
+        <script type="text/javascript" src="jquery-3.4.1.js"></script>
+        <script src="UserFunctionality/RegistrationVariables.js"></script>
+
     </head>
+
     <body>
-        <div class="loginPage">
-            <form name="loginForm" class="loginForm" action="#" >
-
-                <h2>Login </h2>
-                <p>Username: <input id="Username" type="text" Username=""></p>
-                <p>Password: <input id="Password" type="password" Password ="" ></p>
-                <p><button type="button" id="startButton" onclick="createConnection()">Login</button></p>
-                <p> Don't have an account? <a href=javascript:switchPage("RegisterPage.html")>Register</a> </p>
-                <p id="LoginTrouble"></p>
-                <!--<p id="messagesFromServer"></p><p id="loading"></p>-->
-
-                <!--<canvas class="InnerGameScreen" id="game"></canvas> //TODO Delete when sure it works-->
-
-            </form>
-        </div>
-        <script src="PongGame/Model/jsToGameServer.js"></script>
-
-        <!--&lt;!&ndash; Remember the order of the scripts!&ndash;&gt;-->
-        <!--&lt;!&ndash; First we get the backgrounds Graphics&ndash;&gt;-->
-        <!--<script src="PongSpil/GlobalVariables.js"></script>-->
-        <!--<script src="PongSpil/View/BackGroundGraphics/AnimateCanvas.js"></script>-->
-        <!--<script src="PongSpil/View/BackGroundGraphics/BottomLine.js"></script>-->
-        <!--<script src="PongSpil/View/BackGroundGraphics/MidCourtLine.js"></script>-->
-        <!--<script src="PongSpil/View/BackGroundGraphics/MidCourtGraphics.js"></script>-->
-
-        <!--&lt;!&ndash; Then we get the model and the Game Functions/Logic&ndash;&gt;-->
-        <!--<script src="PongSpil/Model/GameStateObject.js"></script>-->
-        <!--<script src="PongSpil/Model/SetupGame.js"></script>-->
-        <!--<script src="PongSpil/Model/jsToGameServer.js"></script>-->
-
-        <!--&lt;!&ndash; Finally we get the GameObjects that we play the game with&ndash;&gt;-->
-        <!--<script src="PongSpil/View/Render.js"></script>-->
-        <!--<script src="PongSpil/View/GameObjectGraphics/Score.js"></script>-->
-        <!--<script src="PongSpil/View/GameObjectGraphics/Paddle.js"></script>-->
-        <!--<script src="PongSpil/View/GameObjectGraphics/Ball.js"></script>-->
-        <!--<script src="PongSpil/View/GameObjectGraphics/Players.js"></script>-->
+        <h2>Login </h2>
+        <form id="loginForm" action="#" onsubmit="dostuff();return false;" >
+            Username: <input type="text" id="username"><br>
+            Password: <input type="password" id="password"><br>
+            <input type="submit" value="Submit"><br>
+        </form>
+        <p> Don't have an account? <a href=javascript:switchPage("RegisterPage.html")>Register</a> </p>
+        <p id="loginTrouble" style="color: darkred; font-weight: bold"></p>
+        <img id="loadingAnimation" src="loading.gif">
+        <script src="UserFunctionality/login.js"></script>
     </body>
 </html>
 
