@@ -49,13 +49,15 @@ public class UserController implements IUserController{
     //FixMe possible issues with error-handling here.
     //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
     public JSONObject createUser(JSONObject input){
+        int elo = 1000;
         String username = input.getString("username");
         String password = input.getString("password");
 
         JSONObject output = new JSONObject();
         try{
-            String code = UserDAO.createUser(username,password);
+            String code = UserDAO.createUser(username,password,elo);
             output.put("code", code);
+
             return output;
         }catch(DALException e){
             output.put("code", "-2");
@@ -76,7 +78,7 @@ public class UserController implements IUserController{
             return output;
         }catch(DALException e){
             output.put("code", "-2");
-            output.put("ERROR Msg", "Something went wrong, elo not found");
+            output.put("ERROR Msg", "Something went wrong, elo not set");
             output.put("Stack-Trace", e.getMessage());
             return output;
         }
@@ -106,7 +108,6 @@ public class UserController implements IUserController{
 
     public JSONArray getTopTen(){
         JSONArray jUsers = new JSONArray();
-
         try{
             List<IUserDTO> iUsers = UserDAO.getTopTen();
             for(IUserDTO x: iUsers){
@@ -118,15 +119,29 @@ public class UserController implements IUserController{
             return jUsers;
 
         }catch(DALException e){
-            return null;
+            e.printStackTrace();
+            JSONArray errorArr = new JSONArray();
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("code", "-2");
+            errorObj.put("Message", "DALException occured.");
+            errorArr.put(errorObj);
+            return errorArr;
         }
     }
 
-    public static void main(String[] args) {
-        IUserController userController = new UserController();
-        JSONArray jUsers;
-        jUsers = userController.getTopTen();
-        System.out.println(jUsers.toString());
-    }
+    public JSONObject deleteUser(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
 
+        JSONObject output = new JSONObject();
+        try{
+            String code = UserDAO.userDeleteUser(username, password);
+            output.put("code", code);
+            return output;
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("errorMSG", e.getMessage());
+            return output;
+        }
+    }
 }

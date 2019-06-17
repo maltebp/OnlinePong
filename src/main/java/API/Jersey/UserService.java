@@ -113,4 +113,14 @@ public class UserService {
         return json.toString();
     }
 
+    @Path("/deleteUser")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser(String msg){
+        IUserController userController = new UserController();
+        JSONObject output = userController.deleteUser(new JSONObject(msg));
+        return output.toString();
+    }
+
 }

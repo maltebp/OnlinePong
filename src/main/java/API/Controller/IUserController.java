@@ -25,4 +25,6 @@ public interface IUserController {
     JSONObject setElo(JSONObject input);
 
     JSONArray getTopTen();
+
+    JSONObject deleteUser(JSONObject input);
 }
