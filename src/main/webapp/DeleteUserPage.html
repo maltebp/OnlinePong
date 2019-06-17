@@ -1,23 +1,26 @@
 <html>
-<body>
+    <head>
 
-    <div class="deletePage">
-        <form id="deleteForm">
+    </head>
+    <body>
 
-            <h2>Delete user</h2>
-            <p>To delete a user, input username and password.</p>
-            <p>Username: <input id="deleteUsername" type="text" Username=""></p>
-            <p>Password: <input id="deletePassword" type="password" Password=""></p>
-            <p id="deleteFailMsg"></p>
-            <input type="submit" value="delete"> <input type="button" value="Back" onclick="switchPage('LoginPage.html')">
+        <div class="deletePage">
+            <form id="deleteForm">
 
-        </form>
-    </div>
+                <h2>Delete user</h2>
+                <p>To delete a user, input username and password.</p>
+                <label>Username: <input id="deleteUsername" type="text" name="username"></label><br><br>
+                <label>Password: <input id="deletePassword" type="password" name="password"></label>
+                <p id="deleteFailMsg"></p>
+                <input type="submit" value="delete"> <input type="button" value="Back" onclick="switchPage('LoginPage.html')">
 
-    <script type="text/javascript" src="jquery.serializejson.js"></script>
+            </form>
+        </div>
 
-    <script src="UserFunctionality/UserVariables.js"></script>
-    <script src="UserFunctionality/DeleteUser.js"></script>
+        <script type="text/javascript" src="jquery.serializejson.js"></script>
 
-</body>
+        <script src="UserFunctionality/UserVariables.js"></script>
+        <script src="UserFunctionality/DeleteUser.js"></script>
+
+    </body>
 </html>
