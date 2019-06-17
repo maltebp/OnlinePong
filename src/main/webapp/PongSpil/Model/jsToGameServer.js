@@ -1,5 +1,4 @@
 var connection = null;
-
 var chosenScore = 10;
 
 
@@ -8,8 +7,10 @@ function createConnection() {
     connection = new WebSocket("ws://localhost:8080/gameserver");
 
     connection.onopen = function () {
+
         initializingMessage001();
     };
+    switchPage("PongPage.html");
 
     connection.onmessage = function (event) {
         var obj = JSON.parse(event.data);
@@ -31,6 +32,7 @@ function decodeEvent(jsonObject){
         case 102:
             acceptGame002();
             initializeGame();
+
             //initialize(chosenScore);
             break;
 
@@ -39,6 +41,7 @@ function decodeEvent(jsonObject){
 
         case 10:
             gameDataUpdatedata(jsonObject);
+
             break;
 
         case 104:
@@ -57,8 +60,6 @@ function decodeEvent(jsonObject){
         case 210:
             opponentDisconected();
             break;
-
-
     }
 
 }
@@ -115,18 +116,18 @@ function opponentDisconected(){
 }
 
 function userAlreadyLoggedIn(){
-    document.getElementById("loading").innerHTML = "You are already logged in... Please Wait"
+    document.getElementById("LoginTrouble").innerHTML = "You are already logged in... Please Wait"
 }
 
 function unableToAuthendizise(){
-    document.getElementById("messagesFromServer").innerHTML = "Unable to make authendication\n Please try again lator";
+    document.getElementById("LoginTrouble").innerHTML = "Unable to make authendication\n Please try again lator";
     connection.close();
 }
 
 function wrongUserNameOrPassword(){
-    document.getElementById("messagesFromServer").innerHTML = "Wrong username or password\n Please try again";
+    document.getElementById("LoginTrouble").innerHTML = "Wrong username or password\n Please try again";
     startButton.style.display = 'inline';
-    connection.close();
+    connection.close;
 
 
 }

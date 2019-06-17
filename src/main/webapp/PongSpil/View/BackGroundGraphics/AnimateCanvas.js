@@ -18,7 +18,6 @@ var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame
         window.setTimeout(callback, 1000/60);
     };
 
-//sets the width of the width of the canvas to width and height the same
 /**
  *  Sets the canvas width and height to be the chosen sizes //TODO Moveable up to other variables?
  */
