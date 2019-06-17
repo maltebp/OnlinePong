@@ -2,10 +2,11 @@ package API.DataLayer;
 
 
 import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Factory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Communication to SQL database
@@ -14,16 +15,15 @@ import java.sql.*;
  */
 public class UserDAOSQL implements IUserDAO{
 
-    /**Creates a connection to the Database.
+
+    /**@author Claes and Simon
+     * Creates a connection to the Database.
      * It is inside a try/catch statment to assure we do not leave open connections.
      * NOTE: "com.mysql.jdbc.Driver" selects the driver for TomCat to use to connect to mySQL server.
      * @return
      * @throws SQLException
-     *
-     * @author Claes and Simon
-     *
      */
-    private Connection createConnection() throws SQLException {
+    private Connection createConnection() throws DALException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
         String dbUsername = "s180943";
         String dbPassword = "UXZTadQzbPrlIosGCZYNF";
@@ -33,15 +33,22 @@ public class UserDAOSQL implements IUserDAO{
         }catch(ClassNotFoundException e){
             e.getMessage();
         }
+        catch (SQLException e){
+            throw new DALException(e.getMessage());
+        }
         return null;
     }
 
+    /**@author Claes, Simon
+     * This function gets User Data From the Database
+     @param username The User, that one wants DB Data from
+     */
     @Override
-    public IUserDTO getUser(int id) throws DALException {
+    public IUserDTO getUser(String username) throws DALException {
         try (Connection con = createConnection()) {
-            String query = "SELECT * FROM users WHERE user_id = ?";
+            String query = "SELECT * FROM users WHERE username = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, username);
             ResultSet set = preparedStatement.executeQuery();
 
             if(set.next()){
@@ -49,89 +56,145 @@ public class UserDAOSQL implements IUserDAO{
             }
             return null;
         } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            throw new DALException("-1");
         }
     }
 
-    /**@author Claes
+    /**@author Claes, Simon
      * This Function Helps Translate the Data from the database
-     * To a local object, which make the Data easier to Access in this local code
+     * To a local object, which makes the Data easier to Access in this local code
      @param set - The set of SQL data you want made into a local object.
       * */
     private IUserDTO createUserDTO(ResultSet set) throws SQLException {
             IUserDTO user = new UserDTO();
-            user.setUserId(set.getInt("user_id"));
             user.setUsername(set.getString("username"));
-            user.setPassword(set.getString("password"));
+            user.setElo(set.getInt("elo"));
             return user;
     }
 
-    public IUserDTO getScore(IUserDTO user) throws DALException{
-        try (Connection con = createConnection()) {
 
-            String query = "SELECT * FROM score WHERE user_id = ?";
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, user.getUserId());
-            ResultSet set = preparedStatement.executeQuery();
-
-            while(set.next()){
-                user.addScore(set.getInt(2));
-            }
-            return user;
-
-        }catch(SQLException e){
-            throw new DALException("Error in retrieving updated score: " + e.getMessage());
-        }
-    }
-
-    public String newScore(int id, int score) throws DALException {
-        try (Connection con = createConnection()) {
-
-            String query = "INSERT INTO score VALUES(?,?)";
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, score);
-            preparedStatement.execute();
-            return "It was added, much wow";
-        } catch (SQLException e) {
-            throw new DALException("There was an error: " + e.getMessage());
-        }
-    }
-
-    public String createUser(String username, String password) throws DALException {
+    /**
+     * @Author Simon, Claes
+     * Create a user in the DB, (with a hashed password ofc.).
+     * @param username
+     * @param password
+     * @return String: Whether successful or not.
+     * @throws DALException
+     */
+    public String createUser(String username, String password, int elo) throws DALException {
         Argon2 argon2 = Argon2Factory.create();
         String hashedPassword = argon2.hash(10, 65536, 1, password);
 
         try (Connection con = createConnection()) {
 
             //user_id is on AUTO_INCREMENT.
-            String query = "INSERT INTO users (username, password) VALUES(?,?)";
+            String query = "INSERT INTO users (username, password, elo) VALUES(?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, hashedPassword);
+            preparedStatement.setInt(3, elo);
             preparedStatement.execute();
-            return"User has been added.";
+            return"1";
         }catch(SQLException e){
-            throw new DALException("There was an error: " + e.getMessage());
+            throw new DALException("-1");
         }
     }
 
-    public boolean checkHash(int id, String password) throws DALException{
+    /**
+     * @Author Simon
+     * Compare a password, to that user's hashed password in the DB.
+     * This is for user-validation.
+     * @param password
+     * @return boolean: whether successful or not.
+     * @throws DALException
+     */
+    public String checkHash(String username, String password) throws DALException{
         Argon2 argon2 = Argon2Factory.create();
 
         try (Connection con = createConnection()) {
-            String query = "SELECT password FROM users WHERE user_id = ?";
+            String query = "SELECT password FROM users WHERE username = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, username);
             ResultSet set = preparedStatement.executeQuery();
 
             if(set.next()){
                 String dbPass = set.getString("password");
-                return (argon2.verify(dbPass, password));
+                if(argon2.verify(dbPass, password)){
+                    return "1";
+                }
             }
-            return false;
+            return "-1";
         }catch(SQLException e){
-            throw new DALException(e.getMessage());
+            throw new DALException("-1");
+        }
+    }
+
+    /**
+     * @Author Simon
+     * set the Elo of a player in the database.
+     * @param username
+     * @param elo
+     * @return String: error message.
+     * @throws DALException
+     */
+    public String setElo(String username, int elo) throws DALException{
+        try(Connection con = createConnection()){
+           String query = "UPDATE users SET elo = ? WHERE username = ?";
+           PreparedStatement preparedStatement = con.prepareStatement(query);
+           preparedStatement.setInt(1, elo);
+           preparedStatement.setString(2, username);
+           preparedStatement.execute();
+           return "1";
+
+        }catch(SQLException e){
+            throw new DALException("-1");
+        }
+    }
+    public List<IUserDTO> getTopTen() throws DALException{
+        try(Connection con = createConnection()){
+            String query = "SELECT username, elo FROM users ORDER BY elo DESC";
+            ResultSet set = con.createStatement().executeQuery(query);
+            ArrayList<IUserDTO> users= new ArrayList<>();
+
+            int i = 0;
+            while(set.next() && i < 10){
+                IUserDTO tempUser = new UserDTO(set.getString("username"), set.getInt("elo"));
+                users.add(tempUser);
+                i++;
+            }
+            return users;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new DALException("-1");
+
+        }
+    }
+
+    public String forceDeleteUser(String username) throws DALException{
+        try(Connection con = createConnection()){
+            String query = "DELETE FROM users WHERE username = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1,username);
+            preparedStatement.execute();
+            return "1";
+            }catch(SQLException e) {
+                throw new DALException("-1" + e.getMessage());
+        }
+    }
+
+    public String userDeleteUser(String username, String password) throws DALException{
+        try(Connection con = createConnection()){
+            String auth = checkHash(username, password);
+            if(auth.equals("1")){
+                return forceDeleteUser(username);
+            }
+            else return "-2";
+        }catch(SQLException e){
+            throw new DALException("-1");
         }
     }
 }
+
+
+

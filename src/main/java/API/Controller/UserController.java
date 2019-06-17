@@ -1,72 +1,149 @@
 package API.Controller;
 
 import API.DataLayer.IUserDAO;
+import API.DataLayer.IUserDAO.DALException;
 import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAOSQL;
-import API.DataLayer.UserDTO;
-import API.DataLayer.IUserDAO.DALException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.List;
+
 
 public class UserController implements IUserController{
 
     private IUserDAO UserDAO = new UserDAOSQL();
 
+    /**
+     * @Author Simon, Claes
+     * calls 'getDBUser' to send a IUserDTO to the API.
+     * @param username The Id of the User we desire userdata from
+     * @return IUserDTO:
+     */
     @Override
-    public IUserDTO convertUser(int id) {
-        IUserDTO user = new UserDTO(4, "this didn't work");
+    public JSONObject convertUser(String username) {
+        JSONObject json = new JSONObject();
         try{
-            user = UserDAO.getUser(id);
+           IUserDTO user = UserDAO.getUser(username);
             if(user == null){
-                user = new UserDTO();
-                user.setUsername("no user");
+                json.put("code", "-2");
+                json.put("ERROR Msg", "User is null");
             }
-
+            else{
+                String name = user.getUsername();
+                int elo = user.getElo();
+                json.put("code", "1");
+                json.put("username", name);
+                json.put("elo", elo);
+            }
+            return json;
         }catch(IUserDAO.DALException e){
-            e.getMessage();
-            //FixMe WARNING: BAD PRACTICE: [nice to have:] make this error statement say something about what went wrong.
-            user = new UserDTO(-1, "Something went wrong");
-        }
-        try {
-            IUserDTO newUser = UserDAO.getScore(user);
-            return newUser;
-
-        }catch(DALException e){
-            user.addScore(-500);
-            return user;
+            json.put("code", "-3");
+            json.put("ERROR Msg", "Something went wrong");
+            json.put("Stack-Trace", e.getMessage());
+            return json;
         }
     }
+
+
     //FixMe possible issues with error-handling here.
     //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
-    public String checkScore(int id, int score){
+    public JSONObject createUser(JSONObject input){
+        int elo = 1000;
+        String username = input.getString("username");
+        String password = input.getString("password");
+
+        JSONObject output = new JSONObject();
         try{
-            String returnMessage = UserDAO.newScore(id, score);
-            return returnMessage;
+            String code = UserDAO.createUser(username,password,elo);
+            output.put("code", code);
+
+            return output;
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, user not added");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
+        }
+    }
+
+    public JSONObject setElo(JSONObject input){
+        String username = input.getString("username");
+        int elo = input.getInt("elo");
+
+        JSONObject output = new JSONObject();
+        try{
+            String code = UserDAO.setElo(username, elo);
+            output.put("code", code);
+            return output;
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, elo not set");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
+        }
+    }
+
+    /**
+     * @Author Simon
+     * Calls 'chechHash' to compare password, with the saved and hashed password.
+     * This is for user-validation.
+     * @param input
+     * @return boolean: whether the password is correct.
+     */
+    public JSONObject userValidation(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
+        JSONObject output = new JSONObject();
+        try{
+            String result = UserDAO.checkHash(username, password);
+            return output.put("code", result);
+        }catch(DALException e){
+            output.put("code", "-2");
+            output.put("ERROR Msg", "Something went wrong, validation incomplete");
+            output.put("Stack-Trace", e.getMessage());
+            return output;
+        }
+    }
+
+    public JSONArray getTopTen(){
+        JSONArray jUsers = new JSONArray();
+        try{
+            List<IUserDTO> iUsers = UserDAO.getTopTen();
+            for(IUserDTO x: iUsers){
+                JSONObject jObject = new JSONObject();
+                jObject.put("username", x.getUsername());
+                jObject.put("elo", x.getElo());
+                jUsers.put(jObject);
+            }
+            return jUsers;
 
         }catch(DALException e){
             e.printStackTrace();
-            return "Something went wrong, user-score NOT added" + e.getMessage();
+            JSONArray errorArr = new JSONArray();
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("code", "-2");
+            errorObj.put("Message", "DALException occured.");
+            errorArr.put(errorObj);
+            return errorArr;
         }
     }
 
-    //FixMe possible issues with error-handling here.
-    //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
-    public String createUser(String username, String password){
-        try{
-            String returnMessage = UserDAO.createUser(username, password);
-            return returnMessage;
+    public JSONObject deleteUser(JSONObject input){
+        String username = input.getString("username");
+        String password = input.getString("password");
 
-        }catch(DALException e){
-            e.getMessage();
-            return "Soemthing went wrong, user NOT added"+e.getMessage();
-        }
-    }
+        System.out.println(username + " " + password);
 
-    public boolean userValidation(int id, String password){
+        JSONObject output = new JSONObject();
         try{
-            boolean result = UserDAO.checkHash(id, password);
-            return result;
+            String code = UserDAO.userDeleteUser(username, password);
+            output.put("code", code);
+            return output;
         }catch(DALException e){
-            e.getMessage();
-            return false;
+            output.put("code", "-2");
+            output.put("errorMSG", e.getMessage());
+            return output;
         }
     }
 }

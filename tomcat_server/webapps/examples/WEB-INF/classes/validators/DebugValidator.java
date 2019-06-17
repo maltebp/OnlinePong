@@ -49,7 +49,7 @@ public class DebugValidator extends TagLibraryValidator {
      * Validate a JSP page.  This will get invoked once per directive in the
      * JSP page.  This method will return <code>null</code> if the page is
      * valid; otherwise the method should return an array of
-     * <code>ValidationMessage</code> objects.  An array of length zero is
+     * <code>ValidationMessage</code> model.  An array of length zero is
      * also interpreted as no errors.
      *
      * @param prefix The value of the prefix argument in this directive
