@@ -12,16 +12,26 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * APIConnection class contains a constructor for the connection, and methods for managing that connection.
+ * These methods are: getResponse from API(recieving bytes from InPutStream), send a message into OutputStream,
+ * and close connection.
+ *
+ */
 public class APIConnection {
 
     private static final String API_URL = "http://localhost:8080/rest/service";
     private HttpURLConnection connection;
 
+    /**
+     * Constructor: Creates the connection to the requested URL. The connection header, is set by the request type.
+     * @param resourceUrl
+     * @param requestType
+     */
     public APIConnection(String resourceUrl, String requestType){
         try {
 
-            URL url = createURL(resourceUrl);
+            URL url = new URL(API_URL.concat(resourceUrl));
             connection = (HttpURLConnection) url.openConnection();
 
             //Designing the request
@@ -36,7 +46,10 @@ public class APIConnection {
         }
     }
 
-
+    /**
+     * Retrives the message from the inputStream.
+     * @return
+     */
     public JSONObject getResponse() {
 
         try (BufferedReader br = new BufferedReader(
@@ -52,6 +65,8 @@ public class APIConnection {
             }
 
             //Converting stringbuffer to JSON object
+
+
             return new JSONObject(response.toString());
 
         } catch (IOException e) {
@@ -61,7 +76,10 @@ public class APIConnection {
         return null;
     }
 
-
+    /**
+     * Sends the message to the outputstream.
+     * @param jsonObject
+     */
     public void sendMessage(JSONObject jsonObject) {
         String jsonString = jsonObject.toString();
 
@@ -74,17 +92,13 @@ public class APIConnection {
         }
     }
 
+    /**
+     * Closing the connection.
+     */
     public void close(){
         connection.disconnect();
     }
 
-    private URL createURL(String resource) {
-        try {
-            return new URL(API_URL.concat(resource));
-        } catch (MalformedURLException e) {
-            e.getMessage();
-        }
-        return null;
-    }
+
 }
 

@@ -17,12 +17,13 @@ public class APIConnectorTest {
 
         System.out.println("setPlayerInformation");
         con.setPlayerInformation(malte);
-        malte.setRating(900);
+        malte.setRating(1000);
 
         System.out.println("updateElo");
         con.updateElo(malte);
 
         System.out.println("setPlayerInformation");
         con.setPlayerInformation(malte);
+
     }
 }

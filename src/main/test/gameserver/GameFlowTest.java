@@ -40,7 +40,7 @@ public class GameFlowTest {
 
         sleep(3500);
 
-        // Signal opponent won game
+        // Signal opponentName won game
         kristian.sendMessage("{ \"code\" : 011 }");
 
         assertSame(ClientState.LOST_GAME, kristian.getState());
@@ -91,11 +91,13 @@ public class GameFlowTest {
         assertSame(ClientState.OPPONENT_DISC, simon.getState());
         assertSame(ClientState.IN_GAME, claes.getState());
 
-        // Signal opponent won game
+        // Signal opponentName won game
         claes.sendMessage("{ \"code\" : 011 }");
 
         assertSame(ClientState.WON_GAME, kristian.getState());
         assertSame(ClientState.LOST_GAME, claes.getState());
+
+
     }
 
     @Test

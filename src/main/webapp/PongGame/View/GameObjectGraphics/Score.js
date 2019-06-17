@@ -22,9 +22,9 @@ function Score(x,y, score) {
  */
 Score.prototype.goal = function() {
     this.score++;
-    if(this.score === maxScore) {
+    /*if(this.score === maxScore) {
         endGame();
-    }
+    }*/
 };
 
 /**

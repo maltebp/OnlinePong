@@ -104,13 +104,23 @@ public class UserService {
     }
 
 
-    @Path("/getAll")
+    @Path("/getTopTen")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAll(){
+    public String getTopTen(){
         IUserController userController = new UserController();
         JSONArray json = userController.getTopTen();
         return json.toString();
+    }
+
+    @Path("/deleteUser")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser(String msg){
+        IUserController userController = new UserController();
+        JSONObject output = userController.deleteUser(new JSONObject(msg));
+        return output.toString();
     }
 
 }

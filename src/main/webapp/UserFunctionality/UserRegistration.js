@@ -8,27 +8,27 @@ function isSamePasswords() {
     return (pass === pass2);
 }
 
-$('form').on('submit', function(event){
-    event.preventDefault();
+
+function evaluateResponse(result){
+    switch(result.code){
+
+        case "1":
+            alert("User created!");
+            break;
+
+        default:
+            alert("Something went wrong" + JSON.stringify(result))
+    }
+}
+
+
+$('form').on('submit', function(){
     if(isSamePasswords()) {
         var userObj = $('#form').serializeJSON();
         delete userObj.passwConf;
-        // var string = JSON.stringify(userObj);
-        // window.alert(string);
 
-        $.ajax({
-            type: 'POST',
-            url: url + '/createUser',           //Path
-            dataType: 'json',                   //What is expect back
-            data: JSON.stringify(userObj),
-            contentType: 'application/json',    //What is want to send
-            success: function(data) {
-                alert("Success !: "+ JSON.stringify(data)); //Write so it does what we want, gets {'code':'1'} returned atm
-            },
-            error: function(data) {
-                alert('Error in operation: ' + JSON.stringify(data));
-            }
-        });
+        apiPost("/createUser", evaluateResponse, JSON.stringify(userObj));
+
         return false;
     } else {
         document.getElementById("registerFailMsg").innerHTML = "Passwords didn't match";

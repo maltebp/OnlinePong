@@ -28,7 +28,7 @@ public interface IUserDAO {
      * @return              String confirmation
      * @throws DALException
      */
-    String createUser(String username, String password) throws DALException;
+    String createUser(String username, String password, int elo) throws DALException;
 
     /**
      * Controls the password is correct through hashing
@@ -64,9 +64,9 @@ public interface IUserDAO {
      * @param username
      * @throws DALException
      */
-    public void deleteUser(String username) throws DALException;
+    public String forceDeleteUser(String username) throws DALException;
 
-
+    public String userDeleteUser(String username, String password) throws DALException;
     /**
      * Customizable exception for explaining Database Access Layer exceptions
      */

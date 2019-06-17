@@ -50,7 +50,7 @@ class MatchController {
 
     /**
      * Forwards data recieved via message code 010 from a
-     * Player participating in a match to the opponent
+     * Player participating in a match to the opponentName
      * of that player.
      */
     void dataRecieved(Player player, String dataMsg ){
@@ -65,7 +65,7 @@ class MatchController {
     /**
      * @param loser Losing player sending message
      */
-    void matchFinished(Player loser, boolean disconnected) {
+    Player matchFinished(Player loser, boolean disconnected) {
         Match match = playerGame.get(loser);
         if( match != null ){
             Player winner = match.getOpponent(loser);
@@ -92,14 +92,16 @@ class MatchController {
                 }else{
                     sender.sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
                     sender.sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
+                    return winner;
                 }
 
             }else{
-                System.out.println("Error: player has no opponent");
+                System.out.println("Error: player has no opponentName");
             }
         }else{
             System.out.println("Error: Player has no match!");
         }
+        return null;
     }
 
 
