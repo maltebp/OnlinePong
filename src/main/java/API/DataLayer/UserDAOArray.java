@@ -1,7 +1,11 @@
 
 package API.DataLayer;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,19 +17,21 @@ import java.util.List;
 
     public class UserDAOArray implements IUserDAO{
 
-    ArrayList<IUserDTO> userList = createArray();
+    ArrayList<IUserDTO> userList = new ArrayList<>();
 
     /**
      * Creates an ArrayList with 10 UserDTO model
      *
      * @return  ArrayList of 10 UserDTO
      */
-    private ArrayList<IUserDTO> createArray() {
-        for(int i = 0; i<10; i++){
-            userList.add(new UserDTO("Test"+i));
-        }
-        return null;
+    private UserDAOArray() throws DALException {
+
+            for (int i = 0; i < 100; i++) {
+               createUser("Test" + i, "123" + i, 1000 + i);
+            }
     }
+
+
 
     @Override
     public IUserDTO getUser(String username) throws DALException {
@@ -41,10 +47,15 @@ import java.util.List;
 
     @Override
     public String createUser(String username, String password, int elo) throws DALException {
-        IUserDTO user = new UserDTO(username);
-        user.setPassword(password);
-        userList.add(user);
-        return "User is created";
+        if(searchUser(username)==null) {
+            Argon2 argon2 = Argon2Factory.create();
+            String hashedPassword = argon2.hash(10, 65536, 1, password);
+            IUserDTO user = new UserDTO(username, elo);
+            user.setPassword(hashedPassword);
+            userList.add(user);
+            return "201";
+        }else return "409";
+
     }
 
     /**
@@ -63,17 +74,46 @@ import java.util.List;
     }
 
     public String checkHash(String username, String password) {
-        return "true";
+        Argon2 argon2 = Argon2Factory.create();
+
+        IUserDTO user = searchUser(username);
+        if(argon2.verify(user.getPassword(),password)){
+            return "1";
+        }else return "-1";
+
     }
 
     @Override
     public String setElo(String username, int elo) throws DALException {
+        for(int i = 0; i<userList.size();i++){
+            if(userList.get(i).getUsername().equals(username)){
+                userList.get(i).setElo(elo);
+                return "200";
+            }
+            return "410";
+        }
+
+
         return null;
     }
 
     @Override
     public List<IUserDTO> getTopTen() throws DALException {
-        return null;
+
+        ArrayList<IUserDTO> tempUserList = new ArrayList<>();
+        int count = 0;
+
+        for(int i = 0; i < userList.size();i++){
+            for(int j = i+1; j < userList.size(); j++){
+                if(userList.get(i).getElo()>userList.get(j).getElo()){
+
+                }else count++;
+
+            }
+            if(count<10){tempUserList.add(userList.get(i));}
+            count = 0;
+        }
+        return tempUserList;
     }
 
     @Override
@@ -86,5 +126,25 @@ import java.util.List;
         return null;
     }
 
+
+
+
+    public static void main(String[] args) {
+
+
+
+
+        try {
+            UserDAOArray arr = new UserDAOArray();
+            //List<IUserDTO> test = arr.getTopTen();
+            arr.createUser("Andreas","Hans", 10000);
+            System.out.println(arr.checkHash("Andreas","per"));
+/*for(int i = 0; i< test.size(); i++) {
+    System.out.println(test.get(i).getElo() +", "+test.get(i).getUsername()+", "+test.get(i).getPassword() );
+}*/
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
 
