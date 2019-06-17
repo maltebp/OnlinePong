@@ -15,7 +15,6 @@ currUser = null;
 
 
 function evaluateResponse(result){
-    console.log("Evaluate response");
 
     switch(result.code){
 
@@ -47,7 +46,6 @@ function showError(errorMsg){
 /* Submit the username / password written in the form
     for authentication  */
 function authenticate(){
-    console.log("Submitting");
     if( !authenticating ) {
         authenticating = true;
         loadingAnimation.style.display = 'inline';

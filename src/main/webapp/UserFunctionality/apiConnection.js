@@ -13,7 +13,6 @@ let API_URL = "http://localhost:8080/rest/service";
  * @param data   The data you want to send. May be left out (null is default).
  */
 function apiPost( resourceUrl, successCallback, data=null){
-    console.log("Api post");
     apiRequest("post", resourceUrl, successCallback, data)
 }
 
@@ -43,7 +42,7 @@ function apiGet( resourceUrl, successCallback, data=null){
  *                          the server
  * @param data   The data you want to send. May be left out (null is default).
  */
-function apiRequest( type, resourceUrl, successCallback, data=null, ){
+function apiRequest( type, resourceUrl, successCallback, data=null ){
 
     $.ajax({
         type: type,

@@ -9,6 +9,8 @@
  *
  */
 $('form').on('submit', function () {
+
+    var deleteUserObj = $('#loginForm').serializeJSON;
         $.ajax({
             type: 'POST',
             url: url + '/deleteUser',           //Path
