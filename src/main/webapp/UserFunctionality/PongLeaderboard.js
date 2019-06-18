@@ -1,19 +1,17 @@
 
-
 var leaderboardLoader = document.getElementById("leaderboardLoader");
 var leaderboard = document.getElementById("leaderboard");
 
-leaderboard.style.display = "none";
-leaderboardLoader.style.display = "none";
-
+hide(leaderboard);
+hide(leaderboardLoader);
 
 function loadLeaderboard(){
 
-    leaderboardLoader.style.display = "inline";
+    show(leaderboardLoader);
 
     apiGet( "/getTopTen", function(data) {
-        leaderboardLoader.style.display = "none";
-        leaderboard.style.display = "inline ";
+        hide(leaderboardLoader);
+        show(leaderboard);
         var userData = "";
         $.each(data, function (key, value) {
             userData += '<tr>';

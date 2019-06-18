@@ -10,8 +10,8 @@ var registerSuccess = document.getElementById("successLayer");
 var registrationUsername = "";
 var registrationPassword = "";
 
-registerError.style.display = "none";
-registerSuccess.style.display = "none";
+hide(registerError);
+hide(registerSuccess);
 
 
 
@@ -24,12 +24,12 @@ function evaluateResponse(result){
         case "1":
             currUser = registrationUsername;
             currPassw = registrationPassword;
-            registerLayer.style.display = "none";
-            registerSuccess.style.display = "inline";
+            hide(registerLayer);
+            show(registerSuccess);
             break;
 
         default:
-            registerLayer.style.display = "inline";
+            show(registerLayer);
             showError("Something went wrong. User wasn't created.");
 
         registrationUsername = "";
@@ -41,17 +41,17 @@ function evaluateResponse(result){
 
 function showError(msg){
     registerError.innerHTML = msg;
-    registerError.style.display = "inline";
+    show(registerError);
 }
 
 
 function toggleLoader(toggle){
     if(toggle){
-        registerLayer.style.display = "none";
-        registerLoading.style.display = "inline";
+        hide(registerLayer);
+        show(registerLoading);
     }else{
-        registerLayer.style.display = "inline";
-        registerLoading.style.display = "none";
+        show(registerLayer);
+        hide(registerLoading);
     }
 }
 

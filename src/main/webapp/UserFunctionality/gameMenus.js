@@ -85,15 +85,6 @@ function showGameResult(resultCode, ratingChange, oppRatingChange){
 
 
 
-function show(element){
-    element.style.display = "inline";
-}
-
-function hide(element){
-    element.style.display = "none";
-}
-
-
 show(findGameLayer);
 hide(gameLayer);
 hide(gameFinishedLayer);

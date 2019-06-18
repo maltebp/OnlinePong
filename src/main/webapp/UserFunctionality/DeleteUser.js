@@ -8,27 +8,63 @@
  *
  *
  */
-$('form').on('submit', function () {
-    var deleteUserObj = $('#deleteForm').serializeJSON();
 
-    console.log(deleteUserObj);
 
-    apiPost("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
+var deleteUserLayer = document.getElementById("deleteUserLayer");
+var deleteSuccess = document.getElementById("deleteSuccessLayer");
+var deleteError = document.getElementById("deleteErrorMsg");
+var deleteUserLoader = document.getElementById("deleteUserLoader");
 
-    return false;
-});
+
+show(deleteUserLayer);
+hide(deleteSuccess);
+hide(deleteError);
+hide(deleteUserLoader);
 
 function responseFromAPI(data) {
 
     switch (data.code) {
 
         case "1":
-            document.getElementById('deleteFailMsg').innerHTML = "User deleted. ";
+            toggleDeleteLoading(false);
+            hide(deleteUserLayer);
+            show(deleteSuccess);
             break;
 
         default:
-            document.getElementById('deleteFailMsg').innerHTML = "Some error. ";
+            showDeleteError("Some error occured during deletion!");
 
     }
 }
+
+
+function toggleDeleteLoading(toggle){
+    if(toggle){
+        hide(deleteUserLayer);
+        show(deleteUserLoader);
+    }else{
+        show(deleteUserLayer);
+        hide(deleteUserLoader);
+    }
+}
+
+
+function showDeleteError(msg){
+    toggleDeleteLoading(false);
+    deleteError.innerHTML = msg;
+    show(deleteError);
+}
+
+
+function deleteUser(){
+    var deleteUserObj = $('#deleteForm').serializeJSON();
+    toggleDeleteLoading(true);
+    apiPost("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
+}
+
+
+$('form').on('submit', function () {
+    deleteUser();
+    return false;
+});
 

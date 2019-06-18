@@ -10,6 +10,8 @@
         <script type="text/javascript" src="jquery.serializejson.js"></script>
         <script type="text/javascript" src="UserFunctionality/apiConnection.js"></script>
         <script src="UserFunctionality/UserVariables.js"></script>
+        <script src="UserFunctionality/javascriptUtil.js"></script>
+
     </head>
     <body>
 
@@ -33,11 +35,6 @@
 
             <div id='dynamicContainer' class="dynamicContainer"></div>
 
-            <script type="text/javascript">
-                function switchPage(page){
-                    $("#dynamicContainer").load(page);
-                }
-            </script>
             <script type="text/javascript">switchPage("LoginPage.html")</script>
 
             <div class="sideBox">
@@ -55,11 +52,11 @@
                         </tr>
                     </table>
                 </div>
-
-
-                <script src="UserFunctionality/PongLeaderboard.js"></script>
             </div>
         </div>
+
+        <!-- This has to be loaded AFTER creating leaderboard div -->
+        <script src="UserFunctionality/PongLeaderboard.js"></script>
 
     </body>
 </html>
