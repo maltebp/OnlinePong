@@ -43,7 +43,7 @@ body, html{
     /* These centers the text vertically: */
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: center; /* Center vertically */
 }
 
 
@@ -76,12 +76,22 @@ body, html{
 .dynamicContainer {
     height: 100%;
     width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #b9b3b3;
 }
 
 /** A layer class, which allows containers to be stacked on top of each other */
 .layer {
-    width: 100%;
-    height: 100%;
+    width: 70%;
+    height: 85%;
+    text-align: center;
     position: absolute;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
