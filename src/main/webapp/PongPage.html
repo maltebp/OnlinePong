@@ -1,40 +1,64 @@
 <html>
     <head>
-        <script>
-            document.getElementById('username').innerHTML = currUser;
-            document.getElementById("playerElo").innerHTML = "Your current elo is: " + currElo;
-        </script>
     </head>
+
     <body>
 
-    <p>Logged in as</p><br>
-    <p id="username" style="font-size: 30px; font-weight: bold;"></p>
+        <div id="findGameLayer" class="layer">
+            <div id="userInfoLayer" style="padding: 5%">
+                <p>Logged in as</p>
+                <p id="username" style="font-size: 30px; font-weight: bold;"></p>
+            </div>
 
-    <div>
-        <p id="messagesFromServer"></p><p id="loading"></p>
-        <p id="playerElo"></p>
-        <button id="newGameBtn" onclick="startGame()">New Game</button><br>
-        <canvas class="InnerGameScreen" id="game"></canvas>
-    </div>
+            <button id="findGameBtn" onclick="showFindGame()">Find game</button><br>
 
-    <!-- Remember the order of the scripts!-->
-    <!-- First we get the backgrounds Graphics-->
-    <script src="PongGame/GlobalVariables.js"></script>
-    <script src="PongGame/View/BackGroundGraphics/AnimateCanvas.js"></script>
-    <script src="PongGame/View/BackGroundGraphics/BottomLine.js"></script>
-    <script src="PongGame/View/BackGroundGraphics/MidCourtLine.js"></script>
-    <script src="PongGame/View/BackGroundGraphics/MidCourtGraphics.js"></script>
+            <p id="findGameError" class="errorMsg"></p>
 
-    <!-- Then we get the model and the Game Functions/Logic-->
-    <script src="PongGame/Model/GameStateObject.js"></script>
-    <script src="PongGame/Model/SetupGame.js"></script>
-    <script src="PongGame/Model/jsToGameServer.js"></script>
+            <div id="findGameLoader">
+                <p id="findGameLoadingMsg">Finding game...</p>
+                <img src="loading.gif" class="centeredImg">
+            </div>
+        </div>
 
-    <!-- Finally we get the GameObjects that we play the game with-->
-    <script src="PongGame/View/Render.js"></script>
-    <script src="PongGame/View/GameObjectGraphics/Score.js"></script>
-    <script src="PongGame/View/GameObjectGraphics/Paddle.js"></script>
-    <script src="PongGame/View/GameObjectGraphics/Ball.js"></script>
-    <script src="PongGame/View/GameObjectGraphics/Players.js"></script>
+        <div id="gameLayer" class="layer">
+
+            <p id="opponentName" style="font-size: 30px; font-weight: bold;"></p>
+            <canvas class="InnerGameScreen" id="game"></canvas>
+        </div>
+
+        <div id="gameFinishedLayer" class="layer">
+            <p id="gameResultMsg" style="font-size: 40px; font-weight: bold;"></p>
+            <br>
+            <p>Rating result:</p>
+            <div style="font-size: 25px; font-weight: bold;">You:</div>
+            <div id="yourRatingResult" style="font-size: 20px; font-weight: bold;"></div>
+            <br><br>
+            <div id="opponentNameResult" style="font-size: 25px; font-weight: bold;"></div>
+            <div id="opponentRatingResult" style="font-size: 20px; font-weight: bold;"></div>
+            <br>
+            <button id="findNewGameBtn" onclick="showFindGame()">Find new game</button>
+        </div>
+
+        <script src="UserFunctionality/gameMenuManager.js"></script>
+
+        <!-- Remember the order of the scripts!-->
+        <!-- First we get the backgrounds Graphics-->
+        <script src="PongGame/GlobalVariables.js"></script>
+        <script src="PongGame/View/BackGroundGraphics/AnimateCanvas.js"></script>
+        <script src="PongGame/View/BackGroundGraphics/BottomLine.js"></script>
+        <script src="PongGame/View/BackGroundGraphics/MidCourtLine.js"></script>
+        <script src="PongGame/View/BackGroundGraphics/MidCourtGraphics.js"></script>
+
+        <!-- Then we get the model and the Game Functions/Logic-->
+        <script src="PongGame/Model/GameStateObject.js"></script>
+        <script src="PongGame/Model/SetupGame.js"></script>
+        <script src="PongGame/Model/jsToGameServer.js"></script>
+
+        <!-- Finally we get the GameObjects that we play the game with-->
+        <script src="PongGame/View/Render.js"></script>
+        <script src="PongGame/View/GameObjectGraphics/Score.js"></script>
+        <script src="PongGame/View/GameObjectGraphics/Paddle.js"></script>
+        <script src="PongGame/View/GameObjectGraphics/Ball.js"></script>
+        <script src="PongGame/View/GameObjectGraphics/Players.js"></script>
     </body>
 </html>

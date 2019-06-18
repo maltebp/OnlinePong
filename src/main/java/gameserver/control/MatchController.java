@@ -96,7 +96,6 @@ class MatchController {
                 databaseConnector.updateElo(loser);
                 databaseConnector.updateElo(winner);
 
-
                 if( !disconnected) return winner;
 
             }else{

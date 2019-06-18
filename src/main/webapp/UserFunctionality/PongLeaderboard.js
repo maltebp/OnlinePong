@@ -13,7 +13,7 @@ function loadLeaderboard(){
 
     apiGet( "/getTopTen", function(data) {
         leaderboardLoader.style.display = "none";
-        leaderboard.style.display = "inline";
+        leaderboard.style.display = "inline ";
         var userData = "";
         $.each(data, function (key, value) {
             userData += '<tr>';
