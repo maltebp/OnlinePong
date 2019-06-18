@@ -3,7 +3,7 @@ var chosenScore = 5;
 var opponentName = "";
 
 function startGame() {
-    connection = new WebSocket("ws://61.79.16.17:8080/gameserver");
+    connection = new WebSocket("ws://62.79.16.17:8080/gameserver");
 
     connection.onopen = function () {
         initializingMessage001();
