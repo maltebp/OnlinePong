@@ -40,13 +40,21 @@
             <script type="text/javascript">switchPage("LoginPage.html")</script>
 
             <div class="sideBox">
+
                 <h2>Leaderboard:</h2>
-                <table id="topTen">
-                    <tr>
-                        <th>Username</th>
-                        <th>Elo</th>
-                    </tr>
-                </table>
+                <div id="leaderboardLoader" style="position: absolute">
+                    <img id="loadingAnimation" src="loading.gif" class="centeredImg">
+                </div>
+
+                <div id="leaderboard" style="position: absolute">
+                    <table id="topTen">
+                        <tr>
+                            <th>Username</th>
+                            <th>Elo</th>
+                        </tr>
+                    </table>
+                </div>
+
                 <script src="UserFunctionality/UserVariables.js"></script>
                 <script src="UserFunctionality/PongLeaderboard.js"></script>
             </div>

@@ -90,6 +90,12 @@ body, html{
     position: absolute;
 }
 
+
+.centeredImg{
+    display: block;
+    margin: auto;
+}
+
 .center {
     display: flex;
     justify-content: center;
