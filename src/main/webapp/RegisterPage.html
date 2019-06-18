@@ -3,19 +3,33 @@
         <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetRegisterPage.css">
     </head>
     <body>
-        <div>
-            <h2>User Registration</h2>
-            <form id="form">
+        <div id="registerLayer" class="layer">
+            <h2>Register</h2>
+            <form id="form" >
                 <label for="userName">Username: </label><br>
                 <input type="text" name="username" id="userName"><br><br>
                 <label id="lblPassword" for="password">Password: </label><br>
-                <input type="password" name='password' placeholder="Password" id="password"><br>
-                <input type="password" placeholder="Confirm password" id="passwConf"><br>
-                <label id="registerFailMsg"> </label><br><br>
-                <input type="submit" value="Submit">
+                <input type="password" name='password' placeholder="Password" id="password"><br><br>
+                <input type="password" placeholder="Confirm password" id="passwConf"><br><br>
+                <input type="submit" value="Create user"><br><br>
+                <p id="registerErrorMsg" class="errorMsg"></p>
             </form>
-            <p><button type="button" onclick="switchPage('LoginPage.html')">Back</button></p>
+            <br>
+            <p style="font-size: small"><a href=javascript:switchPage("LoginPage.html")>Back to login page</a></p>
 
+        </div>
+
+        <!-- A layer containing a loading gif -->
+        <div id="loadingLayer" class="layer" style="padding-top: 5%;" >
+            <img id="loadingAnimation" src="loading.gif" class="centeredImg">
+            <p id="loadingText">Loading...</p>
+        </div>
+
+
+        <!-- A layer containing a loading gif -->
+        <div id="successLayer" class="layer" >
+            <p style="font-weight: bold; color: green; font-size: 30px;">User created!</p>
+            <button type="button" onclick="switchPage('PongPage.html');" >Go to game</button>
         </div>
 
         <script type="text/javascript" src="jquery.serializejson.js"></script>
@@ -24,4 +38,3 @@
         <script src="UserFunctionality/UserRegistration.js"></script>
     </body>
 </html>
-//

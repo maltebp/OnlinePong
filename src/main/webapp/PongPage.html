@@ -1,7 +1,6 @@
 <html>
     <head>
         <script>
-            currUser = "Malte";
             document.getElementById('username').innerHTML = currUser;
             document.getElementById("playerElo").innerHTML = "Your current elo is: " + currElo;
         </script>
@@ -15,7 +14,6 @@
         <p id="messagesFromServer"></p><p id="loading"></p>
         <p id="playerElo"></p>
         <button id="newGameBtn" onclick="startGame()">New Game</button><br>
-
         <canvas class="InnerGameScreen" id="game"></canvas>
     </div>
 
