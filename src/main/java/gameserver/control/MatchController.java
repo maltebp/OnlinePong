@@ -17,16 +17,14 @@ import java.util.Random;
  */
 class MatchController {
 
-    private Sender sender;
+    private GameServer server;
     private RatingAlgorithm ratingAlgorithm = new EloAlgorithm();
-    private DatabaseConnector databaseConnector;
 
     // A map of Players and the match they participate in
-    private HashMap<Player, Match> playerMatch = new HashMap<Player, Match>();
+    private HashMap<Player, Match> playerMatch = new HashMap<>();
 
-    MatchController(Sender sender, DatabaseConnector databaseConnector){
-        this.databaseConnector = databaseConnector;
-        this.sender = sender;
+    MatchController(GameServer server){
+        this.server = server;
     }
 
 
@@ -43,8 +41,8 @@ class MatchController {
         Random rnd = new Random();
         boolean player1Starting = rnd.nextBoolean();
 
-        sender.sendStartGame(player1, player1Starting);
-        sender.sendStartGame(player2, !player1Starting);
+        server.getSender().sendStartGame(player1, player1Starting);
+        server.getSender().sendStartGame(player2, !player1Starting);
     }
 
 
@@ -57,7 +55,7 @@ class MatchController {
         Match match = playerMatch.get(player);
         Player opponent = match.getOpponent(player);
         if(opponent != null ){
-            sender.sendMessage(opponent, dataMsg );
+            server.getSender().sendMessage(opponent, dataMsg );
         }
     }
 
@@ -86,15 +84,15 @@ class MatchController {
                 playerMatch.remove(winner);
 
                 if(disconnected){
-                    sender.sendOpponentDisconnected(winner, winnerRatingChange, loserRatingChange);
+                    server.getSender().sendOpponentDisconnected(winner, winnerRatingChange, loserRatingChange);
                 }else{
-                    sender.sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
-                    sender.sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
+                    server.getSender().sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
+                    server.getSender().sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
 
                 }
 
-                databaseConnector.updateElo(loser);
-                databaseConnector.updateElo(winner);
+                server.getDatabaseConnector().updateElo(loser);
+                server.getDatabaseConnector().updateElo(winner);
 
                 if( !disconnected) return winner;
 
@@ -118,10 +116,5 @@ class MatchController {
         if( match != null ) {
             matchFinished(player, true);
         }
-    }
-
-
-    public void setDatabaseConnector(DatabaseConnector databaseConnector){
-        this.databaseConnector = databaseConnector;
     }
 }

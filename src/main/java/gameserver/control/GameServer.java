@@ -20,17 +20,14 @@ import org.json.JSONObject;
 public class GameServer {
 
     private Sender sender;
-    private MatchController matchController;
-    private Matchmaker matchmaker;
-    private PlayerController playerController;
+    private MatchController matchController  = new MatchController(this);
+    private Matchmaker matchmaker = new Matchmaker(this);
+    private AuthenticationController authenticationController = new AuthenticationController(this);
     private DatabaseConnector databaseConnector = new APIConnector();
 
 
     public GameServer(Sender sender){
         this.sender = sender;
-        playerController = new PlayerController(sender);
-        matchController = new MatchController(sender, databaseConnector);
-        matchmaker = new Matchmaker(sender, matchController);
     }
 
 
@@ -49,28 +46,28 @@ public class GameServer {
                 case 1:
                     String username = msg.getString("username");
                     String password = msg.getString("password");
-                    if( playerController.addPlayer(player, username, password, databaseConnector) ){
+                    if( authenticationController.authenticatePlayer(player, username, password, databaseConnector) ){
                         matchmaker.addPlayer(player);
                     }
                     break;
 
                 // Accept game
                 case 2:
-                    if(playerController.playerIsAuthenticated(player))
+                    if(authenticationController.playerIsAuthenticated(player))
                         matchmaker.playerAcceptsMatch(player);
                     break;
 
                 // Game Data
                 case 10:
-                    if( playerController.playerIsAuthenticated(player))
+                    if( authenticationController.playerIsAuthenticated(player))
                         matchController.dataRecieved(player, textMessage);
                     break;
 
                 case 11:
-                    if( playerController.playerIsAuthenticated(player)) {
+                    if( authenticationController.playerIsAuthenticated(player)) {
                         Player winner = matchController.matchFinished(player, false);
-                        playerController.removePlayer(player);
-                        playerController.removePlayer(winner);
+                        authenticationController.removePlayer(player);
+                        authenticationController.removePlayer(winner);
                     }
                     break;
 
@@ -93,13 +90,26 @@ public class GameServer {
     public void removePlayer( Player player ){
         matchmaker.removePlayer(player);
         matchController.removePlayer(player);
-        playerController.removePlayer(player);
+        authenticationController.removePlayer(player);
     }
 
 
+    public Sender getSender() {
+        return sender;
+    }
+
+
+    public MatchController getMatchController() {
+        return matchController;
+    }
+
+    public DatabaseConnector getDatabaseConnector(){
+        return databaseConnector;
+    }
+
     public void setDatabaseConnector(DatabaseConnector databaseConnector){
         this.databaseConnector = databaseConnector;
-        matchController.setDatabaseConnector(databaseConnector);
+
     }
 
 
