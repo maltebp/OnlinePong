@@ -87,13 +87,36 @@ body, html{
     width: 70%;
     height: 85%;
     text-align: center;
-    position: absolute;
 }
 
+.successMsg{
+    font-weight: bold;
+    color: green;
+    font-size: 30px;
+}
+
+.backLink{
+    font-size: small;
+}
+
+
+.username{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+.userInfoContainer{
+    padding: 5%;
+}
 
 .centeredImg{
     display: block;
     margin: auto
+}
+
+.loadingContainer{
+    padding: 5%;
 }
 
 .errorMsg{

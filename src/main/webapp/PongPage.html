@@ -1,40 +1,40 @@
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetGame.css">
     </head>
 
     <body>
 
         <div id="findGameLayer" class="layer">
-            <div id="userInfoLayer" style="padding: 5%">
+            <div id="userInfoLayer" class="userInfoContainer">
                 <p>Logged in as</p>
-                <p id="username" style="font-size: 30px; font-weight: bold;"></p>
+                <p id="username" class="username"></p>
             </div>
 
             <button id="findGameBtn" onclick="showFindGame()">Find game</button><br>
 
             <p id="findGameError" class="errorMsg"></p>
 
-            <div id="findGameLoader">
+            <div id="findGameLoader" class="loadingContainer">
                 <p id="findGameLoadingMsg">Finding game...</p>
                 <img src="loading.gif" class="centeredImg">
             </div>
         </div>
 
         <div id="gameLayer" class="layer">
-
-            <p id="opponentName" style="font-size: 30px; font-weight: bold;"></p>
+            <p id="opponentName" class="opponentName"></p>
             <canvas class="InnerGameScreen" id="game"></canvas>
         </div>
 
         <div id="gameFinishedLayer" class="layer">
-            <p id="gameResultMsg" style="font-size: 40px; font-weight: bold;"></p>
+            <p id="gameResultMsg" class="resultMsg"></p>
             <br>
             <p>Rating result:</p>
-            <div style="font-size: 25px; font-weight: bold;">You:</div>
-            <div id="yourRatingResult" style="font-size: 20px; font-weight: bold;"></div>
+            <div class="playerName">You:</div>
+            <div id="yourRatingResult" class="playerRating"></div>
             <br><br>
-            <div id="opponentNameResult" style="font-size: 25px; font-weight: bold;"></div>
-            <div id="opponentRatingResult" style="font-size: 20px; font-weight: bold;"></div>
+            <div id="opponentNameResult" class="playername"></div>
+            <div id="opponentRatingResult" class="playerRating"></div>
             <br>
             <button id="findNewGameBtn" onclick="showFindGame()">Find new game</button>
         </div>

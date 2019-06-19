@@ -8,13 +8,9 @@
         <div id="loginLayer" class="layer" >
             <h2>Login to play! </h2>
             <form id="loginForm" action="#" onsubmit="authenticate();return false;" >
-
-                <label>Username<br>
-                    <input id="username" type="text" name="username">
-                </label><br><br>
-                <label>Password<br>
-                    <input id="password" type="password" name="password">
-                </label>
+                <input type="text" name="username" placeholder="Username">
+                <br><br>
+                <input type="password" name="password" placeholder="Password">
                 <br>
                 <br>
                 <input type="submit" value="Login"><br>
@@ -27,7 +23,7 @@
 
 
         <!-- A layer containing a loading gif -->
-        <div id="loadingLayer" class="layer" style="padding-top: 5%;" >
+        <div id="loadingLayer" class="layer loadingContainer" >
             <img id="loadingAnimation" src="loading.gif" class="centeredImg">
             <p id="loadingText">Loading...</p>
         </div>
