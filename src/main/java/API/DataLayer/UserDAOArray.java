@@ -33,7 +33,7 @@ import java.util.List;
         if (user != null) {
             return user;
         } else {
-            throw new DALException("User doesn't exist");
+            throw new DALException("1","User doesn't exist");
         }
     }
 

@@ -2,6 +2,8 @@ package API.Jersey;
 
 import API.Controller.IUserController;
 import API.Controller.UserController;
+import API.DataLayer.IUserDAO;
+import API.DataLayer.UserDAOSQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
 
 /**
  * @author Claes, Simon
@@ -104,7 +107,7 @@ public class UserService {
     }
 
 
-    @Path("/getAll")
+    @Path("/getTopTen")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll(){
@@ -117,10 +120,9 @@ public class UserService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(String msg){
+    public String deleteUser(String msg) {
         IUserController userController = new UserController();
         JSONObject output = userController.deleteUser(new JSONObject(msg));
         return output.toString();
     }
-
 }

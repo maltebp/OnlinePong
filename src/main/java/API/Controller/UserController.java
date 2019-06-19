@@ -23,24 +23,18 @@ public class UserController implements IUserController{
     @Override
     public JSONObject convertUser(String username) {
         JSONObject json = new JSONObject();
-        try{
-           IUserDTO user = UserDAO.getUser(username);
-            if(user == null){
-                json.put("code", "-2");
-                json.put("ERROR Msg", "User is null");
-            }
-            else{
-                String name = user.getUsername();
-                int elo = user.getElo();
-                json.put("code", "1");
-                json.put("username", name);
-                json.put("elo", elo);
-            }
+        try {
+            IUserDTO user = UserDAO.getUser(username);
+            String name = user.getUsername();
+            int elo = user.getElo();
+            json.put("code", "200");
+            json.put("description", "OK.");
+            json.put("username", name);
+            json.put("elo", elo);
             return json;
         }catch(IUserDAO.DALException e){
-            json.put("code", "-3");
-            json.put("ERROR Msg", "Something went wrong");
-            json.put("Stack-Trace", e.getMessage());
+            json.put("code", e.getErrorCode());
+            json.put("description", e.getMessage());
             return json;
         }
     }
@@ -49,37 +43,34 @@ public class UserController implements IUserController{
     //FixMe possible issues with error-handling here.
     //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
     public JSONObject createUser(JSONObject input){
-        int elo = 1000;
-        String username = input.getString("username");
-        String password = input.getString("password");
-
         JSONObject output = new JSONObject();
-        try{
-            String code = UserDAO.createUser(username,password,elo);
+        try {
+            int elo = 1000;
+            String username = input.getString("username");
+            String password = input.getString("password");
+            String code = UserDAO.createUser(username, password, elo);
             output.put("code", code);
-
+            output.put("description", "OK.");
             return output;
         }catch(DALException e){
-            output.put("code", "-2");
-            output.put("ERROR Msg", "Something went wrong, user not added");
-            output.put("Stack-Trace", e.getMessage());
+            output.put("code", e.getErrorCode());
+            output.put("description", e.getMessage());
             return output;
         }
     }
 
-    public JSONObject setElo(JSONObject input){
-        String username = input.getString("username");
-        int elo = input.getInt("elo");
 
+    public JSONObject setElo(JSONObject input){
         JSONObject output = new JSONObject();
-        try{
+        try {
+            String username = input.getString("username");
+            int elo = input.getInt("elo");
             String code = UserDAO.setElo(username, elo);
             output.put("code", code);
             return output;
         }catch(DALException e){
-            output.put("code", "-2");
-            output.put("ERROR Msg", "Something went wrong, elo not set");
-            output.put("Stack-Trace", e.getMessage());
+            output.put("code", e.getErrorCode());
+            output.put("description", e.getMessage());
             return output;
         }
     }
@@ -92,24 +83,28 @@ public class UserController implements IUserController{
      * @return boolean: whether the password is correct.
      */
     public JSONObject userValidation(JSONObject input){
-        String username = input.getString("username");
-        String password = input.getString("password");
         JSONObject output = new JSONObject();
-        try{
+
+        try {
+            String username = input.getString("username");
+            String password = input.getString("password");
             String result = UserDAO.checkHash(username, password);
             return output.put("code", result);
         }catch(DALException e){
-            output.put("code", "-2");
-            output.put("ERROR Msg", "Something went wrong, validation incomplete");
-            output.put("Stack-Trace", e.getMessage());
+            output.put("code", e.getErrorCode());
+            output.put("description", e.getMessage());
             return output;
         }
     }
 
     public JSONArray getTopTen(){
-        JSONArray jUsers = new JSONArray();
         try{
+            JSONArray jUsers = new JSONArray();
             List<IUserDTO> iUsers = UserDAO.getTopTen();
+            JSONObject codeObj = new JSONObject();
+            codeObj.put("code", "200");
+            codeObj.put("description", "OK.");
+            jUsers.put(codeObj);
             for(IUserDTO x: iUsers){
                 JSONObject jObject = new JSONObject();
                 jObject.put("username", x.getUsername());
@@ -119,28 +114,27 @@ public class UserController implements IUserController{
             return jUsers;
 
         }catch(DALException e){
-            e.printStackTrace();
             JSONArray errorArr = new JSONArray();
             JSONObject errorObj = new JSONObject();
-            errorObj.put("code", "-2");
-            errorObj.put("Message", "DALException occured.");
+            errorObj.put("code", e.getErrorCode());
+            errorObj.put("description", e.getMessage());
             errorArr.put(errorObj);
             return errorArr;
         }
     }
 
     public JSONObject deleteUser(JSONObject input){
-        String username = input.getString("username");
-        String password = input.getString("password");
-
         JSONObject output = new JSONObject();
         try{
+            String username = input.getString("username");
+            String password = input.getString("password");
             String code = UserDAO.userDeleteUser(username, password);
             output.put("code", code);
+            output.put("description", "OK.");
             return output;
         }catch(DALException e){
-            output.put("code", "-2");
-            output.put("errorMSG", e.getMessage());
+            output.put("code", e.getErrorCode());
+            output.put("description", e.getMessage());
             return output;
         }
     }
