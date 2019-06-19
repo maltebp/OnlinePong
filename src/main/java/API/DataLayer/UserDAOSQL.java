@@ -103,7 +103,7 @@ public class UserDAOSQL implements IUserDAO{
                 preparedStatement2.setString(2, hashedPassword);
                 preparedStatement2.setInt(3, elo);
                 preparedStatement2.execute();
-                return "200";
+                return "201";
             }
         }catch(SQLException e){
             throw new DALException("500", "Unknown server error");
@@ -133,7 +133,7 @@ public class UserDAOSQL implements IUserDAO{
                     return "200";
                 }
                 else{
-                    throw new DALException("401", "Incorrect passwrord");
+                    throw new DALException("401", "Incorrect password");
                 }
             }
             else{
@@ -174,6 +174,8 @@ public class UserDAOSQL implements IUserDAO{
             throw new DALException("500", "Unknown server error.");
         }
     }
+
+
     public List<IUserDTO> getTopTen() throws DALException{
         try(Connection con = createConnection()){
             String query = "SELECT username, elo FROM users ORDER BY elo DESC";

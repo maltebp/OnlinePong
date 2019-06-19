@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class UserDAOArrayTest {
 
-    UserDAOArray testDAOArray;
+    UserDAOArray testDAOArray = new UserDAOArray();
 
 
     /**
@@ -24,14 +24,9 @@ public class UserDAOArrayTest {
     public void createUser(){
 
         try {
-            testDAOArray  = new UserDAOArray();
             String statusCode = testDAOArray.createUser("testUser", "pass", 500);
             assertEquals("201", statusCode);
-
-            //Test if you can create a user that already exist. If you can't the success code will be 409
-            String statusCode2 = testDAOArray.createUser("testUser", "pass", 500);
-            assertEquals("409",statusCode2);
-
+            testDAOArray.forceDeleteUser("testUser");
 
         }catch (IUserDAO.DALException e){
             e.printStackTrace();
@@ -46,15 +41,10 @@ public class UserDAOArrayTest {
     @Test
     public void getUser(){
         try {
-            testDAOArray = new UserDAOArray();
             testDAOArray.createUser("UserToGet","123",100);
             IUserDTO user = testDAOArray.getUser("UserToGet");
+            testDAOArray.forceDeleteUser("UserToGet");
             assertEquals("UserToGet",user.getUsername());
-
-            //Test the retun value when a user does not exist.
-            IUserDTO nonExistingUser = testDAOArray.getUser("UserNonExisting");
-            assertEquals("User doesn't exist",nonExistingUser.getUsername());
-
         }catch(IUserDAO.DALException e){
             e.printStackTrace();
         }
@@ -67,15 +57,12 @@ public class UserDAOArrayTest {
     @Test
     public void checkHash(){
         try {
-            testDAOArray = new UserDAOArray();
             testDAOArray.createUser("UserToGet","123",100);
             String returnCode = testDAOArray.checkHash("UserToGet","123");
-            String wrongReturnCode = testDAOArray.checkHash("UserToGet","234");
 
             assertEquals("200",returnCode);
-            assertEquals("401",wrongReturnCode);
 
-            testDAOArray.userDeleteUser("UserToGet","123");
+            testDAOArray.forceDeleteUser("UserToGet");
 
         }catch(IUserDAO.DALException e){
             e.printStackTrace();
@@ -92,18 +79,11 @@ public class UserDAOArrayTest {
     @Test
     public void setElo(){
         try {
-            testDAOArray = new UserDAOArray();
             testDAOArray.createUser("UserToGet","123",100);
             String returnCode = testDAOArray.setElo("UserToGet",999);
-
-            String returnCodeNoUser = testDAOArray.setElo("NNonExistingUser",100000);
-
             assertEquals("200",returnCode);
-            assertEquals("410",returnCodeNoUser);
-
             assertEquals(999,testDAOArray.getUser("UserToGet").getElo());
-
-testDAOArray.userDeleteUser("UserToGet","123");
+            testDAOArray.forceDeleteUser("UserToGet");
 
         }catch(IUserDAO.DALException e){
             e.printStackTrace();
@@ -114,49 +94,61 @@ testDAOArray.userDeleteUser("UserToGet","123");
      * Testing retreving of the topTenList
      */
     @Test
-    public void getTopTen(){
+    public void getTopTen() {
         try {
-            testDAOArray = new UserDAOArray();
             //Here we create 12 users so that we know that we have 12 users in database.
             //The 10 users from Test22 to Test211 (Test2 + 11) will have the largest elo score.
-            List<IUserDTO> controleList = new ArrayList<>();
+            testDAOArray.createUser("eloTest0", "pass", 999999999);
+            testDAOArray.createUser("eloTest1", "pass", 999999998);
+            testDAOArray.createUser("eloTest2", "pass", 999999997);
+            testDAOArray.createUser("eloTest3", "pass", 999999996);
+            testDAOArray.createUser("eloTest4", "pass", 999999995);
+            testDAOArray.createUser("eloTest5", "pass", 999999994);
+            testDAOArray.createUser("eloTest6", "pass", 999999993);
+            testDAOArray.createUser("eloTest7", "pass", 999999992);
+            testDAOArray.createUser("eloTest8", "pass", 999999992);
+            testDAOArray.createUser("eloTest9", "pass", 999999992);
 
-            for (int i = 0; i< 12; i++){
-                testDAOArray.createUser("Test2"+i,"12"+0,i);
-                controleList.add(testDAOArray.getUser("Test2"+i));
+            List<IUserDTO> users;
+            users = testDAOArray.getTopTen();
+
+            int elo = 999999999;
+
+            for (int i = 0; i < 7; i++) {
+                assertEquals(elo, users.get(i).getElo());
+                elo--;
             }
+            assertEquals(elo, users.get(7).getElo());
+            assertEquals(elo, users.get(8).getElo());
+            assertEquals(elo, users.get(9).getElo());
 
-            //Romoving the two first usrelemets from the userlist.
-            controleList.remove(0);
-            controleList.remove(0);
-            List<IUserDTO> topTenList = testDAOArray.getTopTen();
+            testDAOArray.forceDeleteUser("eloTest0");
+            testDAOArray.forceDeleteUser("eloTest1");
+            testDAOArray.forceDeleteUser("eloTest2");
+            testDAOArray.forceDeleteUser("eloTest3");
+            testDAOArray.forceDeleteUser("eloTest4");
+            testDAOArray.forceDeleteUser("eloTest5");
+            testDAOArray.forceDeleteUser("eloTest6");
+            testDAOArray.forceDeleteUser("eloTest7");
+            testDAOArray.forceDeleteUser("eloTest8");
+            testDAOArray.forceDeleteUser("eloTest9");
 
-            for(int i = 0; i < controleList.size(); i++) {
-                System.out.println(topTenList.get(i).getUsername()+", "+controleList.get(i).getUsername());
-
-
-            }
-            for(int i = 0; i < controleList.size(); i++) {
-
-                assertEquals(topTenList.get(i),controleList.get(i));
-
-            }
-
-    }catch(IUserDAO.DALException e){
-        e.printStackTrace();
+        } catch (IUserDAO.DALException e) {
+            e.printStackTrace();
+        }
     }
-    }
+
+
+
     @Test
     public void userDeleteUser(){
         try {
-            testDAOArray = new UserDAOArray();
             testDAOArray.createUser("deleteTestUser", "pass", 1000);
-            String failCode = testDAOArray.userDeleteUser("deleteTestUser", "wrongPass");
             String successCode = testDAOArray.userDeleteUser("deleteTestUser", "pass");
             assertEquals("200", successCode);
-            assertEquals("410", failCode);
         }catch(IUserDAO.DALException e){
-            fail(e.getMessage());
+            fail(e.getErrorCode() + e.getMessage());
+            e.printStackTrace();
         }
     }
 

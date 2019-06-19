@@ -4,6 +4,7 @@ import API.Controller.IUserController;
 import API.Controller.UserController;
 import API.DataLayer.IUserDAO;
 import API.DataLayer.IUserDTO;
+import API.DataLayer.UserDAOArray;
 import API.DataLayer.UserDAOSQL;
 import com.google.gson.JsonObject;
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class UserControllerTest {
             JSONObject output;
             JSONObject jUser = new JSONObject("{\"username\":\"swoldbye\",\"password\":\"pass\"}");
             output = testCon.createUser(jUser);
-            assertEquals("200", output.getString("code"));
+            assertEquals("201", output.getString("code"));
             IUserDTO user;
             user = testDAO.getUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
@@ -107,13 +108,13 @@ public class UserControllerTest {
             String name = "eloTest";
             for (int i = 0; i < 7; i++) {
                 user = jUsers.getJSONObject(i+1);
-                assertEquals(name + Integer.toString(i), user.getString("username"));
+                assertEquals(name + i, user.getString("username"));
                 assertEquals(elo, user.getInt("elo"));
                 elo--;
             }
             for (int i = 7; i < 10; i++) {
                 boolean failer = true;
-                user = jUsers.getJSONObject(i+1);
+                user = jUsers.getJSONObject(i + 1);
                 if (user.getString("username").equals("eloTest7")) {
                     failer = false;
                 }
@@ -127,6 +128,7 @@ public class UserControllerTest {
                     fail("Username: " + user.getString("username") + " is the wrong username");
                     assertEquals(elo, user.getInt("elo"));
                 }
+            }
                 testDAO.forceDeleteUser("eloTest0");
                 testDAO.forceDeleteUser("eloTest1");
                 testDAO.forceDeleteUser("eloTest2");
@@ -137,8 +139,8 @@ public class UserControllerTest {
                 testDAO.forceDeleteUser("eloTest7");
                 testDAO.forceDeleteUser("eloTest8");
                 testDAO.forceDeleteUser("eloTest9");
-            }
             }catch(IUserDAO.DALException e){
+            e.printStackTrace();
             fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }

@@ -19,27 +19,13 @@ import java.util.List;
 
     static ArrayList<IUserDTO> userList = new ArrayList<>();
 
-    /**
-     * Creates an ArrayList with 10 UserDTO model
-     *
-     * @return  ArrayList of 10 UserDTO
-     */
-    public UserDAOArray() throws DALException {
-
-           /* for (int i = 0; i < 2; i++) {
-               createUser("Test" + i, "123" + i, 1000 + i);
-            }*/
-    }
-
-
-
     @Override
     public IUserDTO getUser(String username) throws DALException {
         IUserDTO user = searchUser(username);
         if (user != null) {
             return user;
         } else {
-            throw new DALException("1","User doesn't exist");
+            throw new DALException("410","User doesn't exist");
         }
     }
 
@@ -47,15 +33,17 @@ import java.util.List;
 
     @Override
     public String createUser(String username, String password, int elo) throws DALException {
-        if(searchUser(username)==null) {
+        if(!(searchUser(username)==null)) {
+            throw new DALException("409", "A user with that username already exists.");
+        }
+        else {
             Argon2 argon2 = Argon2Factory.create();
             String hashedPassword = argon2.hash(10, 65536, 1, password);
             IUserDTO user = new UserDTO(username, elo);
             user.setPassword(hashedPassword);
             userList.add(user);
             return "201";
-        }else return "409";
-
+        }
     }
 
     /**
@@ -81,14 +69,18 @@ import java.util.List;
      * @return boolean: whether successful or not.
      * @throws DALException
      */
-    public String checkHash(String username, String password) {
+    public String checkHash(String username, String password) throws DALException {
         Argon2 argon2 = Argon2Factory.create();
 
         IUserDTO user = searchUser(username);
-        if(argon2.verify(user.getPassword(),password)){
-            return "200";
-        }else return "401";
+        if (user == null) {
+            throw new DALException("410", "User doesn't exist.");
+        } else {
+            if (argon2.verify(user.getPassword(), password)) {
+                return "200";
+            } else throw new DALException("401", "Incorrect password.");
 
+        }
     }
 
     /**
@@ -100,38 +92,42 @@ import java.util.List;
      */
     @Override
     public String setElo(String username, int elo) throws DALException {
-        for(int i = 0; i<userList.size();i++){
-            if(userList.get(i).getUsername().equals(username)){
+        if ((searchUser(username) == null)) {
+            throw new DALException("410", "User doesn't exist.");
+        } else for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getUsername().equals(username)) {
                 userList.get(i).setElo(elo);
-                return "200";
+                break;
             }
-            return "410";
         }
-        return null;
+        return "200";
     }
 
-
     /**
-     * Recieves at top ten list, based on the best elo scores.
+     * Top ten users (based on ELO) in desc order.
      * @return  gereric List.
      * @throws DALException
      */
     @Override
-    public List<IUserDTO> getTopTen() throws DALException {
-
-        ArrayList<IUserDTO> tempUserList = new ArrayList<>();
-        int count = 0;
-
-        for(int i = 0; i < userList.size();i++){
-            for(int j = i+1; j < userList.size(); j++){
-                if(userList.get(i).getElo()>userList.get(j).getElo()){
-
-                }else count++;
-            }
-            if(count<10){tempUserList.add(userList.get(i));}
-            count = 0;
+    public List<IUserDTO> getTopTen(){
+        ArrayList<IUserDTO> topUsers = new ArrayList<>();
+        int size = userList.size() >= 10 ? 10: (userList.size());
+        IUserDTO blankUser = new UserDTO("", 0);
+        for(int y = 0; y < size; y++){
+            topUsers.add(blankUser);
         }
-        return tempUserList;
+        for(IUserDTO n : userList){
+            for(int j = 0; j < size; j++){
+                if(n.getElo() > topUsers.get(j).getElo()){
+                    for(int x = (size - 1); x > j;x--){
+                        topUsers.set(x, topUsers.get(x-1));
+                    }
+                    topUsers.set(j, n);
+                    break;
+                }
+            }
+        }
+        return topUsers;
     }
 
     @Override
@@ -142,7 +138,7 @@ import java.util.List;
                 return "200";
             }
         }
-        return "410";
+        throw new DALException("410", "User doesn't exist.");
     }
 
     @Override
@@ -151,7 +147,7 @@ import java.util.List;
         if(auth.equals("200")){
             return forceDeleteUser(username);
         }
-        else return "410";
+        else throw new DALException("410", "User doesn't exist.");
     }
 }
 

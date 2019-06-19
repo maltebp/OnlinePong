@@ -3,6 +3,7 @@ package API.Controller;
 import API.DataLayer.IUserDAO;
 import API.DataLayer.IUserDAO.DALException;
 import API.DataLayer.IUserDTO;
+import API.DataLayer.UserDAOArray;
 import API.DataLayer.UserDAOSQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class UserController implements IUserController{
 
+    //private IUserDAO UserDAO = new UserDAOSQL();
     private IUserDAO UserDAO = new UserDAOSQL();
 
     /**
@@ -50,7 +52,7 @@ public class UserController implements IUserController{
             String password = input.getString("password");
             String code = UserDAO.createUser(username, password, elo);
             output.put("code", code);
-            output.put("description", "OK.");
+            output.put("description", "User created.");
             return output;
         }catch(DALException e){
             output.put("code", e.getErrorCode());
