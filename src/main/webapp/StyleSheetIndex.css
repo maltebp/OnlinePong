@@ -1,97 +1,115 @@
 /*-----    This is the stylesheet for the index page, and contains the general setup of the website    -----*/
 
+
+
+/*------------- GENERAL -------------------------------------------------------------------
+
 /*-----    The box-sizing property allows us to include the padding and border in the box's total width (and height), 
 making sure that the padding stays inside of the box and that it does not break    -----*/
 * {
     box-sizing: border-box;
 }
 
-/*-----    This specifies the the style for the entire body tag    -----*/
-.body {
-    font-family: Calibri;
+/* Sets the height/width of the outmost tags (body, html) to 100% such
+   that we may use 100% width/height on children elements */
+body, html{
+    width: 100%;
+    height: 100%;
     margin: 0;
+    font-family: Calibri;
 }
 
-/*-----    This specifies the height of the middle boxes    -----*/
-.leftBox, .rightBox, .dynamicContainer {
-    height: 725px;
-}
 
-/*-----    This specify the style of the TopFrame box    -----*/
+/* -------- HEADER ------------------------------------------------------------------- */
+
+/** Specifies height, width and color of the header container */
 .header {
+    width: 100%;
+    height: 15%;
     background-color: black;
-    padding: 2px;
-    font-size: 25px;
 }
 
-/*-----   This specifies the style of the content in the TopFrame box   -----*/  
+/** Specifies that the image should fit the size of its parent container (.header) */
 .header img {
     float: left;
-    width: 215px;
-    height: 125px;
-}
-.header h1 {
-    left: 10px;
-    color: rgb(240, 238, 238);
-    text-align:left; 
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.centerContainer {
+.title {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    /* These centers the text vertically: */
+    height: 100%;
     display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    /*flex-basis: max-content;*/
+    align-items: center; /* Center vertically */
 }
 
-/*-----    This specifies the style for the left box    -----*/
-.leftBox {
-    float:left;
+
+/* ----------- CENTER -------------------------------------------------------------- */
+
+/** Container for all center elements */
+.centerContainer {
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.sideBox {
+    height: 100%;
     width: 15%;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 1%;
+    padding-right: 1%;
     background-color: rgb(119, 128, 128);
 }
 
-li{
-    margin:5px;
+.sidebox li{
+    margin: 5px;
     font-weight: bold;
 }
 
-.dynamicContainer {
-    text-align: center;
-}
 
-/*-----    This specifies the style of the right box    -----*/
-.rightBox {
-    float: right;
-    width: 15%;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: rgb(119, 128, 128);
-}
-
-/*-----    This specifies the styling of the middle box and the contents    -----*/
+/** The wrapper container for 'switchable' html, using our switchPage() function */
 .dynamicContainer {
-    float: left;
+    height: 100%;
     width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #b9b3b3;
 }
-.dynamicContainer p {
+
+/** A layer class, which allows containers to be stacked on top of each other */
+.layer {
+    width: 70%;
+    height: 85%;
     text-align: center;
 }
 
-/*-----    This specifies the style of the Footer box    -----*/
-.footer {
-    background-color: black;
-    padding: 10px;
-    text-align: center;
-    color: white;
+.successMsg{
+    font-weight: bold;
+    color: green;
+    font-size: 30px;
 }
 
-/*-----    This will get the middle boxes to stand on top of each other on small screens ( smartphones )    -----*/
-@media (max-width: 600px) {
-    .rightBox, .leftBox, .dynamicContainer {
-        width: 100%;
-        height: auto;
-    }
+.backLink{
+    font-size: small;
+}
+
+
+.centeredImg{
+    display: block;
+    margin: auto
+}
+
+.loadingContainer{
+    padding: 5%;
+}
+
+.errorMsg{
+    color: darkred;
+    font-weight: bold;
 }

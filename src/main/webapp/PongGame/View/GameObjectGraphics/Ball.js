@@ -43,7 +43,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { //Goal
-        this.speed = 5;
+        this.speed = 6;
         if (this.x < 0){
             player2.score.goal();
             this.x_speed = this.speed; //Reverts the ball's direction

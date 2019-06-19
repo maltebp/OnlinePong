@@ -2,15 +2,16 @@
 
 var authenticating = false;
 
-var loadingAnimation = document.getElementById("loadingAnimation");
+var loginLayer = document.getElementById("loginLayer");
+var loadingLayer = document.getElementById("loadingLayer");
 var loginTroubleText = document.getElementById("loginTrouble");
-loadingAnimation.style.display = 'none';
-loginTroubleText.style.display = 'none';
+
+hide(loadingLayer);
+hide(loginTroubleText);
 
 // Resetting user password in browser
 currPassw = null;
 currUser = null;
-
 
 
 
@@ -34,14 +35,15 @@ function evaluateResponse(result){
             currPassw = "";
     }
 
-    loadingAnimation.style.display = 'none';
+    show(loginLayer);
+    hide(loadingLayer);
     authenticating = false;
 }
 
 
 function showError(errorMsg){
     loginTroubleText.innerHTML = errorMsg;
-    loginTroubleText.style.display = "inline";
+    show(loginTroubleText);
 }
 
 
@@ -50,8 +52,8 @@ function showError(errorMsg){
 function authenticate(){
     if( !authenticating ) {
         authenticating = true;
-        loadingAnimation.style.display = 'inline';
-        loginTroubleText.style.display = 'none';
+        show(loadingLayer);
+        hide(loginLayer);
         currUser = document.forms["loginForm"]["username"].value;
         currPassw = document.forms["loginForm"]["password"].value;
         let userData = JSON.stringify({username : currUser, password: currPassw});

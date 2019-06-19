@@ -81,8 +81,6 @@ class MatchController {
                 loser.setRating( loserRating + loserRatingChange );
                 winner.setRating(winnerRating + winnerRatingChange);
 
-                databaseConnector.updateElo(loser);
-                databaseConnector.updateElo(winner);
 
                 playerGame.remove(loser);
                 playerGame.remove(winner);
@@ -92,8 +90,13 @@ class MatchController {
                 }else{
                     sender.sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
                     sender.sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
-                    return winner;
+
                 }
+
+                databaseConnector.updateElo(loser);
+                databaseConnector.updateElo(winner);
+
+                if( !disconnected) return winner;
 
             }else{
                 System.out.println("Error: player has no opponentName");

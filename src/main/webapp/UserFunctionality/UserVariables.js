@@ -3,4 +3,3 @@
  */
 var currUser;
 var currPassw;
-var currElo;
