@@ -103,11 +103,11 @@ public class Matchmaker extends Thread{
      */
     public MatchPlayer findMatchForPlayer(MatchPlayer player, List<MatchPlayer> opponents) {
         /*  How it works:
-            It checks each available opponentName for the player ('opponents')
+            It checks each available opponent for the player ('opponents').
             The rating difference between the player and the BEST opponentName
             fulfills following criteria:
                 - It's less than player window
-                - It's less than opponentName window
+                - It's less than opponent window
                 - It's the smallest difference of all possible
                     opponents for player
             The window for a player is increased everytime it runs the algorithm
