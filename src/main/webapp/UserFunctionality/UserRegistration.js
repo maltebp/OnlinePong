@@ -2,35 +2,89 @@
  * Class to control the registration HTML of the website
  */
 
+var registerLayer = document.getElementById("registerLayer");
+var registerLoading = document.getElementById("loadingLayer");
+var registerError = document.getElementById("registerErrorMsg");
+var registerSuccess = document.getElementById("successLayer");
+
+var registrationUsername = "";
+var registrationPassword = "";
+
+hide(registerError);
+hide(registerSuccess);
+
+
+
+function evaluateResponse(result){
+
+    toggleLoader(false);
+
+    switch(result.code){
+
+        case "1":
+            currUser = registrationUsername;
+            currPassw = registrationPassword;
+            hide(registerLayer);
+            show(registerSuccess);
+            break;
+
+        default:
+            show(registerLayer);
+            showError("Something went wrong. User wasn't created.");
+
+        registrationUsername = "";
+        registrationPassword = "";
+    }
+}
+
+
+
+function showError(msg){
+    registerError.innerHTML = msg;
+    show(registerError);
+}
+
+
+function toggleLoader(toggle){
+    if(toggle){
+        hide(registerLayer);
+        show(registerLoading);
+    }else{
+        show(registerLayer);
+        hide(registerLoading);
+    }
+}
+
+
 function isSamePasswords() {
     var pass = document.getElementById("password").value;
     var pass2 = document.getElementById("passwConf").value;
     return (pass === pass2);
 }
 
+function createUser(){
 
-function evaluateResponse(result){
-    switch(result.code){
+    if( isSamePasswords() ) {
+        var userObj = $('#form').serializeJSON();
+        delete userObj.passwConf;
 
-        case "1":
-            alert("User created!");
-            break;
+        toggleLoader(true);
 
-        default:
-            alert("Something went wrong" + JSON.stringify(result))
+        registrationUsername = userObj.username;
+        registrationPassword = userObj.password;
+        apiPost("/createUser", evaluateResponse, JSON.stringify(userObj));
+
+    } else {
+        showError("Passwords doesn't match");
     }
+
 }
 
 
 $('form').on('submit', function(){
-    if(isSamePasswords()) {
-        var userObj = $('#form').serializeJSON();
-        delete userObj.passwConf;
-
-        apiPost("/createUser", evaluateResponse, JSON.stringify(userObj));
-
-        return false;
-    } else {
-        document.getElementById("registerFailMsg").innerHTML = "Passwords didn't match";
-    }
+    createUser();
+    return false;
 });
+
+
+toggleLoader(false);

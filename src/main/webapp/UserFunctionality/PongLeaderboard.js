@@ -1,6 +1,17 @@
 
-$(document).ready(function () {
+var leaderboardLoader = document.getElementById("leaderboardLoader");
+var leaderboard = document.getElementById("leaderboard");
+
+hide(leaderboard);
+hide(leaderboardLoader);
+
+function loadLeaderboard(){
+
+    show(leaderboardLoader);
+
     apiGet( "/getTopTen", function(data) {
+        hide(leaderboardLoader);
+        show(leaderboard);
         var userData = "";
         $.each(data, function (key, value) {
             userData += '<tr>';
@@ -10,4 +21,8 @@ $(document).ready(function () {
         });
         $('#topTen').append(userData);
     });
+}
+
+$(document).ready(function () {
+    loadLeaderboard();
 });

@@ -1,27 +1,35 @@
 <html>
     <head>
-
+        <script src="UserFunctionality/DeleteUser.js"></script>
     </head>
+
     <body>
-
-        <div class="deletePage">
-            <form id="deleteForm" action="#" onsubmit="return false;">
-
-                <h2>Delete user</h2>
-                <p>To delete a user, input username and password.</p>
-                <label>Username: <input id="deleteUsername" type="text" name="username"></label><br><br>
-                <label>Password: <input id="deletePassword" type="password" name="password"></label>
-                <p id="deleteFailMsg"></p>
-                <input type="submit" value="delete"> <input type="button" value="Back" onclick="switchPage('LoginPage.html')">
-
+        <div id="deleteUserLayer" class="layer">
+            <h2>Delete User</h2>
+            <p>To delete a user, input username and password.</p>
+            <form id="deleteForm" >
+                <input type="text" name="username" placeholder="Username" ><br><br>
+                <input type="password" name='password' placeholder="Password"><br><br>
+                <input type="submit" value="Delete user"><br><br>
+                <p id="deleteErrorMsg" class="errorMsg"></p>
             </form>
-
-
+            <br>
+            <p class="backLink"><a href="index.html">Back to login page</a></p>
         </div>
 
-        <script type="text/javascript" src="jquery.serializejson.js"></script>
-        <script src="UserFunctionality/UserVariables.js"></script>
-        <script src="UserFunctionality/DeleteUser.js"></script>
+
+        <!-- A layer containing a loading gif -->
+        <div id="deleteUserLoader" class="layer loadingContainer" >
+            <img id="loadingAnimation" src="loading.gif" class="centeredImg">
+            <p id="loadingText">Loading...</p>
+        </div>
+
+
+        <!-- A layer containing a loading gif -->
+        <div id="deleteSuccessLayer" class="layer" >
+            <p class="successMsg">User deleted!</p>
+            <button type="button" onclick="location.href = 'index.html'" >Back to front page</button>
+        </div>
 
     </body>
 </html>
