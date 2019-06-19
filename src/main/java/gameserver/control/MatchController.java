@@ -59,7 +59,14 @@ class MatchController {
 
 
     /**
-     * @param loser Losing player sending message
+     * Called when a message has been given to GameServer that
+     * a match has finished, or that a Player in a match has
+     * disconnected.
+     * It adjusts ratings by using 'ratingAlgorithm' to calculate,
+     * and it informs players of match results.
+     *
+     * @param loser Losing player or disconnected player sending message
+     * @param disconnected The 'loser' disconnected
      */
     Player matchFinished(Player loser, boolean disconnected) {
         Match match = playerMatch.get(loser);
@@ -77,10 +84,11 @@ class MatchController {
                 loser.setRating( loserRating + loserRatingChange );
                 winner.setRating(winnerRating + winnerRatingChange);
 
-
+                // Removing references to match object
                 playerMatch.remove(loser);
                 playerMatch.remove(winner);
 
+                // Sends message to winner, and loser (if loser didn't disconnect)
                 if(disconnected){
                     server.getSender().sendOpponentDisconnected(winner, winnerRatingChange, loserRatingChange);
                 }else{
@@ -89,6 +97,7 @@ class MatchController {
 
                 }
 
+                // Updates Elo in Database
                 server.getDatabaseConnector().updateElo(loser);
                 server.getDatabaseConnector().updateElo(winner);
 
