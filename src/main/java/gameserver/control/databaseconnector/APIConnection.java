@@ -24,7 +24,7 @@ public class APIConnection {
     private HttpURLConnection connection;
 
     /**
-     * Constructor: Creates the connection to the requested URL. The connection headder, is set by the request type.
+     * Constructor: Creates the connection to the requested URL. The connection header, is set by the request type.
      * @param resourceUrl
      * @param requestType
      */

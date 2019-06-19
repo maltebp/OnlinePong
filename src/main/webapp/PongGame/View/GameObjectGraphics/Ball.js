@@ -13,11 +13,11 @@
 function Ball(x,y) {
     this.x = x;
     this.y = y;
-    this.speed = 3;             //Current max speed of the ball
+    this.speed = 6;              //Current max speed of the ball
     this.x_speed = this.speed;  //Current horizontal speed of the ball
     this.y_speed = 0;           //Current vertical speed of the ball
     this.radius = 5;            //Radius of the ball object
-    this.incrementSpeed = 0.1;  //Speed to be incremented with, when a paddle is hit
+    this.incrementSpeed = 0.4;  //Speed to be incremented with, when a paddle is hit
 }
 
 /**
@@ -43,7 +43,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
         this.y_speed = -this.y_speed;
     }
     if(this.x < 0 || this.x > 700) { //Goal
-        this.speed = 3;
+        this.speed = 5;
         if (this.x < 0){
             player2.score.goal();
             this.x_speed = this.speed; //Reverts the ball's direction
