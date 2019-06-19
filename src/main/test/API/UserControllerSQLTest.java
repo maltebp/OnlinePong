@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class UserControllerTest {
-    UserDAOSQL testDAO = new UserDAOSQL();
+public class UserControllerSQLTest {
+    IUserDAO testDAO = new UserDAOSQL();
     IUserController testCon = new UserController();
 
 
@@ -30,7 +30,6 @@ public class UserControllerTest {
         } catch (IUserDAO.DALException e) {
             fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
-
     }
 
     @Test
