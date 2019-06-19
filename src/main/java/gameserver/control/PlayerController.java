@@ -40,7 +40,7 @@ class PlayerController {
             if( !usernameExists(username)){
                 players.add(player);
                 player.setUsername(username);
-                databaseConnector.setPlayerInformation(player);
+                databaseConnector.getPlayerInformation(player);
                 return true;
             }else{
                 System.out.println("Already logged in");

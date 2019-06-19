@@ -15,15 +15,15 @@ public class APIConnectorTest {
         System.out.println("authendicate Player");
         con.authenticatePlayer("Andreas","123");
 
-        System.out.println("setPlayerInformation");
-        con.setPlayerInformation(malte);
+        System.out.println("getPlayerInformation");
+        con.getPlayerInformation(malte);
         malte.setRating(1000);
 
         System.out.println("updateElo");
         con.updateElo(malte);
 
-        System.out.println("setPlayerInformation");
-        con.setPlayerInformation(malte);
+        System.out.println("getPlayerInformation");
+        con.getPlayerInformation(malte);
 
     }
 }

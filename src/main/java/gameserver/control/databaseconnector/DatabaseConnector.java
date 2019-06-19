@@ -18,7 +18,7 @@ public interface DatabaseConnector {
      *
      * @param player Player object to put the data into
      */
-    void setPlayerInformation(Player player);
+    void getPlayerInformation(Player player);
 
 
     /**

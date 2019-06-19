@@ -22,7 +22,7 @@ class MatchController {
     private DatabaseConnector databaseConnector;
 
     // A map of Players and the match they participate in
-    private HashMap<Player, Match> playerGame = new HashMap<Player, Match>();
+    private HashMap<Player, Match> playerMatch = new HashMap<Player, Match>();
 
     MatchController(Sender sender, DatabaseConnector databaseConnector){
         this.databaseConnector = databaseConnector;
@@ -32,12 +32,12 @@ class MatchController {
 
     /**
      * Sets a match as started by adding it to the
-     * ongoing match list (playerGame)
+     * ongoing match list (playerMatch)
      */
     void startMatch(Player player1, Player player2){
         Match match = new Match(player1, player2);
-        playerGame.put(player1, match);
-        playerGame.put(player2, match);
+        playerMatch.put(player1, match);
+        playerMatch.put(player2, match);
 
         // Randomize the initializing player
         Random rnd = new Random();
@@ -54,7 +54,7 @@ class MatchController {
      * of that player.
      */
     void dataRecieved(Player player, String dataMsg ){
-        Match match = playerGame.get(player);
+        Match match = playerMatch.get(player);
         Player opponent = match.getOpponent(player);
         if(opponent != null ){
             sender.sendMessage(opponent, dataMsg );
@@ -66,7 +66,7 @@ class MatchController {
      * @param loser Losing player sending message
      */
     Player matchFinished(Player loser, boolean disconnected) {
-        Match match = playerGame.get(loser);
+        Match match = playerMatch.get(loser);
         if( match != null ){
             Player winner = match.getOpponent(loser);
             if(winner != null ){
@@ -82,8 +82,8 @@ class MatchController {
                 winner.setRating(winnerRating + winnerRatingChange);
 
 
-                playerGame.remove(loser);
-                playerGame.remove(winner);
+                playerMatch.remove(loser);
+                playerMatch.remove(winner);
 
                 if(disconnected){
                     sender.sendOpponentDisconnected(winner, winnerRatingChange, loserRatingChange);
@@ -114,7 +114,7 @@ class MatchController {
      * with a disconnect signal
      */
     void removePlayer(Player player){
-        Match match = playerGame.get(player);
+        Match match = playerMatch.get(player);
         if( match != null ) {
             matchFinished(player, true);
         }

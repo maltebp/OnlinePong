@@ -53,7 +53,7 @@ public class Matchmaker extends Thread{
             for (MatchPlayer player : lookingForMatch) {
                 if( remainingPlayers.remove(player) ){
 
-                    MatchPlayer opponent = findMatch(player, remainingPlayers);
+                    MatchPlayer opponent = findMatchForPlayer(player, remainingPlayers);
                     if( opponent != null ){
                         // A match has been found
                         remainingPlayers.remove(opponent);
@@ -104,7 +104,7 @@ public class Matchmaker extends Thread{
      *
      * @param opponents A list of possible opponents for the Player
      */
-    public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
+    public MatchPlayer findMatchForPlayer(MatchPlayer player, List<MatchPlayer> opponents) {
         /*  How it works:
             It checks each available opponentName for the player ('opponents')
             The rating difference between the player and the BEST opponentName
