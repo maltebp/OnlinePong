@@ -100,16 +100,6 @@ body, html{
 }
 
 
-.username{
-    font-size: 30px;
-    font-weight: bold;
-}
-
-
-.userInfoContainer{
-    padding: 5%;
-}
-
 .centeredImg{
     display: block;
     margin: auto
