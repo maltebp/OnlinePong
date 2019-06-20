@@ -9,11 +9,12 @@ function loadLeaderboard(){
 
     show(leaderboardLoader);
 
-    apiGet( "/getTopTen", function(data) {
+    apiGet( "/getTopTen", function(json) {
         hide(leaderboardLoader);
         show(leaderboard);
         var userData = "";
-        $.each(data, function (key, value) {
+        $.each(json, function (key, value) {
+            if(value.username !== '')
             userData += '<tr>';
             userData += '<td>'+value.username+'</td>';
             userData += '<td>'+value.elo+'</td>';
