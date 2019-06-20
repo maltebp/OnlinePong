@@ -25,10 +25,14 @@ function responseFromAPI(data) {
 
     switch (data.code) {
 
-        case "1":
+        case "200":
             toggleDeleteLoading(false);
             hide(deleteUserLayer);
             show(deleteSuccess);
+            break;
+
+        case "410":
+            showDeleteError("User doesn't exist");
             break;
 
         default:
