@@ -17,17 +17,21 @@ import java.util.List;
 public class UserDAOArray implements IUserDAO{
 
     private static ArrayList<IUserDTO> userList = new ArrayList<>();
+    private static boolean isInstantiated = false;
 
 
     public UserDAOArray(){
-        try{
-            // Creating standard users for database
-            createUser("Torben","1234", 1243);
-            createUser("Karsten","1234", 1304);
-            createUser("Bent","1234", 780);
-            createUser("Kenneth","1234", 1803);
-        }catch(DALException e){
-            e.printStackTrace();
+        if( !isInstantiated) {
+            try {
+                // Creating standard users for database
+                createUser("Torben", "1234", 1243);
+                createUser("Karsten", "1234", 1304);
+                createUser("Bent", "1234", 780);
+                createUser("Kenneth", "1234", 1803);
+                isInstantiated = true;
+            } catch (DALException e) {
+                e.printStackTrace();
+            }
         }
 
     }

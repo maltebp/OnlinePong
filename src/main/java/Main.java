@@ -28,7 +28,7 @@ public class Main {
 
         Tomcat tomcat;
 
-        if (USE_ARRAY_DB) UserController.useBackup();
+        UserController.useBackup(USE_ARRAY_DB);
 
         tomcat = new Tomcat();
         tomcat.setBaseDir("temp");

@@ -97,9 +97,16 @@ public class GameFlowTest {
 
     }
 
+
+    /**
+     * WARNING:
+     * Application must be running in order for
+     * this test to pass!
+     */
     @Test
     public void testWrongUserNamePass() throws Exception{
 
+        // Connecting a wrong username
         ClientConnector malte = connectPlayer("malte", "pandekag", 0);
 
         sleep(3000);
@@ -109,6 +116,7 @@ public class GameFlowTest {
 
         sleep(3000);
 
+        // Connecting the correct username
         malte = connectPlayer("Malte", "pandekage", 0 );
         assertSame(ClientState.WAITING_FOR_GAME, malte.getState());
     }

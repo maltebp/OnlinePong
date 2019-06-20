@@ -7,6 +7,7 @@ import API.DataLayer.IUserDTO;
 import API.DataLayer.UserDAOArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class UserControllerArrayTest {
     @Before
     public void createUserController(){
         testDAO = new UserDAOArray();
-        UserController.useBackup();
+        UserController.useBackup(true);
         testCon = new UserController();
     }
 
@@ -154,5 +155,10 @@ public class UserControllerArrayTest {
         }catch(IUserDAO.DALException e){
             fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
+    }
+
+    @After
+    public void dontUseBackup(){
+        UserController.useBackup(false);
     }
 }
