@@ -23,6 +23,9 @@ public class UserController implements IUserController{
     @Override
     public JSONObject convertUser(String username) {
         JSONObject json = new JSONObject();
+
+
+
         try{
            IUserDTO user = UserDAO.getUser(username);
             if(user == null){
