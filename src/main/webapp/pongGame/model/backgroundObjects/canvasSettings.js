@@ -15,7 +15,7 @@ var context = canvas.getContext('2d');
 
 
 // /!**
-//  *  Sets the canvas width and height to be the chosen sizes //TODO Moveable up to other variables?
+//  *  Sets the canvas width and height to be the chosen sizes
 //  *!/
 canvas.width = width;
 canvas.height = height;

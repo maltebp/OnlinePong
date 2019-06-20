@@ -10,14 +10,13 @@ import java.util.List;
 
 /**
  * Class to act as database, by using a local ArrayList
- * FixMe Has not hashing implemented
  *
  * @author Andreas and Kristian
  */
 
-    public class UserDAOArray implements IUserDAO{
+public class UserDAOArray implements IUserDAO{
 
-    static ArrayList<IUserDTO> userList = new ArrayList<>();
+    private static ArrayList<IUserDTO> userList = new ArrayList<>();
 
 
     public UserDAOArray(){
@@ -99,10 +98,7 @@ import java.util.List;
 
     /**
      * set the Elo of a player in the userList.
-     * @param username
-     * @param elo
      * @return String: error message.
-     * @throws DALException
      */
     @Override
     public String setElo(String username, int elo) throws DALException {
@@ -120,7 +116,6 @@ import java.util.List;
     /**
      * Top ten users (based on ELO) in desc order.
      * @return  gereric List.
-     * @throws DALException
      */
     @Override
     public List<IUserDTO> getTopTen(){

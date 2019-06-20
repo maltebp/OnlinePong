@@ -15,7 +15,7 @@ function Player2() {
     this.paddle = new Paddle(680, 175, 10, 50);
     this.score = new Score(525, 460, 0);
 }
-/*function Player(Playerpaddle,Playerscore,id){ //TODO Implement general constructor or delete
+/*function Player(Playerpaddle,Playerscore,id){
      this.paddle= Playerpaddle;
      this.score = Playerscore;
      this.playerId = id;
