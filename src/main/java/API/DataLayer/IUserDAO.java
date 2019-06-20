@@ -64,16 +64,14 @@ public interface IUserDAO {
      * @param username
      * @throws DALException
      */
-    public String forceDeleteUser(String username) throws DALException;
+    String forceDeleteUser(String username) throws DALException;
 
-    public String userDeleteUser(String username, String password) throws DALException;
+    String userDeleteUser(String username, String password) throws DALException;
     /**
      * Customizable exception for explaining Database Access Layer exceptions
      */
     class DALException extends Exception {
 
-        //Til Java serialisering...
-        private static final long serialVersionUID = 7355418246336739229L;
         public String errorCode;
 
         public DALException(String msg, Throwable e) {super(msg,e);}
