@@ -89,6 +89,7 @@ public class UserService {
      * @return String: whether the password was correct or not.
      */
     @Path("/AuthUser")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String userValidation(String msg){
