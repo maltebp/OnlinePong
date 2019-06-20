@@ -67,7 +67,7 @@ function showDeleteError(msg){
 function deleteUser(){
     var deleteUserObj = $('#deleteForm').serializeJSON();
     toggleDeleteLoading(true);
-    apiPost("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
+    apiDelete("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
 }
 
 

@@ -76,7 +76,7 @@ function createUser(){
 
         registrationUsername = userObj.username;
         registrationPassword = userObj.password;
-        apiPost("/createUser", evaluateResponse, JSON.stringify(userObj));
+        apiPut("/createUser", evaluateResponse, JSON.stringify(userObj));
 
     } else {
         showError("Passwords doesn't match");

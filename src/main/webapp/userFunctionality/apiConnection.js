@@ -30,7 +30,25 @@ function apiGet( resourceUrl, successCallback, data=null){
     apiRequest("get",resourceUrl, successCallback, data)
 }
 
+/**
+ * Sends a HTTP DELETE request to the game API using the API_URL
+ * @param resourceUrl
+ * @param successCallback
+ * @param data
+ */
+function apiDelete( resourceUrl, successCallback, data=null){
+    apiRequest("delete", resourceUrl, successCallback, data)
+}
 
+/**
+ *Sends a HTTP PUT request to the game API using the API_URL
+ * @param resourceUrl
+ * @param successCallback
+ * @param data
+ */
+function apiPut( resourceUrl, successCallback, data=null){
+    apiRequest("put", resourceUrl, successCallback, data)
+}
 /**
  * Sends a HTTP request to the game API using the API_URL
  *
