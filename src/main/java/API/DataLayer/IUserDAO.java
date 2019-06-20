@@ -74,8 +74,17 @@ public interface IUserDAO {
 
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;
+        public String errorCode;
 
         public DALException(String msg, Throwable e) {super(msg,e);}
-        public DALException(String msg) { super(msg);}
+        public DALException(String code, String msg) { super(msg); this.errorCode = code;}
+
+        public String getErrorCode() {
+            return errorCode;
+        }
+
+        public void setErrorCode(String errorCode) {
+            this.errorCode = errorCode;
+        }
     }
 }
