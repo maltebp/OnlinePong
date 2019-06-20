@@ -31,6 +31,10 @@ function responseFromAPI(data) {
             show(deleteSuccess);
             break;
 
+        case "401":
+            showDeleteError("Incorrect password");
+            break;
+
         case "410":
             showDeleteError("User doesn't exist");
             break;

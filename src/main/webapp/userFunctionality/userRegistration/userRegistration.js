@@ -21,12 +21,16 @@ function evaluateResponse(result){
 
     switch(result.code){
 
-        case "1":
+        case "201":
             currUser = registrationUsername;
             currPassw = registrationPassword;
             hide(registerLayer);
             show(registerSuccess);
             break;
+
+        case "409":
+            show(registerLayer);
+            showError("Username is already taken");
 
         default:
             show(registerLayer);

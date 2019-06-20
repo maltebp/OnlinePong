@@ -23,7 +23,8 @@ function evaluateResponse(result){
             switchPage("pongGame/pongPage.html");
             break;
 
-        case "420":
+        case "401":
+        case "410":
             showError("Wrong username and/or password!");
             currUser = "";
             currPassw = "";
