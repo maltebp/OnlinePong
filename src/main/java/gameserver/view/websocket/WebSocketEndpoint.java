@@ -1,5 +1,7 @@
 package gameserver.view.websocket;
 
+import org.apache.tomcat.websocket.*;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
