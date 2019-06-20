@@ -4,10 +4,12 @@ import API.Controller.IUserController;
 import API.Controller.UserController;
 import API.DataLayer.IUserDAO;
 import API.DataLayer.UserDAOSQL;
+import org.eclipse.persistence.annotations.Cache;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 
+import javax.naming.ldap.Control;
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -112,7 +114,7 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public String getTopTen(){
         IUserController userController = new UserController();
-        JSONArray json = userController.getTopTen();
+        JSONObject json = userController.getTopTen();
         return json.toString();
     }
 

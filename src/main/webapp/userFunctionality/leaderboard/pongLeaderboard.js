@@ -6,20 +6,21 @@ hide(leaderboard);
 hide(leaderboardLoader);
 
 function loadLeaderboard(){
-
     show(leaderboardLoader);
 
     apiGet( "/getTopTen", function(data) {
+        console.log(data);
         hide(leaderboardLoader);
         show(leaderboard);
-        var userData = "";
-        $.each(data, function (key, value) {
-            userData += '<tr>';
-            userData += '<td>'+value.username+'</td>';
-            userData += '<td>'+value.elo+'</td>';
-            userData += '</tr>';
+        var leaderboardData = "";
+        $.each(data.users, function (key, value) {
+            if(value.username !== '')
+            leaderboardData += '<tr>';
+            leaderboardData += '<td>'+value.username+'</td>';
+            leaderboardData += '<td>'+value.elo+'</td>';
+            leaderboardData += '</tr>';
         });
-        $('#topTen').append(userData);
+        $('#topTen').append(leaderboardData);
     });
 }
 

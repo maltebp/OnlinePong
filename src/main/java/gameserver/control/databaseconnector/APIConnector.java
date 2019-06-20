@@ -40,7 +40,7 @@ public class APIConnector implements DatabaseConnector {
         connection.close();
 
         //Reading response from API
-        return jsonObject.getInt("code") == 1;
+        return jsonObject.getInt("code") == 200;
     }
 
 
