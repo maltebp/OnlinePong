@@ -19,6 +19,20 @@ import java.util.List;
 
     static ArrayList<IUserDTO> userList = new ArrayList<>();
 
+
+    public UserDAOArray(){
+        try{
+            // Creating standard users for database
+            createUser("Torben","1234", 1243);
+            createUser("Karsten","1234", 1304);
+            createUser("Bent","1234", 780);
+            createUser("Kenneth","1234", 1803);
+        }catch(DALException e){
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public IUserDTO getUser(String username) throws DALException {
         IUserDTO user = searchUser(username);

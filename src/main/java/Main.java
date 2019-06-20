@@ -1,4 +1,6 @@
 import java.io.File;
+
+import API.Controller.UserController;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
@@ -12,11 +14,19 @@ import org.apache.catalina.startup.Tomcat;
  *  - Website
  *  - REST API
  *  - Game Server (websocket)
+ *
+ * USING ARRAYLIST:
+ * Change the value of USE_ARRAY_DB to 'true';
  */
 public class Main {
 
+    private static final boolean USE_ARRAY_DB = true;
+
     public static void main(String[] args) throws LifecycleException  {
+
         Tomcat tomcat;
+
+        if(USE_ARRAY_DB) UserController.useBackup();
 
         tomcat = new Tomcat();
         tomcat.setBaseDir("temp");

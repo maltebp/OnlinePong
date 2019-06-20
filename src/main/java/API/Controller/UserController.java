@@ -13,11 +13,7 @@ import java.util.List;
 
 public class UserController implements IUserController{
 
-    boolean backup = false;
-
-    //Constructors
-    public UserController(){}
-    public UserController(boolean backup){UserDAO = backup ? new UserDAOArray() : new UserDAOSQL();}
+    private static boolean backup = false;
 
     //Initialize which Database you want the controller to connect to (ARRAY-backup or SQL)
     //Defaulted to SQL.
@@ -49,7 +45,6 @@ public class UserController implements IUserController{
     }
 
 
-    //FixMe possible issues with error-handling here.
     //if SQLException at "createUser", return message will be skipped (even though there is error handling at UserDAOSQL level).
     public JSONObject createUser(JSONObject input){
         JSONObject output = new JSONObject();
@@ -136,5 +131,15 @@ public class UserController implements IUserController{
             output.put("description", e.getMessage());
             return output;
         }
+    }
+
+    /**
+     * Sets the backup value to true, such that
+     * a newly created UserController object will
+     * use an array implementation of the IUserDAO
+     * rather than the MySQL.
+     */
+    public static void useBackup(){
+        backup = true;
     }
 }
