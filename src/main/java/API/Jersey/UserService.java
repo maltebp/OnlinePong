@@ -73,7 +73,7 @@ public class UserService {
      * @return String: whether successful or not.
      */
     @Path("/createUser")
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String createUser(String msg){
@@ -119,7 +119,7 @@ public class UserService {
     }
 
     @Path("/deleteUser")
-    @POST
+    @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteUser(String msg) {
