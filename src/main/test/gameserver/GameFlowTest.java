@@ -1,14 +1,11 @@
 package gameserver;
 
-import gameserver.model.Player;
 import gameserver.testobjects.ClientConnector;
 import gameserver.testobjects.ClientState;
 import gameserver.testobjects.ServerConnector;
 import gameserver.testobjects.TestDatabaseConnector;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.ws.rs.client.Client;
 
 import static org.junit.Assert.*;
 
@@ -112,8 +109,7 @@ public class GameFlowTest {
 
         sleep(3000);
 
-        malte = connectPlayer("M" +
-                "Malte", "pandekage", 0 );
+        malte = connectPlayer("Malte", "pandekage", 0 );
         assertSame(ClientState.WAITING_FOR_GAME, malte.getState());
     }
 

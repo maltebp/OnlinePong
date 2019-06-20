@@ -1,7 +1,6 @@
 package gameserver.control;
 
 import gameserver.model.Player;
-import gameserver.view.Sender;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,8 +19,7 @@ import java.util.List;
  */
 public class Matchmaker extends Thread{
 
-    private Sender sender;
-    private MatchController matchController;
+    private GameServer server;
 
     // The frequent between checking if there are any players to be matched
     private static final double MATCHMAKING_FREQ = 3;
@@ -34,9 +32,8 @@ public class Matchmaker extends Thread{
     private final LinkedList<MatchPlayer> lookingForMatch = new LinkedList<>();
 
 
-    Matchmaker(Sender sender, MatchController matchController){
-        this.matchController = matchController;
-        this.sender = sender;
+    Matchmaker(GameServer server){
+        this.server = server;
         start(); // Starting thread
     }
 
@@ -53,7 +50,7 @@ public class Matchmaker extends Thread{
             for (MatchPlayer player : lookingForMatch) {
                 if( remainingPlayers.remove(player) ){
 
-                    MatchPlayer opponent = findMatch(player, remainingPlayers);
+                    MatchPlayer opponent = findMatchForPlayer(player, remainingPlayers);
                     if( opponent != null ){
                         // A match has been found
                         remainingPlayers.remove(opponent);
@@ -75,7 +72,7 @@ public class Matchmaker extends Thread{
             for(MatchPlayer player : matchedPlayers){
                 lookingForMatch.remove(player);
                 player.setHasAcceptedMatch(false);
-                sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
+                server.getSender().sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
             }
         }
     }
@@ -104,13 +101,13 @@ public class Matchmaker extends Thread{
      *
      * @param opponents A list of possible opponents for the Player
      */
-    public MatchPlayer findMatch(MatchPlayer player, List<MatchPlayer> opponents) {
+    public MatchPlayer findMatchForPlayer(MatchPlayer player, List<MatchPlayer> opponents) {
         /*  How it works:
-            It checks each available opponentName for the player ('opponents')
+            It checks each available opponent for the player ('opponents').
             The rating difference between the player and the BEST opponentName
             fulfills following criteria:
                 - It's less than player window
-                - It's less than opponentName window
+                - It's less than opponent window
                 - It's the smallest difference of all possible
                     opponents for player
             The window for a player is increased everytime it runs the algorithm
@@ -146,10 +143,8 @@ public class Matchmaker extends Thread{
             if( matchPlayer.getMatchedOpponent().hasAcceptedMatch() ){
                 matchPlayers.remove(player);
                 matchPlayers.remove(matchPlayer.getMatchedOpponent().getPlayer());
-                matchController.startMatch(player, matchPlayer.getMatchedOpponent().getPlayer());
+                server.getMatchController().startMatch(player, matchPlayer.getMatchedOpponent().getPlayer());
             }
-        }else{
-            // TODO: Implement error
         }
     }
 
@@ -161,7 +156,7 @@ public class Matchmaker extends Thread{
     void addPlayer(Player player){
         MatchPlayer matchmakingPlayer = new MatchPlayer(player);
         matchPlayers.put(player, matchmakingPlayer);
-        sender.sendFindingGame(player, 0);
+        server.getSender().sendFindingGame(player, 0);
         synchronized (lookingForMatch){
             lookingForMatch.add(matchmakingPlayer);
         }
@@ -187,7 +182,7 @@ public class Matchmaker extends Thread{
                         opponent.setMatchedOpponent(null);
                         opponent.setHasAcceptedMatch(false);
                         lookingForMatch.add(opponent);
-                        sender.sendFindingGame(opponent.getPlayer(), 0);
+                        server.getSender().sendFindingGame(opponent.getPlayer(), 0);
                     }
                 }
             }

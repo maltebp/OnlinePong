@@ -1,6 +1,5 @@
 package gameserver.model;
 
-//todo: omnavngiv til DAO
 /**
  * Defines a Match between two players
  */
