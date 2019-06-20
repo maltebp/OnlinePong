@@ -139,7 +139,7 @@ public class UserController implements IUserController{
      * use an array implementation of the IUserDAO
      * rather than the MySQL.
      */
-    public static void useBackup(){
-        backup = true;
+    public static void useBackup(boolean toggle){
+        backup = toggle;
     }
 }
