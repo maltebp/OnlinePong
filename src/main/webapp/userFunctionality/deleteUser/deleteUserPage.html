@@ -1,26 +1,26 @@
 <html>
     <head>
-        <script src="deleteUser.js"></script>
+        <script src="userFunctionality/deleteUser/deleteUser.js"></script>
     </head>
 
     <body>
         <div id="deleteUserLayer" class="layer">
             <h2>Delete User</h2>
             <p>To delete a user, input username and password.</p>
-            <form id="deleteForm" >
+            <form id="deleteForm">
                 <input type="text" name="username" placeholder="Username" ><br><br>
                 <input type="password" name='password' placeholder="Password"><br><br>
                 <input type="submit" value="Delete user"><br><br>
                 <p id="deleteErrorMsg" class="errorMsg"></p>
             </form>
             <br>
-            <p class="backLink"><a href="../index.html">Back to login page</a></p>
+            <p class="backLink"><a href="../../index.html">Back to login page</a></p>
         </div>
 
 
         <!-- A layer containing a loading gif -->
         <div id="deleteUserLoader" class="layer loadingContainer" >
-            <img id="loadingAnimation" src="../loading.gif" class="centeredImg">
+            <img id="loadingAnimation" src="../../loading.gif" class="centeredImg">
             <p id="loadingText">Loading...</p>
         </div>
 
