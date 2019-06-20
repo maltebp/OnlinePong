@@ -31,6 +31,7 @@ function evaluateResponse(result){
         case "409":
             show(registerLayer);
             showError("Username is already taken");
+            break;
 
         default:
             show(registerLayer);

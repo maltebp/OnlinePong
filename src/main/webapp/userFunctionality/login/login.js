@@ -19,11 +19,16 @@ function evaluateResponse(result){
 
     switch(result.code){
 
+        // Username correct
         case "200":
             switchPage("pongGame/pongPage.html");
             break;
 
+        // Wrong username
         case "401":
+            // Just continue to case 410...
+
+        // Wrong password
         case "410":
             showError("Wrong username and/or password!");
             currUser = "";
