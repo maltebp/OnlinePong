@@ -8,17 +8,19 @@
         <link rel="stylesheet" type="text/css" media="screen" href="StyleSheetIndex.css">
         <script type="text/javascript" src="jquery-3.4.1.js"></script>
         <script type="text/javascript" src="jquery.serializejson.js"></script>
-        <script type="text/javascript" src="UserFunctionality/apiConnection.js"></script>
+        <script type="text/javascript" src="userFunctionality/apiConnection.js"></script>
+        <script type="text/javascript" src="userFunctionality/userVariables.js"></script>
+        <script type="text/javascript" src="userFunctionality/javascriptUtil.js"></script>
     </head>
-    <body class="body">
+    <body>
 
         <header class="header">
             <img src="pong.gif">
-            <h1>Online Tennis</h1>
+            <div class="title">Online Pong</div>
         </header>
 
         <div class="centerContainer">
-            <div class="leftBox">
+            <div class="sideBox">
                 <h2>Game rules</h2>
                 <ul>
                     <li>Your paddle is on the left side</li>
@@ -31,29 +33,29 @@
             </div>
 
             <div id='dynamicContainer' class="dynamicContainer"></div>
-            <script type="text/javascript">
-                function switchPage(page){
-                    $("#dynamicContainer").load(page);
-                }
-            </script>
-            <script type="text/javascript">switchPage("LoginPage.html")</script>
 
-            <div class="rightBox">
+            <script type="text/javascript">switchPage("userFunctioality/loginPage.html")</script>
+
+            <div class="sideBox">
+
                 <h2>Leaderboard:</h2>
-                <table id="topTen">
-                    <tr>
-                        <th>Username</th>
-                        <th>Elo</th>
-                    </tr>
-                </table>
-                <script src="UserFunctionality/UserVariables.js"></script>
-                <script src="UserFunctionality/PongLeaderboard.js"></script>
+                <div id="leaderboardLoader" style="position: absolute">
+                    <img id="loadingAnimation" src="loading.gif" class="centeredImg">
+                </div>
+
+                <div id="leaderboard" style="position: absolute">
+                    <table id="topTen" >
+                        <tr>
+                            <th>Username</th>
+                            <th>Elo</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <footer class="footer">
-            <address>Anker Engelunds Vej 1 Building 101A, 2800 Kgs. Lyngby</address>
-        </footer>
+        <!-- This has to be loaded AFTER creating leaderboard div -->
+        <script src="userFunctionality/pongLeaderboard.js"></script>
 
     </body>
 </html>

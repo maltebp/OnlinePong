@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" media="screen" href="pongGame/styleSheetGame.css">
+
+        <script src="../userFunctionality/gameMenus.js"></script>
+    </head>
+
+    <body>
+
+        <div id="findGameLayer" class="layer">
+            <div id="userInfoLayer" class="userInfoContainer">
+                <p>Logged in as</p>
+                <p id="username" class="username"></p>
+            </div>
+
+            <button id="findGameBtn" onclick="showFindGame()">Find game</button><br>
+
+            <p id="findGameError" class="errorMsg"></p>
+
+            <div id="findGameLoader" class="loadingContainer">
+                <p id="findGameLoadingMsg">Finding game...</p>
+                <img src="../loading.gif" class="centeredImg">
+            </div>
+        </div>
+
+        <div id="gameLayer" class="layer">
+            <p id="opponentName" class="opponentName"></p>
+            <canvas class="InnerGameScreen" id="game"></canvas>
+        </div>
+
+        <div id="gameFinishedLayer" class="layer">
+            <p id="gameResultMsg" class="resultMsg"></p>
+            <br>
+            <p>Rating result:</p>
+            <div class="resultName">You:</div>
+            <div id="yourRatingResult" class="resultRating"></div>
+            <br><br>
+            <div id="opponentNameResult" class="resultName"></div>
+            <div id="opponentRatingResult" class="resultRating"></div>
+            <br>
+            <button id="findNewGameBtn" onclick="showFindGame()">Find new game</button>
+        </div>
+
+
+        <!-- Remember the order of the scripts!-->
+        <!-- First we get the backgrounds Graphics-->
+        <script src="pongGame/globalVariables.js"></script>
+        <script src="pongGame/model/backgroundObjects/canvasSettings.js"></script>
+        <script src="pongGame/view/backGroundGraphics/bottomLine.js"></script>
+        <script src="pongGame/view/backGroundGraphics/midCourtLine.js"></script>
+        <script src="pongGame/view/backGroundGraphics/midCourtGraphics.js"></script>
+        <script src="pongGame/model/gameObjects/score.js"></script>
+        <script src="pongGame/model/gameObjects/paddle.js"></script>
+        <script src="pongGame/model/gameObjects/ball.js"></script>
+        <script src="pongGame/model/gameObjects/players.js"></script>
+
+        <!-- Then we get the model and the Game Functions/Logic-->
+        <script src="pongGame/model/gameStateObject.js"></script>
+        <script src="pongGame/model/setupGame.js"></script>
+        <script src="pongGame/controller/jsToGameServer.js"></script>
+
+        <!-- Finally we get the GameObjects that we play the game with-->
+        <script src="pongGame/view/render.js"></script>
+        <script src="pongGame/view/gameObjectGraphics/ballRender.js"></script>
+        <script src="pongGame/view/gameObjectGraphics/paddleRender.js"></script>
+        <script src="pongGame/view/gameObjectGraphics/playerRender.js"></script>
+        <script src="pongGame/view/gameObjectGraphics/scoreRender.js"></script>
+
+
+    </body>
+</html>

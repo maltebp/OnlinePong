@@ -1,1 +1,1 @@
-# EksamenPong 🌭
+# EksamenPong

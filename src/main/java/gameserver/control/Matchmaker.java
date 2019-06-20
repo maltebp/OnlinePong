@@ -41,6 +41,46 @@ public class Matchmaker extends Thread{
     }
 
 
+    public void matchmake(){
+        synchronized (lookingForMatch){
+            // List of players we have found a match for
+            LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
+
+            // Copying the list so we can remove players as we evaluate they can't be matched
+            LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
+
+
+            for (MatchPlayer player : lookingForMatch) {
+                if( remainingPlayers.remove(player) ){
+
+                    MatchPlayer opponent = findMatch(player, remainingPlayers);
+                    if( opponent != null ){
+                        // A match has been found
+                        remainingPlayers.remove(opponent);
+
+                        matchedPlayers.add(player);
+                        player.setMatchedOpponent(opponent);
+
+                        matchedPlayers.add(opponent);
+                        opponent.setMatchedOpponent(player);
+                    }else{
+                        player.incrementTimeWaited(MATCHMAKING_FREQ);
+                    }
+                }
+            }
+
+                /*  Removing Matched players from the list of players
+                    looking for a match, and sending correct message.
+                    Can't do this in the other loop. */
+            for(MatchPlayer player : matchedPlayers){
+                lookingForMatch.remove(player);
+                player.setHasAcceptedMatch(false);
+                sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
+            }
+        }
+    }
+
+
     /**
      * The loop which checks for possible matches
      * between players.
@@ -50,44 +90,7 @@ public class Matchmaker extends Thread{
     public void run(){
         try {
             while (true) {
-                synchronized (lookingForMatch){
-                    // List of players we have found a match for
-                    LinkedList<MatchPlayer> matchedPlayers = new LinkedList<>();
-
-                    // Copying the list so we can remove players as we evaluate they can't be matched
-                    LinkedList<MatchPlayer> remainingPlayers = new LinkedList<>(lookingForMatch);
-
-
-                    for (MatchPlayer player : lookingForMatch) {
-                        if( remainingPlayers.remove(player) ){
-
-                            MatchPlayer opponent = findMatch(player, remainingPlayers);
-                            if( opponent != null ){
-                                // A match has been found
-                                remainingPlayers.remove(opponent);
-
-                                matchedPlayers.add(player);
-                                player.setMatchedOpponent(opponent);
-
-                                matchedPlayers.add(opponent);
-                                opponent.setMatchedOpponent(player);
-                            }else{
-                                player.incrementTimeWaited(MATCHMAKING_FREQ);
-                            }
-                        }
-                    }
-
-                /*  Removing Matched players from the list of players
-                    looking for a match, and sending correct message.
-                    Can't do this in the other loop. */
-                    for(MatchPlayer player : matchedPlayers){
-                        lookingForMatch.remove(player);
-                        player.setHasAcceptedMatch(false);
-                        sender.sendFoundGame(player.getPlayer(), player.getMatchedOpponent().getPlayer());
-                    }
-                }
-
-
+                matchmake();
                 sleep((long) MATCHMAKING_FREQ * 1000);
             }
         }catch( InterruptedException e){
