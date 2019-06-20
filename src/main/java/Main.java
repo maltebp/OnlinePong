@@ -21,7 +21,7 @@ import org.apache.catalina.startup.Tomcat;
  */
 public class Main {
 
-    private static final boolean USE_ARRAY_DB = true;
+    private static final boolean USE_ARRAY_DB = false;
     private static final short PORT  = 8080;
 
     public static void main(String[] args) throws LifecycleException  {
