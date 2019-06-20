@@ -6,7 +6,7 @@ import gameserver.model.Player;
 public class TestDatabaseConnector implements DatabaseConnector {
 
     @Override
-    public void setPlayerInformation(Player player) {
+    public void getPlayerInformation(Player player) {
 
     }
 

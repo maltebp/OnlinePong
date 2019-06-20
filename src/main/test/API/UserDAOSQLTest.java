@@ -28,7 +28,7 @@ public class UserDAOSQLTest {
             assertEquals("testUser", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
 
     }
@@ -42,7 +42,7 @@ public class UserDAOSQLTest {
             assertEquals("swoldbye", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -52,10 +52,10 @@ public class UserDAOSQLTest {
             testDAO.createUser("swoldbye", "pass", 1000);
             String output = testDAO.checkHash("swoldbye", "pass");
             testDAO.forceDeleteUser("swoldbye");
-            assertEquals("1", output);
+            assertEquals("200", output);
             testDAO.forceDeleteUser("swoldbye");
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class UserDAOSQLTest {
             testDAO.forceDeleteUser("testUser");
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ public class UserDAOSQLTest {
             testDAO.forceDeleteUser("eloTest8");
             testDAO.forceDeleteUser("eloTest9");
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -117,12 +117,10 @@ public class UserDAOSQLTest {
     public void userDeleteUser(){
         try {
             testDAO.createUser("deleteTestUser", "pass", 1000);
-            String failCode = testDAO.userDeleteUser("deleteTestUser", "wrongPass");
             String successCode = testDAO.userDeleteUser("deleteTestUser", "pass");
-            assertEquals("1", successCode);
-            assertEquals("-2", failCode);
+            assertEquals("200", successCode);
         }catch(IUserDAO.DALException e){
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 }

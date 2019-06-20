@@ -20,12 +20,3 @@ function MidCourtLine(x,y,width,height){
     this.height = height;
 }
 
-/**
- * Rendering function
- */
-MidCourtLine.prototype.render = function() {
-    context.beginPath();
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(this.x, this.y, this.width, this.height);
-
-};

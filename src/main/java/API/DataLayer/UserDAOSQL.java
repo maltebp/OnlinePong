@@ -32,10 +32,10 @@ public class UserDAOSQL implements IUserDAO{
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         }catch(ClassNotFoundException e){
-            e.getMessage();
+        e.printStackTrace();
         }
         catch (SQLException e){
-            throw new DALException(e.getMessage());
+            throw new DALException("500", "Couldn't connect to DB server.");
         }
         return null;
     }
@@ -55,9 +55,11 @@ public class UserDAOSQL implements IUserDAO{
             if(set.next()){
                 return createUserDTO(set);
             }
-            return null;
+            else{
+                throw new DALException("410", "User doesn't exist.");
+            }
         } catch (SQLException e) {
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error.");
         }
     }
 
@@ -88,16 +90,24 @@ public class UserDAOSQL implements IUserDAO{
 
         try (Connection con = createConnection()) {
 
-            //user_id is on AUTO_INCREMENT.
-            String query = "INSERT INTO users (username, password, elo) VALUES(?,?,?)";
+            String query = "SELECT * FROM users WHERE username = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, hashedPassword);
-            preparedStatement.setInt(3, elo);
-            preparedStatement.execute();
-            return"1";
+            ResultSet set = preparedStatement.executeQuery();
+            if(set.next()){
+                throw new DALException("409", "A user with that username already exists.");
+            }
+            else {
+                String query2 = "INSERT INTO users (username, password, elo) VALUES(?,?,?)";
+                PreparedStatement preparedStatement2 = con.prepareStatement(query2);
+                preparedStatement2.setString(1, username);
+                preparedStatement2.setString(2, hashedPassword);
+                preparedStatement2.setInt(3, elo);
+                preparedStatement2.execute();
+                return "201";
+            }
         }catch(SQLException e){
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error");
         }
     }
 
@@ -121,12 +131,17 @@ public class UserDAOSQL implements IUserDAO{
             if(set.next()){
                 String dbPass = set.getString("password");
                 if(argon2.verify(dbPass, password)){
-                    return "1";
+                    return "200";
+                }
+                else{
+                    throw new DALException("401", "Incorrect password");
                 }
             }
-            return "-1";
+            else{
+                throw new DALException("410", "User doesn't exist.");
+            }
         }catch(SQLException e){
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error.");
         }
     }
 
@@ -140,17 +155,28 @@ public class UserDAOSQL implements IUserDAO{
      */
     public String setElo(String username, int elo) throws DALException{
         try(Connection con = createConnection()){
-           String query = "UPDATE users SET elo = ? WHERE username = ?";
+           String query = "SELECT * FROM users WHERE username = ?";
            PreparedStatement preparedStatement = con.prepareStatement(query);
-           preparedStatement.setInt(1, elo);
-           preparedStatement.setString(2, username);
-           preparedStatement.execute();
-           return "1";
+           preparedStatement.setString(1, username);
+           ResultSet set = preparedStatement.executeQuery();
 
+           if(!set.next()){
+               throw new DALException("410", "User doesn't exist.");
+           }
+           else {
+               String query2 = "UPDATE users SET elo = ? WHERE username = ?";
+               PreparedStatement preparedStatement2 = con.prepareStatement(query2);
+               preparedStatement2.setInt(1, elo);
+               preparedStatement2.setString(2, username);
+               preparedStatement2.execute();
+               return "200";
+           }
         }catch(SQLException e){
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error.");
         }
     }
+
+
     public List<IUserDTO> getTopTen() throws DALException{
         try(Connection con = createConnection()){
             String query = "SELECT username, elo FROM users ORDER BY elo DESC";
@@ -167,7 +193,7 @@ public class UserDAOSQL implements IUserDAO{
 
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error.");
 
         }
     }
@@ -178,21 +204,21 @@ public class UserDAOSQL implements IUserDAO{
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1,username);
             preparedStatement.execute();
-            return "1";
+            return "200";
             }catch(SQLException e) {
-                throw new DALException("-1" + e.getMessage());
+                throw new DALException("500", "Unknown server error.");
         }
     }
 
     public String userDeleteUser(String username, String password) throws DALException{
         try(Connection con = createConnection()){
             String auth = checkHash(username, password);
-            if(auth.equals("1")){
+            if(auth.equals("200")){
                 return forceDeleteUser(username);
             }
-            else return "-2";
+            else throw new DALException("401", "Incorrect Password");
         }catch(SQLException e){
-            throw new DALException("-1");
+            throw new DALException("500", "Unknown server error.");
         }
     }
 }

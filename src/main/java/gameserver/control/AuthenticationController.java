@@ -2,53 +2,53 @@ package gameserver.control;
 
 import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.model.Player;
-import gameserver.view.Sender;
+
 import java.util.ArrayList;
 
 
 /**
- * Controller which handles players connected to the
+ * Controller which handles authenticatedPlayers connected to the
  * game server.
  * It validates users via authenticating (username/password)
  * and duplicate Player checks (usernameExists()), and maintains
  * information about validated users.
  *
  */
-class PlayerController {
+class AuthenticationController {
 
-    private Sender sender;
+    private GameServer server;
 
     // Validated users
-    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Player> authenticatedPlayers = new ArrayList<>();
 
 
-    PlayerController(Sender sender){
-        this.sender = sender;
+    AuthenticationController(GameServer server){
+        this.server = server;
     }
 
 
     /**
      * Validate the player and adds it to the list of validated
-     * Players (players connected to the Game Server).
+     * Players (authenticatedPlayers connected to the Game Server).
      *
      * @return Whether or not the player was validated
      */
-    boolean addPlayer( Player player, String username, String password, DatabaseConnector databaseConnector ){
+    boolean authenticatePlayer(Player player, String username, String password, DatabaseConnector databaseConnector ){
 
         if( databaseConnector.authenticatePlayer(username, password) ){
 
             if( !usernameExists(username)){
-                players.add(player);
+                authenticatedPlayers.add(player);
                 player.setUsername(username);
-                databaseConnector.setPlayerInformation(player);
+                databaseConnector.getPlayerInformation(player);
                 return true;
             }else{
                 System.out.println("Already logged in");
-                sender.sendAlreadyLoggedIn(player);
+                server.getSender().sendAlreadyLoggedIn(player);
             }
         }else{
             System.out.println("Wrong username password");
-            sender.sendWrongUsernamePassword(player);
+            server.getSender().sendWrongUsernamePassword(player);
         }
         return false;
     }
@@ -57,18 +57,18 @@ class PlayerController {
      * Removes the player as a validated user
      */
     void removePlayer(Player player){
-        players.remove(player);
+        authenticatedPlayers.remove(player);
     }
 
 
     /**
-     * @return True if the player has been authenticated (via addPlayer())
+     * @return True if the player has been authenticated (via authenticatePlayer())
      */
     boolean playerIsAuthenticated(Player player){
-        if( players.contains(player)){
+        if( authenticatedPlayers.contains(player)){
             return true;
         }else{
-            sender.sendNotAuthenticated(player);
+            server.getSender().sendNotAuthenticated(player);
             return false;
         }
     }
@@ -78,7 +78,7 @@ class PlayerController {
      * to the game server.
      */
     private boolean usernameExists(String username){
-        for( Player player : players ){
+        for( Player player : authenticatedPlayers){
             if( player.getUsername().equals(username) ){
                 return true;
             }

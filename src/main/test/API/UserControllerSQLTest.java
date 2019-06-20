@@ -4,6 +4,7 @@ import API.Controller.IUserController;
 import API.Controller.UserController;
 import API.DataLayer.IUserDAO;
 import API.DataLayer.IUserDTO;
+import API.DataLayer.UserDAOArray;
 import API.DataLayer.UserDAOSQL;
 import com.google.gson.JsonObject;
 import org.json.JSONArray;
@@ -12,8 +13,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class UserControllerTest {
-    UserDAOSQL testDAO = new UserDAOSQL();
+public class UserControllerSQLTest {
+    IUserDAO testDAO = new UserDAOSQL();
     IUserController testCon = new UserController();
 
 
@@ -22,17 +23,13 @@ public class UserControllerTest {
         try {
             testDAO.createUser("swoldbye", "pass", 1000);
             JSONObject user = testCon.convertUser("swoldbye");
-            JSONObject wrongUser = testCon.convertUser("doesntExist");
             testDAO.forceDeleteUser("swoldbye");
-            assertEquals("1", user.getString("code"));
+            assertEquals("200", user.getString("code"));
             assertEquals("swoldbye", user.getString("username"));
             assertEquals(1000, user.getInt("elo"));
-
-            assertEquals("-2", wrongUser.getString("code"));
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
-
     }
 
     @Test
@@ -41,18 +38,18 @@ public class UserControllerTest {
             JSONObject output;
             JSONObject jUser = new JSONObject("{\"username\":\"swoldbye\",\"password\":\"pass\"}");
             output = testCon.createUser(jUser);
-            assertEquals("1", output.getString("code"));
+            assertEquals("201", output.getString("code"));
             IUserDTO user;
             user = testDAO.getUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
             assertEquals(1000, user.getElo());
 
             String vali = testDAO.checkHash("swoldbye", "pass");
-            assertEquals("1", vali);
+            assertEquals("200", vali);
             testDAO.forceDeleteUser("swoldbye");
 
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -65,10 +62,10 @@ public class UserControllerTest {
             jUserOutput = testCon.setElo(jUser);
             testDAO.forceDeleteUser("swoldbye");
 
-            assertEquals(1, jUserOutput.getInt("code"));
+            assertEquals("200", jUserOutput.getString("code"));
 
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -76,25 +73,13 @@ public class UserControllerTest {
     public void userValidation() {
         try {
             JSONObject jUser = new JSONObject("{\"username\":\"swoldbye\",\"password\":\"pass\"}");
-            JSONObject jWrongPass = new JSONObject("{\"username\":\"swoldbye\",\"password\":\"wrong\"}");
-            JSONObject jWrongUser = new JSONObject("{\"username\":\"doesntExist\",\"password\":\"pass\"}");
-
             testDAO.createUser("swoldbye", "pass", 1000);
             JSONObject corrPass;
-            JSONObject wrongPass;
-            JSONObject wrongUser;
             corrPass = testCon.userValidation(jUser);
-            wrongPass = testCon.userValidation(jWrongPass);
-            wrongUser = testCon.userValidation(jWrongUser);
             testDAO.forceDeleteUser("swoldbye");
-
-            assertEquals("1", corrPass.get("code"));
-            assertEquals("-1", wrongPass.get("code"));
-            assertEquals("-1", wrongUser.get("code"));
-
-
+            assertEquals("200", corrPass.get("code"));
         } catch (IUserDAO.DALException e) {
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
 
     }
@@ -121,14 +106,14 @@ public class UserControllerTest {
             int elo = 999999999;
             String name = "eloTest";
             for (int i = 0; i < 7; i++) {
-                user = jUsers.getJSONObject(i);
-                assertEquals(name + Integer.toString(i), user.getString("username"));
+                user = jUsers.getJSONObject(i+1);
+                assertEquals(name + i, user.getString("username"));
                 assertEquals(elo, user.getInt("elo"));
                 elo--;
             }
             for (int i = 7; i < 10; i++) {
                 boolean failer = true;
-                user = jUsers.getJSONObject(i);
+                user = jUsers.getJSONObject(i + 1);
                 if (user.getString("username").equals("eloTest7")) {
                     failer = false;
                 }
@@ -142,6 +127,7 @@ public class UserControllerTest {
                     fail("Username: " + user.getString("username") + " is the wrong username");
                     assertEquals(elo, user.getInt("elo"));
                 }
+            }
                 testDAO.forceDeleteUser("eloTest0");
                 testDAO.forceDeleteUser("eloTest1");
                 testDAO.forceDeleteUser("eloTest2");
@@ -152,9 +138,9 @@ public class UserControllerTest {
                 testDAO.forceDeleteUser("eloTest7");
                 testDAO.forceDeleteUser("eloTest8");
                 testDAO.forceDeleteUser("eloTest9");
-            }
             }catch(IUserDAO.DALException e){
-            fail(e.getMessage());
+            e.printStackTrace();
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 
@@ -162,17 +148,13 @@ public class UserControllerTest {
     public void deleteUser(){
         try {
             testDAO.createUser("deleteTestUser", "pass", 1000);
-            JSONObject correctUser = new JSONObject("{\"username\":\"deleteTestUser\",\"password\":\"pass\"}");
+            JSONObject user = new JSONObject("{\"username\":\"deleteTestUser\",\"password\":\"pass\"}");
             JSONObject success;
-            JSONObject wrongUser = new JSONObject("{\"username\":\"deleteTestUser\",\"password\":\"wrongPass\"}");
-            JSONObject fail;
-            fail = testCon.deleteUser(wrongUser);
-            success = testCon.deleteUser(correctUser);
+            success = testCon.deleteUser(user);
 
-            assertEquals("-2", fail.getString("code"));
-            assertEquals("1", success.getString("code"));
+            assertEquals("200", success.getString("code"));
         }catch(IUserDAO.DALException e){
-            fail(e.getMessage());
+            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
     }
 }

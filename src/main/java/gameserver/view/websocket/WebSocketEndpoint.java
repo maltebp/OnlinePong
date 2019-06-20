@@ -12,17 +12,17 @@ public class WebSocketEndpoint {
 
     @OnOpen
     public void onOpen(Session session){
-        controller.addSession(session);
+        controller.openSession(session);
     }
 
     @OnMessage
     public void onMessage( Session session, String msg ){
-        controller.sessionMessage(session, msg);
+        controller.messageRecieved(session, msg);
     }
 
     @OnClose
     public void onClose( Session session ){
-        controller.sessionClosed(session);
+        controller.closeSession(session);
     }
 
     @OnError

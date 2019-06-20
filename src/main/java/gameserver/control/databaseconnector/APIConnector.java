@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class APIConnector implements DatabaseConnector {
 
 
-    public void setPlayerInformation(Player player) {
+    public void getPlayerInformation(Player player) {
 
         String resource = "/"+player.getUsername();
 

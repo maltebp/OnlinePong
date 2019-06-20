@@ -13,20 +13,20 @@ public class WebSocketController extends Sender {
     private HashMap<Session, Player> players = new HashMap<Session, Player>();
     private HashMap<Player, Session> sessions = new HashMap<Player, Session>();
 
-    public void addSession(Session session){
+    public void openSession(Session session){
         Player player = new Player();
         players.put(session, player );
         sessions.put(player, session);
     }
 
-    public void sessionMessage(Session session, String message){
+    public void messageRecieved(Session session, String message){
         Player player = players.get(session);
         if( player != null ){
             gameServer.recieveMessage(player, message);
         }
     }
 
-    public void sessionClosed( Session session ){
+    public void closeSession(Session session ){
         Player player = players.get(session);
         if( player != null ){
             gameServer.removePlayer(player);
