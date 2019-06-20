@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Online Tennis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" media="screen" href="styleSheetIndex.css">
+        <script type="text/javascript" src="jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="jquery.serializejson.js"></script>
+        <script type="text/javascript" src="userFunctionality/apiConnection.js"></script>
+        <script type="text/javascript" src="userFunctionality/userVariables.js"></script>
+        <script type="text/javascript" src="userFunctionality/javascriptUtil.js"></script>
+    </head>
+    <body>
+
+        <header class="header">
+            <img src="pong.gif">
+            <div class="title">Online Pong</div>
+        </header>
+
+        <div class="centerContainer">
+            <div class="sideBox">
+                <h2>Game rules</h2>
+                <ul>
+                    <li>Your paddle is on the left side</li>
+                    <li>Use 'W' to move up and 'S' to move down</li>
+                    <li>Get the ball past your opponents paddle to score a goal</li>
+                    <li>Defend from getting the ball into your goal</li>
+                    <li>First to 10 goals win</li>
+                    <li>Have fun!</li>
+                </ul>
+            </div>
+
+            <div id='dynamicContainer' class="dynamicContainer"></div>
+
+            <script type="text/javascript">switchPage("userFunctionality/login/loginPage.html")</script>
+
+            <div class="sideBox">
+
+                <h2>Leaderboard:</h2>
+                <div id="leaderboardLoader" style="position: absolute">
+                    <img id="loadingAnimation" src="loading.gif" class="centeredImg">
+                </div>
+
+                <div id="leaderboard" style="position: absolute">
+                    <table id="topTen" >
+                        <tr>
+                            <th>Username</th>
+                            <th>Elo</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- This has to be loaded AFTER creating leaderboard div -->
+        <script src="userFunctionality/leaderboard/pongLeaderboard.js"></script>
+
+    </body>
+</html>
