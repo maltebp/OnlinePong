@@ -106,29 +106,19 @@ public class UserController implements IUserController{
         }
     }
 
-    public JSONArray getTopTen(){
+    public JSONObject getTopTen(){
+        JSONObject jUsers = new JSONObject();
         try{
-            JSONArray jUsers = new JSONArray();
             List<IUserDTO> iUsers = UserDAO.getTopTen();
-            JSONObject codeObj = new JSONObject();
-            codeObj.put("code", "200");
-            codeObj.put("description", "OK.");
-            jUsers.put(codeObj);
-            for(IUserDTO x: iUsers){
-                JSONObject jObject = new JSONObject();
-                jObject.put("username", x.getUsername());
-                jObject.put("elo", x.getElo());
-                jUsers.put(jObject);
-            }
+            jUsers.put("code", "200");
+            jUsers.put("description", "OK.");
+            jUsers.put("users", iUsers);
             return jUsers;
 
         }catch(DALException e){
-            JSONArray errorArr = new JSONArray();
-            JSONObject errorObj = new JSONObject();
-            errorObj.put("code", e.getErrorCode());
-            errorObj.put("description", e.getMessage());
-            errorArr.put(errorObj);
-            return errorArr;
+            jUsers.put("code", e.getErrorCode());
+            jUsers.put("description", e.getMessage());
+            return jUsers;
         }
     }
 

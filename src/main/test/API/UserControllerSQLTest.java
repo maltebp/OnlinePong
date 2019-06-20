@@ -99,21 +99,22 @@ public class UserControllerSQLTest {
             testDAO.createUser("eloTest9", "pass", 999999992);
 
 
-            JSONArray jUsers;
-            jUsers = testCon.getTopTen();
+            JSONObject object;
+            object = testCon.getTopTen();
+            JSONArray jUsers = object.getJSONArray("users");
 
             JSONObject user;
             int elo = 999999999;
             String name = "eloTest";
             for (int i = 0; i < 7; i++) {
-                user = jUsers.getJSONObject(i+1);
+                user = jUsers.getJSONObject(i);
                 assertEquals(name + i, user.getString("username"));
                 assertEquals(elo, user.getInt("elo"));
                 elo--;
             }
             for (int i = 7; i < 10; i++) {
                 boolean failer = true;
-                user = jUsers.getJSONObject(i + 1);
+                user = jUsers.getJSONObject(i);
                 if (user.getString("username").equals("eloTest7")) {
                     failer = false;
                 }
@@ -128,6 +129,11 @@ public class UserControllerSQLTest {
                     assertEquals(elo, user.getInt("elo"));
                 }
             }
+        } catch (IUserDAO.DALException e) {
+            e.printStackTrace();
+            fail("Code: " + e.getErrorCode() + " Desc: " + e.getMessage());
+        } finally {
+            try {
                 testDAO.forceDeleteUser("eloTest0");
                 testDAO.forceDeleteUser("eloTest1");
                 testDAO.forceDeleteUser("eloTest2");
@@ -138,9 +144,10 @@ public class UserControllerSQLTest {
                 testDAO.forceDeleteUser("eloTest7");
                 testDAO.forceDeleteUser("eloTest8");
                 testDAO.forceDeleteUser("eloTest9");
-            }catch(IUserDAO.DALException e){
-            e.printStackTrace();
-            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
+            } catch (IUserDAO.DALException e) {
+                e.printStackTrace();
+                fail("Code: " + e.getErrorCode() + " Desc: " + e.getMessage());
+            }
         }
     }
 
