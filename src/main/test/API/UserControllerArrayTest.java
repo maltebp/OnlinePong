@@ -69,20 +69,6 @@ public class UserControllerArrayTest {
     @Test
     public void userValidation() {
         try {
-            JSONObject jUser = new JSONObject("{\"username\":\"swoldbye\",\"password\":\"pass\"}");
-            testDAO.createUser("swoldbye", "pass", 1000);
-            JSONObject corrPass;
-            corrPass = testCon.userValidation(jUser);
-            testDAO.forceDeleteUser("swoldbye");
-            assertEquals("200", corrPass.get("code"));
-        } catch (IUserDAO.DALException e) {
-            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void getTopTen() {
-        try {
             testDAO.createUser("eloTest0", "pass", 999999999);
             testDAO.createUser("eloTest1", "pass", 999999998);
             testDAO.createUser("eloTest2", "pass", 999999997);
@@ -95,21 +81,22 @@ public class UserControllerArrayTest {
             testDAO.createUser("eloTest9", "pass", 999999992);
 
 
-            JSONArray jUsers;
-            jUsers = testCon.getTopTen();
+            JSONObject object;
+            object = testCon.getTopTen();
+            JSONArray jUsers = object.getJSONArray("users");
 
             JSONObject user;
             int elo = 999999999;
             String name = "eloTest";
             for (int i = 0; i < 7; i++) {
-                user = jUsers.getJSONObject(i+1);
+                user = jUsers.getJSONObject(i);
                 assertEquals(name + i, user.getString("username"));
                 assertEquals(elo, user.getInt("elo"));
                 elo--;
             }
             for (int i = 7; i < 10; i++) {
                 boolean failer = true;
-                user = jUsers.getJSONObject(i + 1);
+                user = jUsers.getJSONObject(i);
                 if (user.getString("username").equals("eloTest7")) {
                     failer = false;
                 }
@@ -124,21 +111,28 @@ public class UserControllerArrayTest {
                     assertEquals(elo, user.getInt("elo"));
                 }
             }
-            testDAO.forceDeleteUser("eloTest0");
-            testDAO.forceDeleteUser("eloTest1");
-            testDAO.forceDeleteUser("eloTest2");
-            testDAO.forceDeleteUser("eloTest3");
-            testDAO.forceDeleteUser("eloTest4");
-            testDAO.forceDeleteUser("eloTest5");
-            testDAO.forceDeleteUser("eloTest6");
-            testDAO.forceDeleteUser("eloTest7");
-            testDAO.forceDeleteUser("eloTest8");
-            testDAO.forceDeleteUser("eloTest9");
-        }catch(IUserDAO.DALException e){
+        } catch (IUserDAO.DALException e) {
             e.printStackTrace();
-            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
+            fail("Code: " + e.getErrorCode() + " Desc: " + e.getMessage());
+        } finally {
+            try {
+                testDAO.forceDeleteUser("eloTest0");
+                testDAO.forceDeleteUser("eloTest1");
+                testDAO.forceDeleteUser("eloTest2");
+                testDAO.forceDeleteUser("eloTest3");
+                testDAO.forceDeleteUser("eloTest4");
+                testDAO.forceDeleteUser("eloTest5");
+                testDAO.forceDeleteUser("eloTest6");
+                testDAO.forceDeleteUser("eloTest7");
+                testDAO.forceDeleteUser("eloTest8");
+                testDAO.forceDeleteUser("eloTest9");
+            } catch (IUserDAO.DALException e) {
+                e.printStackTrace();
+                fail("Code: " + e.getErrorCode() + " Desc: " + e.getMessage());
+            }
         }
     }
+
 
     @Test
     public void deleteUser() {
