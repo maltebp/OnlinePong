@@ -1,7 +1,7 @@
 import java.io.File;
-import java.net.BindException;
+import java.io.FileNotFoundException;
 
-import API.Controller.UserController;
+import keymanager.KeyManager;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
@@ -21,17 +21,21 @@ import org.apache.catalina.startup.Tomcat;
  */
 public class Main {
 
-    private static final boolean USE_ARRAY_DB = false;
-    private static final short PORT  = 8080;
+    private static final short PORT  = 20000;
 
-    public static void main(String[] args) throws LifecycleException  {
+    public static void main(String[] args) throws LifecycleException, FileNotFoundException  {
+        KeyManager.loadKeys();
 
         Tomcat tomcat;
 
         tomcat = new Tomcat();
         tomcat.setBaseDir("temp");
         tomcat.setPort(PORT);
-        tomcat.addWebapp("", new File("src/main/webapp").getAbsolutePath());
+
+        System.out.println("Working directory: " + System.getProperty("user.dir"));
+        String webAppFolder = getWebAppFolder();
+        System.out.println("Web app folder: " + webAppFolder);
+        tomcat.addWebapp("", webAppFolder);
 
         tomcat.getConnector();
 
@@ -41,9 +45,34 @@ public class Main {
                 "If you didn't get an exception during start-up, the TomCat server has started successfully," +
                 "and all applications are ready!" +
                 "\n\n" +
-                "Go to 'localhost:8080' in your browser!");
+                "Go to 'localhost:" + PORT + "' in your browser!");
 
         tomcat.getServer().await();
 
     }
+
+    private static String getWebAppFolder() throws FileNotFoundException {
+        String workingDir = System.getProperty("user.dir");
+        File f;
+
+        f = new File(workingDir + "/webapp");
+        if (f.exists() && f.isDirectory()) {
+            return f.getAbsolutePath();
+        }
+
+        f = new File("src/main/webapp");
+        if (f.exists() && f.isDirectory()) {
+            return f.getAbsolutePath();
+        }
+
+        f = new File("webapp");
+        if (f.exists() && f.isDirectory()) {
+            return f.getAbsolutePath();
+        }
+
+        throw new FileNotFoundException("Cannot find webapp folder");
+    }
+
+
+
 }

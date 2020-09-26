@@ -3,3 +3,4 @@ target/
 workspace.xml
 *.iml
 temp/
+src/main/resources/keys.json

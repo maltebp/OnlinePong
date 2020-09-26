@@ -1,7 +1,5 @@
-package API.Controller;
+package API.controller;
 
-import API.DataLayer.IUserDTO;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface IUserController {

@@ -1,4 +1,4 @@
-package API.DataLayer;
+package API.database;
 
 public interface IUserDTO {
     /**@author Claes and Simon

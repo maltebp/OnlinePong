@@ -1,10 +1,10 @@
 package API;
 
-import API.Controller.IUserController;
-import API.Controller.UserController;
-import API.DataLayer.IUserDAO;
-import API.DataLayer.IUserDTO;
-import API.DataLayer.UserDAOArray;
+import API.controller.IUserController;
+import API.controller.UserController;
+import API.database.IUserDAO;
+import API.database.IUserDTO;
+import API.database.UserDAOArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;

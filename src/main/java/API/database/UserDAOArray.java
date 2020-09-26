@@ -1,11 +1,10 @@
 
-package API.DataLayer;
+package API.database;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

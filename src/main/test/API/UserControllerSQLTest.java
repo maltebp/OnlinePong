@@ -1,11 +1,11 @@
 package API;
 
-import API.Controller.IUserController;
-import API.Controller.UserController;
-import API.DataLayer.IUserDAO;
-import API.DataLayer.IUserDTO;
-import API.DataLayer.UserDAOArray;
-import API.DataLayer.UserDAOSQL;
+import API.controller.IUserController;
+import API.controller.UserController;
+import API.database.IUserDAO;
+import API.database.IUserDTO;
+import API.database.UserDAOArray;
+import API.database.UserDAOSQL;
 import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
