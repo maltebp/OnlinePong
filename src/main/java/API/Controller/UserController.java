@@ -13,11 +13,12 @@ import java.util.List;
 
 public class UserController implements IUserController{
 
-    private static boolean backup = false;
+    private static boolean backup = true;
 
     //Initialize which Database you want the controller to connect to (ARRAY-backup or SQL)
     //Defaulted to SQL.
     private IUserDAO UserDAO = backup ? new UserDAOArray() : new UserDAOSQL();
+
 
     /**
      * @Author Simon, Claes

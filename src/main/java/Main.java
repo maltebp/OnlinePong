@@ -28,8 +28,6 @@ public class Main {
 
         Tomcat tomcat;
 
-        UserController.useBackup(USE_ARRAY_DB);
-
         tomcat = new Tomcat();
         tomcat.setBaseDir("temp");
         tomcat.setPort(PORT);
