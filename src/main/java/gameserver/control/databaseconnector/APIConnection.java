@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class APIConnection {
 
-    private static final String API_URL = "http://localhost:8080/rest/service";
+    private static final String API_URL = "http://localhost:20000/rest/service";
     private HttpURLConnection connection;
 
     /**

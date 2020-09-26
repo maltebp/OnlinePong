@@ -1,6 +1,6 @@
 
 // The API for the URL
-let API_URL = "http://localhost:8080/rest/service";
+let API_URL = "/rest/service";
 
 
 /**

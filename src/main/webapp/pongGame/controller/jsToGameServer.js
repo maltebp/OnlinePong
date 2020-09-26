@@ -4,7 +4,9 @@ var opponentName = "";
 
 function startGame() {
     toggleFindGameLoading(true);
-    connection = new WebSocket("ws://localhost:8080/gameserver");
+    var url = "ws://" + location.host + "/gameserver";
+    console.log("Connecting to game server: " + url);
+    connection = new WebSocket(url);
 
     connection.onopen = function () {
         initializingMessage001();
