@@ -1,8 +1,9 @@
-package API.DataLayer;
+package API.database;
 
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import keymanager.KeyManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class UserDAOSQL implements IUserDAO{
     private Connection createConnection() throws DALException {
         String dbUrl = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s180943?";
         String dbUsername = "s180943";
-        String dbPassword = "UXZTadQzbPrlIosGCZYNF";
+        String dbPassword = KeyManager.getMySQLKey();
         try{
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);

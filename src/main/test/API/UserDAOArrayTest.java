@@ -1,10 +1,9 @@
 package API;
 
-import API.DataLayer.IUserDAO;
 import org.junit.Test;
-import API.DataLayer.IUserDAO;
-import API.DataLayer.IUserDTO;
-import API.DataLayer.UserDAOArray;
+import API.database.IUserDAO;
+import API.database.IUserDTO;
+import API.database.UserDAOArray;
 
 import java.util.ArrayList;
 import java.util.List;

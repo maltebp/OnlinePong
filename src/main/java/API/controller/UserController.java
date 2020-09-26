@@ -1,11 +1,11 @@
-package API.Controller;
+package API.controller;
 
-import API.DataLayer.IUserDAO;
-import API.DataLayer.IUserDAO.DALException;
-import API.DataLayer.IUserDTO;
-import API.DataLayer.UserDAOArray;
-import API.DataLayer.UserDAOSQL;
-import org.json.JSONArray;
+import API.database.IUserDAO;
+import API.database.IUserDAO.DALException;
+import API.database.IUserDTO;
+import API.database.UserDAOArray;
+import API.database.UserDAOSQL;
+import API.database.mongodb.UserDAOMongo;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class UserController implements IUserController{
 
     //Initialize which Database you want the controller to connect to (ARRAY-backup or SQL)
     //Defaulted to SQL.
-    private IUserDAO UserDAO = backup ? new UserDAOArray() : new UserDAOSQL();
+    private IUserDAO UserDAO = new UserDAOMongo();
 
 
     /**

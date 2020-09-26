@@ -1,4 +1,4 @@
-package API.DataLayer;
+package API.database;
 
 public class UserDTO implements IUserDTO {
     String username;
@@ -10,6 +10,7 @@ public class UserDTO implements IUserDTO {
     }
     public UserDTO(){}
     public UserDTO(String username, int elo) {this. username = username; this.elo = elo;}
+    public UserDTO(String username, int elo, String password) {this. username = username; this.elo = elo; this.password = password;}
 
     public String getUsername() {
         return username;

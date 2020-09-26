@@ -1,19 +1,12 @@
-package API.Jersey;
+package API.endpoint;
 
-import API.Controller.IUserController;
-import API.Controller.UserController;
-import API.DataLayer.IUserDAO;
-import API.DataLayer.UserDAOSQL;
-import org.eclipse.persistence.annotations.Cache;
-import org.json.JSONArray;
+import API.controller.IUserController;
+import API.controller.UserController;
 import org.json.JSONObject;
 
 
-import javax.naming.ldap.Control;
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.SQLException;
 
 /**
  * @author Claes, Simon

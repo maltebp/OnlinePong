@@ -1,4 +1,4 @@
-package API.Jersey;
+package API.endpoint;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

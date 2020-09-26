@@ -3,34 +3,32 @@ package API;
 import API.database.IUserDAO;
 import API.database.IUserDTO;
 import API.database.UserDAOSQL;
+import API.database.mongodb.MongoDatabase;
+import API.database.mongodb.UserDAOMongo;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import keymanager.KeyManager;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class UserDAOSQLTest {
 
-    UserDAOSQL testDAO = new UserDAOSQL();
-    Argon2 argon2 = Argon2Factory.create();
+public class UserDAOMongoTest {
 
+    IUserDAO testDAO = new UserDAOMongo();
 
-    @Test
-    public void getUser() {
+    {
+        KeyManager.loadKeys();
+    }
 
-        try {
-            testDAO.createUser("testUser", "pass", 500);
-            IUserDTO user = testDAO.getUser("testUser");
-            testDAO.forceDeleteUser("testUser");
-            assertEquals("testUser", user.getUsername());
-            assertEquals(500, user.getElo());
-        } catch (IUserDAO.DALException e) {
-            fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
-        }
-
+    @Before
+    public void clearDatabase(){
+        MongoDatabase.useNewTestDatabase();
     }
 
     @Test
@@ -38,7 +36,6 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass", 500);
             IUserDTO user = testDAO.getUser("swoldbye");
-            testDAO.forceDeleteUser("swoldbye");
             assertEquals("swoldbye", user.getUsername());
             assertEquals(500, user.getElo());
         } catch (IUserDAO.DALException e) {
@@ -51,9 +48,7 @@ public class UserDAOSQLTest {
         try {
             testDAO.createUser("swoldbye", "pass", 1000);
             String output = testDAO.checkHash("swoldbye", "pass");
-            testDAO.forceDeleteUser("swoldbye");
             assertEquals("200", output);
-            testDAO.forceDeleteUser("swoldbye");
         } catch (IUserDAO.DALException e) {
             fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }
@@ -85,6 +80,10 @@ public class UserDAOSQLTest {
             testDAO.createUser("eloTest7", "pass", 999999992);
             testDAO.createUser("eloTest8", "pass", 999999992);
             testDAO.createUser("eloTest9", "pass", 999999992);
+            testDAO.createUser("eloTest10", "pass", 999999991);
+            testDAO.createUser("eloTest11", "pass", 999999233);
+            testDAO.createUser("eloTest12", "pass", 999999123);
+            testDAO.createUser("eloTest13", "pass", 999999423);
 
             List<IUserDTO> users;
             users = testDAO.getTopTen();
@@ -98,16 +97,6 @@ public class UserDAOSQLTest {
             assertEquals(elo, users.get(8).getElo());
             assertEquals(elo, users.get(9).getElo());
 
-            testDAO.forceDeleteUser("eloTest0");
-            testDAO.forceDeleteUser("eloTest1");
-            testDAO.forceDeleteUser("eloTest2");
-            testDAO.forceDeleteUser("eloTest3");
-            testDAO.forceDeleteUser("eloTest4");
-            testDAO.forceDeleteUser("eloTest5");
-            testDAO.forceDeleteUser("eloTest6");
-            testDAO.forceDeleteUser("eloTest7");
-            testDAO.forceDeleteUser("eloTest8");
-            testDAO.forceDeleteUser("eloTest9");
         } catch (IUserDAO.DALException e) {
             fail("Code: " +e.getErrorCode() +" Desc: " + e.getMessage());
         }

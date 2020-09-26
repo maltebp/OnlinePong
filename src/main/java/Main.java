@@ -1,7 +1,6 @@
 import java.io.File;
-import java.net.BindException;
 
-import API.Controller.UserController;
+import keymanager.KeyManager;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
@@ -21,10 +20,10 @@ import org.apache.catalina.startup.Tomcat;
  */
 public class Main {
 
-    private static final boolean USE_ARRAY_DB = false;
     private static final short PORT  = 8080;
 
     public static void main(String[] args) throws LifecycleException  {
+        KeyManager.loadKeys();
 
         Tomcat tomcat;
 
@@ -46,4 +45,9 @@ public class Main {
         tomcat.getServer().await();
 
     }
+
+
+
+
+
 }
