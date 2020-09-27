@@ -3,7 +3,7 @@ package gameserver.model;
 
 /**
  * Objects identifying player connections to
- * in the Game Server
+ * in the Game server.Server
  */
 public class Player {
 

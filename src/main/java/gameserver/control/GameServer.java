@@ -8,14 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * The central controller of the Game Server
+ * The central controller of the Game server.Server
  *
  * It analyses incoming messages and initiaties required
  * processes from helping controllers:
  *
- * It isolates Game Server functionality from connection
+ * It isolates Game server.Server functionality from connection
  * functionality, creating an abstract "connectection"
- * between Game Server and Game client.
+ * between Game server.Server and Game client.
  */
 public class GameServer {
 
@@ -33,7 +33,7 @@ public class GameServer {
 
     /**
      * Analyze a given message in the format defined in the
-     * Game Server Message System, and starts required
+     * Game server.Server Message System, and starts required
      * processes in helping controllers.
      */
     public void recieveMessage(Player player, String textMessage ){

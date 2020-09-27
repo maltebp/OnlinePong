@@ -30,7 +30,7 @@ public class ServerConnector extends Sender {
     }
 
     void recieveMessage(ClientConnector session, String message){
-        System.out.println("Server: "+message);
+        System.out.println("server.Server: "+message);
         gameServer.recieveMessage(players.get(session), message);
     }
 

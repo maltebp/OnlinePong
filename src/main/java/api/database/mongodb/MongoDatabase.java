@@ -1,13 +1,14 @@
-package API.database.mongodb;
+package api.database.mongodb;
 
+import api.database.User;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import keymanager.KeyManager;
 
 import java.util.HashSet;
+
 
 public class MongoDatabase {
 

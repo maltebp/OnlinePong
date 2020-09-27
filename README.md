@@ -30,7 +30,7 @@ The project contains 4 applications in total:
 ## Running The Game (local):
 
 1. Download Project as ZIP or import via Version control
-2. Run Main class in 'src/main/java/Main.class'. (This starts all applications)
+2. Run server.Server class in 'src/main/java/server.Server.class'. (This starts all applications)
 3. Go to a browser, and type in localhost:8080
 4. Play!
 

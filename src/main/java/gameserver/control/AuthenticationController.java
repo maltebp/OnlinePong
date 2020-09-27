@@ -29,7 +29,7 @@ class AuthenticationController {
 
     /**
      * Validate the player and adds it to the list of validated
-     * Players (authenticatedPlayers connected to the Game Server).
+     * Players (authenticatedPlayers connected to the Game server.Server).
      *
      * @return Whether or not the player was validated
      */

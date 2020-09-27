@@ -1,11 +1,14 @@
 package gameserver.view.websocket;
 
-import gameserver.control.GameServer;
+
 import gameserver.model.Player;
+import org.eclipse.jetty.websocket.api.*;
 import gameserver.view.Sender;
 
-import javax.websocket.Session;
+import gameserver.control.GameServer;
+
 import java.util.HashMap;
+
 
 public class WebSocketController extends Sender {
 
@@ -40,7 +43,7 @@ public class WebSocketController extends Sender {
         Session session = sessions.get(player);
         try {
             if( session.isOpen() ){
-                session.getBasicRemote().sendText(message);
+                session.getRemote().sendString(message);
             }
         }catch(Exception e){
             e.printStackTrace();
