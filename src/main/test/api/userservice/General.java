@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class General {
 
     private static final int    PORT = 20000;
-    private static final String URL = "http://localhost:" + PORT;
+    private static final String URL = "http://localhost:" + PORT + "/api";
 
 
     @Before
@@ -27,22 +27,38 @@ public class General {
                 .asString();
 
         if( response.getStatus() != 200 )
-            throw new Exception("Server is not in test mode!");
+            throw new Exception("Server is not in test mode! (Response was: " + response.getStatus() + ")");
     }
 
 
     @Test
     public void createUser(){
-        JSONObject body = new JSONObject();
-        body.put("username", "TestUser");
-        body.put("password", "pass");
+        {
+            JSONObject body = new JSONObject();
+            body.put("username", "TestUser");
+            body.put("password", "pass");
 
-        HttpResponse<String> response = Unirest.post(URL + "/user")
-                .header("Content-Type", "application/json")
-                .body(body.toString())
-                .asString();
+            HttpResponse<String> response = Unirest.post(URL + "/user")
+                    .header("Content-Type", "application/json")
+                    .body(body.toString())
+                    .asString();
 
-        assertEquals(201, response.getStatus());
+            assertEquals(201, response.getStatus());
+        }
+
+        {// Checking you can't create user twice
+            JSONObject body = new JSONObject();
+            body.put("username", "TestUser");
+            body.put("password", "pass");
+
+            HttpResponse<String> response = Unirest.post(URL + "/user")
+                    .header("Content-Type", "application/json")
+                    .body(body.toString())
+                    .asString();
+
+            assertEquals(403, response.getStatus());
+        }
+
     }
 
 
@@ -153,7 +169,7 @@ public class General {
             assertEquals(401, response.getStatus());
         }
 
-        // Authenticating with wrong password
+        // Authenticating with correct password
         {
             JSONObject body = new JSONObject();
             body.put("password", "pass");

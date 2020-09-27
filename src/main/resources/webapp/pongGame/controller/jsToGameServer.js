@@ -1,6 +1,7 @@
 var connection = null;
 var chosenScore = 5;
 var opponentName = "";
+var gameFinished = false;
 
 function startGame() {
     toggleFindGameLoading(true);
@@ -19,6 +20,7 @@ function startGame() {
 }
 
 function decodeEvent(jsonObject){
+
     switch (jsonObject.code) {
 
         case 101:
@@ -63,7 +65,6 @@ function decodeEvent(jsonObject){
 }
 
 function gameDataUpdatedata(jsonObject){
-    console.log(jsonObject);
     player2Movement(jsonObject.paddle);    //Update the opponent paddle
     ballMovement(jsonObject.ball);         //Update the ball
     playerScores(jsonObject.scores);       //Update the scores
@@ -125,6 +126,8 @@ function initializingMessage001(){
         "password": currPassw
     };
 
+    gameFinished = false;
+
     setFindGameLoadingMsg("Authenticating with server...");
     connection.send(JSON.stringify(user));
 }
@@ -136,7 +139,9 @@ function finishedGame(result, jsonObject){
 }
 
 function  checkForWinner(){
-    if(player2.score.score === chosenScore) {
+    if(player2.score.score === chosenScore && !gameFinished ) {
+        gameFinished = true;
+        console.log("Sending winner");
         var winner = {"code": 11};
         var jsonString = JSON.stringify(winner);
         connection.send(jsonString);

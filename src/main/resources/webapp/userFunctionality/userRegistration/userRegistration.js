@@ -15,31 +15,32 @@ hide(registerSuccess);
 
 
 
-function evaluateResponse(result){
+function evaluateResponse(result, status){
 
+    console.log(result);
     toggleLoader(false);
 
-    switch(result.code){
+    switch(status){
 
-        case "201":
+        case 201:
             currUser = registrationUsername;
             currPassw = registrationPassword;
             hide(registerLayer);
             show(registerSuccess);
             break;
 
-        case "409":
+        case 403:
             show(registerLayer);
-            showError("Username is already taken");
+            showError("Username is taken");
             break;
 
         default:
             show(registerLayer);
             showError("Something went wrong. User wasn't created.");
-
-        registrationUsername = "";
-        registrationPassword = "";
     }
+
+    registrationUsername = "";
+    registrationPassword = "";
 }
 
 
@@ -77,7 +78,7 @@ function createUser(){
 
         registrationUsername = userObj.username;
         registrationPassword = userObj.password;
-        apiPut("/createUser", evaluateResponse, JSON.stringify(userObj));
+        apiPost("/user", evaluateResponse, JSON.stringify(userObj));
 
     } else {
         showError("Passwords doesn't match");

@@ -8,12 +8,12 @@ hide(leaderboardLoader);
 function loadLeaderboard(){
     show(leaderboardLoader);
 
-    apiGet( "/getTopTen", function(data) {
-        console.log(data);
+
+    apiGet( "/topten", function(data) {
         hide(leaderboardLoader);
         show(leaderboard);
         var leaderboardData = "";
-        $.each(data.users, function (key, value) {
+        $.each(data.result.users, function (key, value) {
             if(value.username !== '')
             leaderboardData += '<tr>';
             leaderboardData += '<td>'+value.username+'</td>';

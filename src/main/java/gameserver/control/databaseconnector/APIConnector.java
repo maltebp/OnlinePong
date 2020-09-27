@@ -1,46 +1,58 @@
 package gameserver.control.databaseconnector;
 
 import gameserver.model.Player;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import org.json.JSONObject;
 
 public class APIConnector implements DatabaseConnector {
 
+    private static final String API_URL = "http://localhost:20000/api";
 
-    public void getPlayerInformation(Player player) {
 
-        String resource = "/"+player.getUsername();
+    public void getPlayerInformation(Player player) throws DatabaseException {
+        HttpResponse<String> response = Unirest.get(API_URL + "/user/" + player.getUsername())
+                .header("Content-Type", "application/json")
+                .asString();
 
-        APIConnection connection = new APIConnection(resource, "GET");
-        JSONObject jsonObject = connection.getResponse();
-        connection.close();
+        if( response.getStatus() == 404 )
+            return; // TODO: Do something meaningful here
+
+        if( response.getStatus() == 500 )
+            throw new DatabaseException("An internal exception occured at the API " + response.getBody());
+
+        if( response.getStatus() != 200 )
+            throw new DatabaseException("An unexpected status was received from API: " + response.getStatus());
+
+        JSONObject result = new JSONObject(response.getBody()).getJSONObject("result");
 
         //Here we can update whatever we want
-        player.setRating(jsonObject.getInt("elo"));
+        player.setRating(result.getInt("elo"));
     }
 
 
     /**
      * Authenticates a given username + password combination
      */
-    public boolean authenticatePlayer(String username, String password) {
+    public boolean authenticatePlayer(String username, String password) throws DatabaseException{
+        JSONObject body = new JSONObject();
+        body.put("password", password);
 
-        //Create connection
-        String resource = "/AuthUser";
-        APIConnection connection = new APIConnection(resource, "POST");
+        HttpResponse<String> response = Unirest.post(API_URL + "/user/" + username + "/authenticate")
+                .body(body.toString())
+                .header("Content-Type", "application/json")
+                .asString();
 
-        //Create JSONObject to send
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("username", username);
-        jsonObject.put("password",password);
+        if( response.getStatus() == 204 )
+            return true;
 
-        //Sending JSONOBject
-        connection.sendMessage(jsonObject);
-        jsonObject = connection.getResponse();
+        if( response.getStatus() == 401 )
+            return false;
 
-        connection.close();
+        if( response.getStatus() == 500 )
+            throw new DatabaseException("An internal exception occured at the API " + response.getBody());
 
-        //Reading response from API
-        return jsonObject.getInt("code") == 200;
+        throw new DatabaseException("An unexpected response was received from API: " + response.getStatus());
     }
 
 
@@ -49,20 +61,13 @@ public class APIConnector implements DatabaseConnector {
      * to the current rating of the player object.
      * @param player Player object to retrieve Elo-rating from
      */
-    public void updateElo(Player player){
+    public void updateElo(Player player) throws DatabaseException {
+        HttpResponse<String> response = Unirest.put(API_URL + "/user/" + player.getUsername() + "/elo/" + player.getRating() )
+                .header("Content-Type", "application/json")
+                .asString();
 
-        String resource = "/setElo";
-        APIConnection connection = new APIConnection(resource, "POST");
-
-        //Create JSONObject to sent
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("username", player.getUsername());
-        jsonObject.put("elo",player.getRating());
-
-        //Sending JSONOBject
-        connection.sendMessage(jsonObject);
-        connection.getResponse(); // We need to read response before the database will update
-        connection.close();
+        if( response.getStatus() != 204 )
+            throw new DatabaseException("Couldn't update player rating (unexpected status code from server: " + response.getBody() + ")");
     }
 
 

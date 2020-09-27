@@ -8,7 +8,7 @@ import server.Server;
 public class TestModeService {
 
     public TestModeService(Javalin server){
-        server.put("testmode/clear", this::clearData);
+        server.put("api/testmode/clear", this::clearData);
     }
 
     public void clearData(Context context){

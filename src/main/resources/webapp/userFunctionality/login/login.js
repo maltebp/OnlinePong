@@ -15,28 +15,32 @@ currUser = null;
 
 
 
-function evaluateResponse(result){
+function evaluateResponse(result, statusCode){
 
-    switch(result.code){
+    switch(statusCode){
 
         // Username correct
-        case "200":
+        case 204:
             switchPage("pongGame/pongPage.html");
             break;
 
-        // Wrong username
-        case "401":
-            // Just continue to case 410...
-
         // Wrong password
-        case "410":
-            showError("Wrong username and/or password!");
+        case 401:
+            showError("Wrong password!");
+            currUser = "";
+            currPassw = "";
+            break;
+
+        // Wrong username
+        case 404:
+            showError("Wrong username!");
             currUser = "";
             currPassw = "";
             break;
 
         default:
             showError("An unexpected error occured!");
+            console.log(result);
             currUser = "";
             currPassw = "";
     }
@@ -62,8 +66,9 @@ function authenticate(){
         hide(loginLayer);
         currUser = document.forms["loginForm"]["username"].value;
         currPassw = document.forms["loginForm"]["password"].value;
-        let userData = JSON.stringify({username : currUser, password: currPassw});
-        apiPost("/AuthUser", evaluateResponse, userData);
+        let userData = JSON.stringify({username : currUser, password : currPassw});
+
+        apiPost("/user/"+currUser+"/authenticate", evaluateResponse, userData);
     }
 }
 

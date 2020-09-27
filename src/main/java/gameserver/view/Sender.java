@@ -162,6 +162,22 @@ public abstract class Sender {
 
 
 
+    // INTERNAL ERROR  ---------------------------------------------------
+
+
+    /**
+     * CODE: 300
+     * Informs client that Player's opponentName disconnected
+     * during the match.
+     * Match will be stopped and connection to client closed.
+     */
+    public void sendInternalError(String errorMessage){
+        JSONObject msg = getCodeMsg(300);
+        msg.put("msg", errorMessage);
+    }
+
+
+
 
     /**
      * Creates an initial JSON object containing a "code" field:

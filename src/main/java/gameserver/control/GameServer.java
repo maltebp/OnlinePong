@@ -79,6 +79,8 @@ public class GameServer {
         // Wrong format (syntax/missing variable)
         }catch(JSONException exception){
             sender.sendWrongMessageFormat(player);
+        }catch(Exception e){
+            sender.sendInternalError("An internal game server error occured: " + e.getMessage());
         }
     }
 

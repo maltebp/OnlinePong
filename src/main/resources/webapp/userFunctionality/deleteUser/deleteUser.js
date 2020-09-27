@@ -21,21 +21,21 @@ hide(deleteSuccess);
 hide(deleteError);
 hide(deleteUserLoader);
 
-function responseFromAPI(data) {
+function responseFromAPI(result, status) {
 
-    switch (data.code) {
+    switch (status) {
 
-        case "200":
+        case 204:
             toggleDeleteLoading(false);
             hide(deleteUserLayer);
             show(deleteSuccess);
             break;
 
-        case "401":
+        case 401:
             showDeleteError("Incorrect password");
             break;
 
-        case "410":
+        case 404:
             showDeleteError("User doesn't exist");
             break;
 
@@ -67,7 +67,7 @@ function showDeleteError(msg){
 function deleteUser(){
     var deleteUserObj = $('#deleteForm').serializeJSON();
     toggleDeleteLoading(true);
-    apiDelete("/deleteUser", responseFromAPI, JSON.stringify(deleteUserObj));
+    apiDelete("/user/"+deleteUserObj.username, responseFromAPI, JSON.stringify(deleteUserObj));
 }
 
 

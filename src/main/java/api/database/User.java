@@ -1,9 +1,11 @@
 package api.database;
 
 
+import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import org.json.JSONObject;
 
+@Entity("users")
 public class User {
 
     @Id

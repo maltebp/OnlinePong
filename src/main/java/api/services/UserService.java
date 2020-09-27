@@ -20,12 +20,12 @@ public class UserService {
 
 
     public UserService(Javalin server) {
-        server.post("user", this::createUser);
-        server.get("user/:username", this::getUser);
-        server.delete("user/:username", this::deleteUser);
-        server.post("user/:username/authenticate", this::authenticateUser);
-        server.put("user/:username/elo/:elo", this::updateElo);
-        server.get("topten", this::getTopTen);
+        server.post("api/user", this::createUser);
+        server.get("api/user/:username", this::getUser);
+        server.delete("api/user/:username", this::deleteUser);
+        server.post("api/user/:username/authenticate", this::authenticateUser);
+        server.put("api/user/:username/elo/:elo", this::updateElo);
+        server.get("api/topten", this::getTopTen);
     }
 
 

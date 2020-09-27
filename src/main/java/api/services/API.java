@@ -8,7 +8,7 @@ import org.json.JSONException;
 public class API {
 
     public static void initialize(Javalin server){
-        server.before(ctx -> {
+        server.before("api/*", ctx -> {
             ctx.result(new Response().toJSONString());
             ctx.contentType(ContentType.JSON);
         });

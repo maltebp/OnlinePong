@@ -2,6 +2,8 @@ package gameserver.control.databaseconnector;
 
 import gameserver.model.Player;
 
+import javax.xml.crypto.Data;
+
 
 /**
  * Makes contacts to the database used by
@@ -18,13 +20,13 @@ public interface DatabaseConnector {
      *
      * @param player Player object to put the data into
      */
-    void getPlayerInformation(Player player);
+    void getPlayerInformation(Player player) throws DatabaseException;
 
 
     /**
      * Authenticates a given username + password combination
      */
-    boolean authenticatePlayer(String username, String password);
+    boolean authenticatePlayer(String username, String password) throws DatabaseException;
 
 
     /**
@@ -32,6 +34,11 @@ public interface DatabaseConnector {
      * to the current rating of the player object.
      * @param player Player object to retrieve Elo-rating from
      */
-    void updateElo(Player player);
+    void updateElo(Player player) throws DatabaseException;
 
+
+
+    class DatabaseException extends Exception {
+        public DatabaseException(String msg){ super(msg); }
+    }
 }

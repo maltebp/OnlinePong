@@ -35,20 +35,28 @@ class AuthenticationController {
      */
     boolean authenticatePlayer(Player player, String username, String password, DatabaseConnector databaseConnector ){
 
-        if( databaseConnector.authenticatePlayer(username, password) ){
+        try{
+            boolean authenticated = databaseConnector.authenticatePlayer(username, password);
 
-            if( !usernameExists(username)){
-                authenticatedPlayers.add(player);
-                player.setUsername(username);
-                databaseConnector.getPlayerInformation(player);
-                return true;
+            if( authenticated ){
+                if( !usernameExists(username)){
+                    authenticatedPlayers.add(player);
+                    player.setUsername(username);
+                    databaseConnector.getPlayerInformation(player);
+                    return true;
+                }else{
+                    System.out.println("Already logged in");
+                    server.getSender().sendAlreadyLoggedIn(player);
+                }
             }else{
-                System.out.println("Already logged in");
-                server.getSender().sendAlreadyLoggedIn(player);
+                System.out.println("Wrong username password");
+                server.getSender().sendWrongUsernamePassword(player);
+                return false;
             }
-        }else{
-            System.out.println("Wrong username password");
-            server.getSender().sendWrongUsernamePassword(player);
+
+        }catch( DatabaseConnector.DatabaseException e ){
+            server.getSender().sendInternalError("Error from database: " + e.getMessage());
+            return false;
         }
         return false;
     }

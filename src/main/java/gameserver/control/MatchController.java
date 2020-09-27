@@ -1,5 +1,6 @@
 package gameserver.control;
 
+import gameserver.control.databaseconnector.DatabaseConnector;
 import gameserver.control.ratingalgorithm.EloAlgorithm;
 import gameserver.control.ratingalgorithm.RatingAlgorithm;
 import gameserver.model.Match;
@@ -94,12 +95,16 @@ class MatchController {
                 }else{
                     server.getSender().sendGameFinished(loser, false, loserRatingChange, winnerRatingChange);
                     server.getSender().sendGameFinished(winner, true, winnerRatingChange, loserRatingChange );
-
                 }
 
-                // Updates Elo in Database
-                server.getDatabaseConnector().updateElo(loser);
-                server.getDatabaseConnector().updateElo(winner);
+                try{
+                    server.getDatabaseConnector().updateElo(loser);
+                    server.getDatabaseConnector().updateElo(winner);
+                }catch(DatabaseConnector.DatabaseException e){
+                    server.getSender().sendInternalError("Internal server error when registering new elo in database: " + e.getMessage());
+                }
+
+
 
                 if( !disconnected) return winner;
 
